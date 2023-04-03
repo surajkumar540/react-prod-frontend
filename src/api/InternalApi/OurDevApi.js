@@ -1,6 +1,7 @@
 import axios from "axios";
-const devURL = "http://184.169.164.131:8000/api"
-//"https://devorganaise.com/api";
+const devURL = "https://devorganaise.com/api";
+///"http://13.57.89.208:8000/api"
+//
 const localUrl = "http://localhost:8000/api";
 
 const UserApiVersion = "/v1/user";

@@ -20,9 +20,9 @@ import { getSender } from '../../utils/chatLogic';
 import io from "socket.io-client";
 
 
-const ENDPOINT = "http://184.169.164.131:8000"
-//"https://devorganaise.com/"
-//"https://devorganaise.com"
+const ENDPOINT = "https://devorganaise.com";
+//"https://devorganaise.com/api"
+//"http://13.57.89.208:8000"
 //"http://localhost:8000"
 
 var socket, selectedChatCompare;
@@ -54,7 +54,16 @@ const NewMessageGrid = ({ selectedChannel }) => {
     ///////// UseEffect for socket io
     useEffect(() => {
         //////// Here we are check the login user status
-        socket = io(ENDPOINT);
+        socket = io(`${ENDPOINT}`, {
+            debug: true
+        });
+        socket.on("connect_error", (err) => {
+            console.error("Connection error:", err);
+        });
+
+        socket.on("connect_timeout", (timeout) => {
+            console.error("Connection timeout:", timeout);
+        });
         socket.emit("setup", user);
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setisTyping(true));
@@ -275,7 +284,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
     const fetchAllMessV1 = async (chatId) => {
         try {
             const response = await fetchingAllMess({ chatId });
-            console.log("respone fetch data", response)
             setCurrentChats(response)
             socket.emit("join chat", chatId)
         } catch (error) {
