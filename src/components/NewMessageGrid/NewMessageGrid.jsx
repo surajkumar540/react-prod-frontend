@@ -15,10 +15,12 @@ import ContentModels from '../../pages/ContentModels';
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
 import { useMutation } from 'react-query';
-import { fetchAllChatSingleUserOrGroup, fetchChatSingleUserOrGroup, fetchMessagesV1, sendV1Message } from '../../api/InternalApi/OurDevApi';
+import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message } 
+from '../../api/InternalApi/OurDevApi';
 import { getSender } from '../../utils/chatLogic';
 import io from "socket.io-client";
 
+import ListModal from '../Chat/ListModal';
 
 const ENDPOINT = "https://devorganaise.com";
 //"https://devorganaise.com/api"
@@ -120,7 +122,8 @@ const NewMessageGrid = ({ selectedChannel }) => {
         firstBoxMessage: { height: "80vh", backgroundColor: "#ffffff", marginTop: "0px" },
         groupNameBox: {
             position: "sticky", top: "65px", width: "100%", height: "50px", zIndex: "100",
-            borderBottom: "1px solid #efefef", background: " #FFFFFF", boxSizing: "border-box", borderBottom: "1px solid #F1F1F1"
+            background: " #FFFFFF", boxSizing: "border-box", 
+            borderBottom: "1px solid #F1F1F1"
         },
         avatarCss: { width: "25px", height: "25px" },
         listofPeopeBtn: { paddingLeft: "10px", paddingRight: "10px", fontSize: "10px" },
@@ -345,7 +348,9 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                 <Avatar sx={cssStyle.avatarCss} alt="Cindy Baker" src="https://mui.com/static/images/avatar/3.jpg" />
                             </Stack>
                         </Box>
-                        <Box>
+
+
+                        <Box display={'flex'} alignItems={'center'} >
                             <Button
                                 sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
                                 variant="outlined"
@@ -353,9 +358,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                 onClick={() => modelOpens()}>
                                 Add Member
                             </Button>
-                            <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
+                            {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
                                 List Of People
-                            </Button>
+                            </Button> */}
+                            <ListModal buttonStyle={cssStyle.listofPeopeBtn}/>
                         </Box>
                     </>
                 }
