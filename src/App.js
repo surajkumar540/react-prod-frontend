@@ -1,4 +1,4 @@
-import { useState,createContext } from 'react'
+import { useState, createContext } from 'react'
 import Typography from '@mui/material/Typography'
 import { Route, Router, Routes, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -28,133 +28,134 @@ import { useContext } from 'react';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
-  const [leftSideData,setLeftSideData]=useState("")
-  useEffect(()=>{
-    console.log(leftSideData)
-  },[leftSideData])
-  const { pageType } = useParams();
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#448DF0',
+    const [leftSideData, setLeftSideData] = useState("")
+    useEffect(() => {
+        console.log(leftSideData)
+    }, [leftSideData])
+    const { pageType } = useParams();
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#448DF0',
 
-      },
-      secondary: {
-        main: '#FF5353',
-        dark: "#333333",
-      }
-    },
-    typography: {
-      fontFamily: 'Nunito',
-      color: "#333333",
-      fontWeight: "600"
-    },
+            },
+            secondary: {
+                main: '#FF5353',
+                dark: "#333333",
+            }
+        },
+        typography: {
+            fontFamily: 'Nunito',
+            color: "#333333",
+            fontWeight: "600"
+        },
 
-  });
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [isAnonymous, setAnonymous] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState("")
+    });
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [isAnonymous, setAnonymous] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userId, setUserId] = useState("")
 
-  useEffect(() => {
-    configureAmplify();
-    getAwsCredentialsFromCognito();
-  }, [])
+    useEffect(() => {
+        configureAmplify();
+        getAwsCredentialsFromCognito();
+    }, [])
 
-  const setAuthenticatedUserFromCognito = () => {
-    ///// Its return the current userInfo
-    Auth.currentUserInfo()
-      .then(curUser => {
-        if (curUser.attributes?.profile === 'none') {
-          setIsAuthenticated(false);
-        } else {
-          setUserId(curUser.attributes.sub);
-          setIsAuthenticated(true);
-          navigate(location.pathname);
-        }
-      })
-      .catch((err) => {
-        console.log(`Failed to set authenticated user! ${err}`);
-      });
-    //getAwsCredentialsFromCognito();
-  };
+    const setAuthenticatedUserFromCognito = () => {
+        ///// Its return the current userInfo
+        Auth.currentUserInfo()
+            .then(curUser => {
+                if (curUser.attributes?.profile === 'none') {
+                    setIsAuthenticated(false);
+                } else {
+                    setUserId(curUser.attributes.sub);
+                    setIsAuthenticated(true);
+                    navigate(location.pathname);
+                }
+            })
+            .catch((err) => {
+                console.log(`Failed to set authenticated user! ${err}`);
+            });
+        //getAwsCredentialsFromCognito();
+    };
 
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(
-        setAuthenticatedUserFromCognito
-      )
-      .catch((err) => {
-        console.log("error get in app.js", err);
-        setIsAuthenticated(false);
-        if (location.pathname === "/") {
-          navigate("/login");
-        } else {
-          navigate(location.pathname);
-        }
-
-
-      });
-  }, [Auth]);
+    useEffect(() => {
+        Auth.currentAuthenticatedUser()
+            .then(
+                setAuthenticatedUserFromCognito
+            )
+            .catch((err) => {
+                console.log("error get in app.js", err);
+                setIsAuthenticated(false);
+                if (location.pathname === "/") {
+                    navigate("/start");
+                } else {
+                    navigate(location.pathname);
+                }
 
 
+            });
+    }, [Auth]);
 
 
 
-  return (
-    <>
-      <ThemeProvider theme={theme}>
-        {!isAuthenticated
-          ?
-          <Routes>
-            <Route path="/login" element={<AuthService serviceType="login" />} />
-            <Route path="/forget-password" element={<AuthService serviceType="forgetPassword" />} />
-            <Route path="/signup" element={<AuthService serviceType="signup" />} />
-          </Routes>
-          :
-          <ChatProvider>
-              
-            <Routes>
-              {/* <Route path="/" element={<Dashboard />} /> */}
-              {/* <Route path="/data" element={<Data userId={userId} />} /> */}
-              {/** Delete code  aafter file upload feaature complete */}
-              {/* <Route path="/message" element={<Message />} /> */}
-              {/** Delete code after creaing new message feature complete */}
-              {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
-              {/** Delete code after folder feature complete */}
-              <Route path="/model" element={<ContentModels />} />
-              <Route path="/companyDetail" element={<CompanyDetails />} />
 
-          
-              {/* 
+
+    return (
+        <>
+            <ThemeProvider theme={theme}>
+                {!isAuthenticated
+                    ?
+                    <Routes>
+                        <Route path="/login" element={<AuthService serviceType="login" />} />
+                        <Route path="/forget-password" element={<AuthService serviceType="forgetPassword" />} />
+                        <Route path="/start" element={<AuthService serviceType="start" />} />
+                        <Route path="/signup" element={<AuthService serviceType="signup" />} />
+                    </Routes>
+                    :
+                    <ChatProvider>
+
+                        <Routes>
+                            {/* <Route path="/" element={<Dashboard />} /> */}
+                            {/* <Route path="/data" element={<Data userId={userId} />} /> */}
+                            {/** Delete code  aafter file upload feaature complete */}
+                            {/* <Route path="/message" element={<Message />} /> */}
+                            {/** Delete code after creaing new message feature complete */}
+                            {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
+                            {/** Delete code after folder feature complete */}
+                            <Route path="/model" element={<ContentModels />} />
+                            <Route path="/companyDetail" element={<CompanyDetails />} />
+
+
+                            {/* 
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/settings" element={<Setting />} /> 
             */}
-              <Route path="/forget-password" element={<ForgetPassword />} />
-            </Routes>
+                            <Route path="/forget-password" element={<ForgetPassword />} />
+                        </Routes>
 
-            {/* <LeftSideBar data={{leftSideData}} > */}
-            {/* <LeftSideBarContext.Provider value={{setLeftSideData}}> */}
-              <Routes>
+                        {/* <LeftSideBar data={{leftSideData}} > */}
+                        {/* <LeftSideBarContext.Provider value={{setLeftSideData}}> */}
+                        <Routes>
 
-              <Route path="/:feature/:section" element={<FileUpload />} />
-              <Route path="/:feature/:section" element={<FolderData userId={userId} />} />
-              <Route path="/" element={<MyMessage userId={userId} />} />
-              <Route path="/:feature" element={<MyMessage userId={userId} />} />
-              <Route path="/:feature/:section" element={<AllFiles />} />
-              <Route path="*" element={<>404 page</>} />
+                            <Route path="/:feature/:section" element={<FileUpload />} />
+                            <Route path="/:feature/:section" element={<FolderData userId={userId} />} />
+                            <Route path="/" element={<MyMessage userId={userId} />} />
+                            <Route path="/:feature" element={<MyMessage userId={userId} />} />
+                            <Route path="/:feature/:section" element={<AllFiles />} />
+                            <Route path="*" element={<>404 page</>} />
 
-              </Routes>
-              {/* </LeftSideBarContext.Provider> */}
-            {/* </LeftSideBar> */}
-          </ChatProvider>
-        }
+                        </Routes>
+                        {/* </LeftSideBarContext.Provider> */}
+                        {/* </LeftSideBar> */}
+                    </ChatProvider>
+                }
 
-      </ThemeProvider>
+            </ThemeProvider>
 
-    </>
-  )
+        </>
+    )
 }
 
 export default App
