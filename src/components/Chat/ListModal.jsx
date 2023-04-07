@@ -55,10 +55,17 @@ export default function ListModal({buttonStyle}) {
         aria-describedby="modal-modal-description"
       >
           
-        <Box sx={{...style, width: {xs:'100%',sm:350,md:450} }}>
+        <Box sx={{...style, width: {xs:'100%',sm:350,md:420} }}>
         
         <IconButton
-          style={{ position: "absolute", top: "3%", right: "4%",boxShadow:'2px 2px 10px rgba(0, 0, 0, 0.2)',outline:'none'}}
+          style={{ position: "absolute", top: "3%", right: "4%",boxShadow:'2px 2px 10px rgba(0, 0, 0, 0.2)',outline:'none',
+          cursor: "pointer",
+          color: "#333333",
+          fontSize: "18px",
+          borderRadius: "50%",
+          border: "1px solid #33333342",
+          padding: "2px",
+        }}
           onClick={() => setOpen(false)}
         >
           <CloseIcon sx={{p:0,fontSize:'15px'}}/>

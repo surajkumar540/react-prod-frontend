@@ -42,7 +42,7 @@ const ContentModels = ({
     const navigate = useNavigate();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('xs');
-
+    console.log(activeModel)
 
     ////// use conetext use here
     const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
@@ -645,7 +645,7 @@ const ContentModels = ({
                                 fontSize: "18px",
                                 borderRadius: "50%",
                                 border: "1px solid #33333342",
-                                padding: "2px"
+                                padding: "2px",
                             }} onClick={() => handleClose()} />
                         </Box>
                     </DialogTitle>
@@ -792,7 +792,7 @@ const ContentModels = ({
                             <Box px={"25px"} py={"15px"} sx={{ width: "100%", cursor: "pointer" }} display={"flex"}>
                                 <AddIcon />
                                 <Typography
-                                    onClick={() => navigate("/upload")}
+                                    onClick={() => navigate("/files/upload")}
                                     variant="subtitle2" >
                                     Add new file
                                 </Typography>
@@ -1112,7 +1112,7 @@ const ContentModels = ({
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            variant="standard"
+                                            variant="outlined"
                                             label="Select Member"
                                             placeholder="Search Member"
                                             onChange={(event) => setSrcMemberName(event.target.value)}

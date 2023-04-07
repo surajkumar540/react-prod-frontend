@@ -1,5 +1,7 @@
-import { Box, Grid, Typography, TextField, 
-    Button, IconButton, InputAdornment } from '@mui/material'
+import {
+    Box, Grid, Typography, TextField,
+    Button, IconButton, InputAdornment
+} from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
@@ -20,8 +22,11 @@ import {
 } from "../../api/CognitoApi/CognitoApi";
 import { passwordValidator } from '../../utils/validation';
 import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
-
-
+// import checkboxIcon from '../../assets/BackgroundImages/checkbox.png'
+// import GoogleIcon from '../../assets/svg/Google.svg'
+// import FacebookIcon from '../../assets/svg/Facebook.svg'
+// import AppleIcon from '../../assets/svg/Apple.svg'
+import { List, ListItem, ListItemText } from '@mui/material';
 
 const cssStyle = {
     parent_box: {
@@ -31,12 +36,13 @@ const cssStyle = {
     },
     content_container_box: {
         backgroundColor: "#ffffff",
+        // padding: "10% 20%",
         padding: "10% 20%",
         minHeight: "500px",
         maxHeight: "100vh"
     },
     box_container_form: {
-        margin: "10% 0%",
+        margin: "1% 0%",
     },
     btn_textfield: {
         width: "100%",
@@ -58,7 +64,7 @@ const cssStyle = {
         }
     },
     grid_textBox_button: {
-        margin: "5px 0px"
+        margin: "4px 0px"
     },
 }
 
@@ -70,6 +76,9 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
     const [showOtpVeriCont, setShowVeriCon] = useState(false);
     /////Store email address
     const [fullName, setFullName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -218,7 +227,9 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
     ///////Service type  change then useEffect Run
     useEffect(() => {
-        setFullName("")
+        // setFullName("");
+        setFirstName("");
+        setLastName("")
         setEmailAddress("");
         setPassword("");
         setConfirmPassword("");
@@ -235,7 +246,7 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
         }
 
         if (serviceType === "signup") {
-            if (fullName === "" || emailAddress === "" || password === "" || confirmPassword === "") {
+            if (firstName === "" || lastName === "" || emailAddress === "" || password === "" || confirmPassword === "") {
                 toast.error("Please fill all fields.")
                 return null;
             }
@@ -246,7 +257,8 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
             if (!passwordValidator(password) || !passwordValidator(confirmPassword)) {
                 return null;
             }
-            await createAccount(fullName, emailAddress, password);
+            await createAccount(firstName, lastName, emailAddress, password);
+            // await createAccount(firstName, lastName, emailAddress, password);
         }
 
         if (serviceType === "forgetPassword") {
@@ -294,10 +306,13 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
     const bgImgForLoginSignUpForgetVarify = (serviceType) => {
         switch (serviceType) {
             case "login":
-                return <img src={loginPageBackgroundImg} style={{ width: "100%" }} alt="login-page-background-image" />
+                return <img src={loginPageBackgroundImg} style={{ width: "70%" }} alt="login-page-background-image" />
+                break;
+            case "start":
+                return <img src={loginPageBackgroundImg} style={{ width: "60%" }} alt="login-page-background-image" />
                 break;
             case "signup":
-                return <img src={signupPageBgImg} style={{ width: "100%" }} alt="signUp-page-background-image" />
+                return <img src={signupPageBgImg} style={{ width: "80%" }} alt="signUp-page-background-image" />
                 break;
             case "forgetPassword":
                 return <img src={forgetPassPageBGImg} style={{ width: "100%" }} alt="forget-password-page-background-image" />
@@ -314,49 +329,107 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
 
     return (
-        <Box container sx={cssStyle.parent_box}>
-            <Grid container>
-                <Grid item xs={12} sm={12} md={6}>
-                    <Box container sx={{ ...cssStyle.content_container_box, padding: "10% 5% 10% 20% !important" }} >
-                        <Box>
+        <Box container sx={cssStyle.parent_box}  >
+            <Grid container >
+                <Grid item xs={12} sm={12} md={6} >
+                    <Box container sx={{ ...cssStyle.content_container_box, padding: "6% 5% 10% 20% !important" }}  >
+                        <Box >
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Box>
-                        <Box>
+                        <Box >
                             {showOtpVeriCont
                                 ? bgImgForLoginSignUpForgetVarify("verification") :
                                 bgImgForLoginSignUpForgetVarify(serviceType)}
                         </Box>
+                        {serviceType === 'start' &&
+                            <Box sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} paddingX={2} paddingY={1} borderRadius={4} width='60%'  >
+
+                                <Typography variant='h5' paddingBottom={1} textAlign='center' fontWeight='bold' fontSize='20px'>Discover what sets us apart</Typography>
+                                <Box display='flex' flexDirection='column' justifyContent='center' >
+                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                        {/* <img src={checkboxIcon} /> */}
+                                        <Typography >Profile Creation</Typography>
+                                    </Box>
+                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                        {/* <img src={checkboxIcon} /> */}
+                                        <Typography >Social Networking</Typography>
+                                    </Box>
+                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                        {/* <img src={checkboxIcon} /> */}
+                                        <Typography >Media Sharing</Typography>
+                                    </Box>
+                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                        {/* <img src={checkboxIcon} /> */}
+                                        <Typography >Groups and Communities</Typography>
+                                    </Box>
+                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                        {/* <img src={checkboxIcon} /> */}
+                                        <Typography >Privacy Controls</Typography>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        }
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                     {!showOtpVeriCont &&
-                        <Box container sx={cssStyle.content_container_box} >
+                        <Box container sx={cssStyle.content_container_box}  >
                             <Box>
                                 <Typography variant="h4" fontWeight='600' color="#333333">
-                                    {serviceType === "login" && 'Get Started'}
+                                    {serviceType === "login" && 'Login'}
+                                    {serviceType === "start" && 'Get Started'}
                                     {serviceType === "signup" && 'Create Account'}
                                     {serviceType === "forgetPassword" && 'Forget Password?'}
                                 </Typography>
                             </Box>
                             <Box sx={cssStyle.box_container_form}>
                                 <Grid container>
-                                    {serviceType === "signup" &&
-                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                            <TextField
-                                                id="signup-name-user"
-                                                label="Full Name"
-                                                variant='outlined'
-                                                type="text"
-                                                sx={cssStyle.btn_textfield}
-                                                value={fullName ? fullName : ""}
-                                                onChange={(e) => setFullName(e?.target?.value)}
-                                            />
-                                        </Grid>
-                                    }
+                                    <Box display='flex' gap={2} >
+                                        {serviceType === "signup" &&
+                                            <>
+                                                <Grid item xs={6} sx={cssStyle.grid_textBox_button}>
+                                                    <TextField
+                                                        id="signup-name-user"
+                                                        label="First Name"
+                                                        variant='outlined'
+                                                        type="text"
+                                                        sx={cssStyle.btn_textfield}
+                                                        value={firstName ? firstName : ""}
+                                                        onChange={(e) => setFirstName(e?.target?.value)}
+                                                    />
+                                                </Grid>
 
+                                                <Grid item xs={6} sx={cssStyle.grid_textBox_button}>
+                                                    <TextField
+                                                        id="signup-name-user"
+                                                        label="Last Name"
+                                                        variant='outlined'
+                                                        type="text"
+                                                        sx={cssStyle.btn_textfield}
+                                                        value={lastName ? lastName : ""}
+                                                        onChange={(e) => setLastName(e?.target?.value)}
+                                                    />
+                                                </Grid>
+
+                                            </>
+                                        }
+                                        </Box>
+                                        {serviceType === "signup" &&
+                                            <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                                <TextField
+                                                    id="login-signup-forgetPassword-email"
+                                                    label="Phone Number"
+                                                    variant='outlined'
+                                                    type="number"
+                                                    sx={cssStyle.btn_textfield}
+                                                    value={phoneNumber ? phoneNumber : ""}
+                                                    onChange={(e) => setPhoneNumber(e?.target?.value)}
+                                                />
+                                            </Grid>
+                                        }
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                         <TextField
                                             id="login-signup-forgetPassword-email"
@@ -368,52 +441,99 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
                                             onChange={(e) => setEmailAddress(e?.target?.value)}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                        <TextField
-                                            id="login-signup-forgetPassword-password"
-                                            label="Password"
-                                            type={showPassword ? 'text' : 'password'}
-                                            variant='outlined'
-                                            sx={cssStyle.btn_textfield}
-                                            value={password ? password : ""}
-                                            onChange={(e) => setPassword(e?.target?.value)}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end"
-                                                        sx={{
-                                                            display: password !== "" ? "contents" : "none"
-                                                        }}
-                                                    >
-                                                        {password.length > 2
-                                                            ?
-                                                            <IconButton onClick={handleTogglePassword}>
-                                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                            </IconButton>
-                                                            : null
-                                                        }
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                        {
-                                            /* When service type login then this 
-                                            link show otherwise not visible */
-                                        }
-                                        {
-                                            serviceType === "login" &&
-                                            <Typography variant="subtitle2" align='right'>
-                                                <Link to="/forget-password" style={{ textDecoration: "none", color: "red" }}>
-                                                    Forget Password?
-                                                </Link>
-                                            </Typography>
 
-                                        }
-                                    </Grid>
+                                    {serviceType === "signup" &&
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <TextField
+                                                id="login-signup-forgetPassword-password"
+                                                label="Password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                variant='outlined'
+                                                sx={cssStyle.btn_textfield}
+                                                value={password ? password : ""}
+                                                onChange={(e) => setPassword(e?.target?.value)}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end"
+                                                            sx={{
+                                                                display: password !== "" ? "contents" : "none"
+                                                            }}
+                                                        >
+                                                            {password.length > 2
+                                                                ?
+                                                                <IconButton onClick={handleTogglePassword}>
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                                : null
+                                                            }
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                            {
+                                                /* When service type login then this 
+                                                link show otherwise not visible */
+                                            }
+                                            {
+                                                serviceType === "login" &&
+                                                <Typography variant="subtitle2" align='right'>
+                                                    <Link to="/forget-password" style={{ textDecoration: "none", color: "red" }}>
+                                                        Forget Password?
+                                                    </Link>
+                                                </Typography>
+
+                                            }
+                                        </Grid>
+                                    }
+                                    {serviceType === "login" &&
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <TextField
+                                                id="login-signup-forgetPassword-password"
+                                                label="Password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                variant='outlined'
+                                                sx={cssStyle.btn_textfield}
+                                                value={password ? password : ""}
+                                                onChange={(e) => setPassword(e?.target?.value)}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end"
+                                                            sx={{
+                                                                display: password !== "" ? "contents" : "none"
+                                                            }}
+                                                        >
+                                                            {password.length > 2
+                                                                ?
+                                                                <IconButton onClick={handleTogglePassword}>
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                                : null
+                                                            }
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                            {
+                                                /* When service type login then this 
+                                                link show otherwise not visible */
+                                            }
+                                            {
+                                                serviceType === "login" &&
+                                                <Typography variant="subtitle2" align='right'>
+                                                    <Link to="/forget-password" style={{ textDecoration: "none", color: "red" }}>
+                                                        Forget Password?
+                                                    </Link>
+                                                </Typography>
+
+                                            }
+                                        </Grid>
+                                    }
+
                                     {
                                         /* when service type is forget password 
                                         then extra input box are show for conferm password */
                                     }
-                                    {serviceType !== "login" &&
+                                    {serviceType === "signup" &&
                                         <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                             <TextField
                                                 id="login-signup-forgetPassword-confirm-password"
@@ -444,7 +564,118 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
                                             />
                                         </Grid>
                                     }
+                                    {serviceType === "login" &&
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    ...cssStyle.btn_textfield,
+                                                    height: "50px", position: "relative",
+                                                    backgroundColor: "primary",
+                                                    '&:hover': {
+                                                        backgroundColor: '#1c529b' // background color on hover
+                                                    }
+                                                }}
+                                                disabled={btnDisabed || isLoadingSignUpFun}
+                                                onClick={() => buttonAction(serviceType)}
 
+                                            >
+                                                {(btnDisabed || isLoadingSignUpFun) && (
+                                                    <CircularProgress
+                                                        size={24}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '50%',
+                                                            right: '3%',
+                                                            marginTop: -12,
+                                                            marginLeft: -12,
+                                                            color: "primary"
+                                                        }}
+                                                    />
+                                                )}
+                                                {serviceType === "login" && 'Login'}
+                                                {serviceType === "signup" && 'Create Account'}
+                                                {serviceType === "forgetPassword" && 'Send OTP'}
+
+                                            </Button>
+
+                                        </Grid>
+                                    }
+                                    {serviceType === "forgetPassword" &&
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    ...cssStyle.btn_textfield,
+                                                    height: "50px", position: "relative",
+                                                    backgroundColor: "primary",
+                                                    '&:hover': {
+                                                        backgroundColor: '#1c529b' // background color on hover
+                                                    }
+                                                }}
+                                                disabled={btnDisabed || isLoadingSignUpFun}
+                                                onClick={() => buttonAction(serviceType)}
+
+                                            >
+                                                {(btnDisabed || isLoadingSignUpFun) && (
+                                                    <CircularProgress
+                                                        size={24}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '50%',
+                                                            right: '3%',
+                                                            marginTop: -12,
+                                                            marginLeft: -12,
+                                                            color: "primary"
+                                                        }}
+                                                    />
+                                                )}
+                                                {serviceType === "login" && 'Login'}
+                                                {serviceType === "signup" && 'Create Account'}
+                                                {serviceType === "forgetPassword" && 'Send OTP'}
+
+                                            </Button>
+
+                                        </Grid>
+                                    }
+                                    <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                        {serviceType === "login" &&
+                                            <Typography variant="subtitle2" align='center'>
+                                                I don't have account so <Link to="/signup">
+                                                    Click Here
+                                                </Link>
+                                            </Typography>
+                                        }
+                                        {serviceType === "signup" &&
+                                            <Typography variant="subtitle2" align='center'>
+                                                You have already Account so <Link to="/login">
+                                                    Click Here
+                                                </Link>
+                                            </Typography>
+                                        }
+                                        {serviceType === "forgetPassword" &&
+                                            <Typography variant="subtitle2" align='center'>
+                                                I want to login so &nbsp;<Link to="/login">
+                                                    Click Here
+                                                </Link>
+                                            </Typography>
+                                        }
+
+
+                                    </Grid>
+
+                                </Grid>
+                                {serviceType === 'signup' &&
+                                <>
+                                
+                                    <Grid item xs={12} gap={2} >
+                                        <Typography fontWeight='bold' paddingBottom={1} >Password must have</Typography>
+                                        <Typography as='li' color='red'>At least 8 characters </Typography>
+                                        <Typography as='li' color='red'>At least 1 lestter (a,b,c...)</Typography>
+                                        <Typography as='li' color='red'>At least 1 number (1,2,3...)</Typography>
+                                        <Typography as='li' color='red'>Both uppercase & lowercase characters</Typography>
+                                    </Grid>
+                               
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                         <Button
                                             variant="contained"
@@ -480,32 +711,77 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
                                         </Button>
 
                                     </Grid>
+                                </>
+                                }
+                                {serviceType === 'start' &&
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                        {serviceType === "login" &&
-                                            <Typography variant="subtitle2" align='center'>
-                                                I don't have account so <Link to="/signup">
-                                                    Click Here
-                                                </Link>
-                                            </Typography>
-                                        }
-                                        {serviceType === "signup" &&
-                                            <Typography variant="subtitle2" align='center'>
-                                                You have already Account so <Link to="/login">
-                                                    Click Here
-                                                </Link>
-                                            </Typography>
-                                        }
-                                        {serviceType === "forgetPassword" &&
-                                            <Typography variant="subtitle2" align='center'>
-                                                I want to login so &nbsp;<Link to="/login">
-                                                    Click Here
-                                                </Link>
-                                            </Typography>
-                                        }
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                ...cssStyle.btn_textfield,
+                                                height: "50px", position: "relative",
+                                                backgroundColor: "primary",
+                                                '&:hover': {
+                                                    backgroundColor: '#1c529b' // background color on hover
+                                                }
+                                            }}
+                                            disabled={btnDisabed || isLoadingSignUpFun}
+                                            onClick={() => buttonAction(serviceType)}
 
+                                        >
+                                            {(btnDisabed || isLoadingSignUpFun) && (
+                                                <CircularProgress
+                                                    size={24}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        right: '3%',
+                                                        marginTop: -12,
+                                                        marginLeft: -12,
+                                                        color: "primary"
+                                                    }}
+                                                />
+                                            )}
+                                            {serviceType === "login" && 'Login'}
+                                            {serviceType === "start" && 'Continue'}
+                                            {serviceType === "signup" && 'Create Account'}
+                                            {serviceType === "forgetPassword" && 'Send OTP'}
+
+                                        </Button>
 
                                     </Grid>
-                                </Grid>
+                                }
+                                {serviceType === 'start' &&
+                                    <Grid item xs={12} display='flex' justifyContent='center' alignItems='center' gap={2} marginY={5}>
+                                        <Box height='1px' width='45%' backgroundColor='gray' />
+                                        <Typography>OR</Typography>
+                                        <Box height='1px' width='45%' backgroundColor='gray' />
+                                    </Grid>
+                                }
+                                {serviceType === 'start' &&
+                                    <Grid item xs={12} >
+                                        <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                            <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                                <img src={GoogleIcon} />
+                                                <Typography fontWeight='bold' >Continue with Google</Typography>
+                                            </Box>
+                                        </Box>
+
+                                        <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                            <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                                <img src={FacebookIcon} />
+                                                <Typography fontWeight='bold' textAlign='center'>Continue with Facebook</Typography>
+                                            </Box>
+                                        </Box>
+
+                                        <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                            <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                                <img src={AppleIcon} />
+                                                <Typography fontWeight='bold' textAlign='center'>Continue with Apple</Typography>
+                                            </Box>
+                                        </Box>
+                                    </Grid>
+                                }
                             </Box>
                         </Box>
                     }

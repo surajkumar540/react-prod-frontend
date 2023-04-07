@@ -20,8 +20,10 @@ import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from "@mui/material/Drawer"
 import SearchIcon from '@mui/icons-material/Search';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
@@ -55,7 +57,7 @@ const openedMixin = (theme) => ({
     width: drawerWidth,
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        duration: theme.transitions.duration['20000'],
     }),
     overflowX: 'hidden',
     marginLeft:'5rem',
@@ -64,14 +66,14 @@ const openedMixin = (theme) => ({
 
 const closedMixin = (theme) => ({
     transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        easing: theme.transitions.easing.easeInOut,
+        duration: theme.transitions.duration.complex,
     }),
     overflowX: 'hidden',
     marginLeft:'5rem',
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(0)} + 0px)`,
+        width: `calc(${theme.spacing(3)} + 0px)`,
     },
 });
 
@@ -107,6 +109,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     ({ theme, open }) => ({
         width: drawerWidth,
         flexShrink: 0,
+        marginLeft:'5rem',
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
         ...(open && {
@@ -175,7 +178,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const LeftSideBar = (props) => {
-    const {feature,section}=useParams()
 
     ////// use conetext use here
     const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
@@ -187,7 +189,7 @@ const LeftSideBar = (props) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
     const [activePage, setActivePage] = useState("HomePage");
-    const [activeChat,setActiveChat]=useState()
+    const [activeChatId,setActiveChatId]=useState()
 
     //////new model  open when click on the left side bar options and some others options like add folder and add teammate and so more
     const [openNewModel, setOpenNewModel] = useState(false);
@@ -203,7 +205,7 @@ const LeftSideBar = (props) => {
     const [IdentityServiceObject] = useState(
         () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
     );
-    //////////When this page render then user_id store , nad channel list also load
+    //////////When this page render then user_id store , and channel list also load
     useEffect(() => {
         getAwsCredentialsFromCognito();
         IdentityServiceObject.setupClient();
@@ -386,9 +388,9 @@ const LeftSideBar = (props) => {
             // props.data.setSelectedChannel(data);
             props.data.setMessagingActive(true);
         } else {
-            if (location.pathname !== "/") {
+            if (location.pathname !== "/chat") {
                 setActivePage("groups");
-                navegate(`/`)
+                navegate(`/chat`)
             }
         }
     }
@@ -419,98 +421,102 @@ const LeftSideBar = (props) => {
             <Box id="main_container_box" sx={{ display: 'flex' }}>
                 <CssBaseline />
 
-
-                <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
-                    <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                        {/* {!open &&
-                        <IconButton
-                            color="#333333"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{
-                                marginRight: 5,
-                                ...(open && { display: 'none' }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    }
-                    <Typography width={"45%"} variant="h6" color="#333333" noWrap component="div">
-                        {props.data.pageName}
-                    </Typography>
-                    <Box sx={{ flexGrow: 0, width: "60%" }} display="inline-flex"
-                        justifyContent={props.data.pageName === "Data" ? 'space-between' : "end"}
-                    >
-                        {props.data.pageName === "Data" &&
-                            <Box id="file_upload_icon">
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: "#03CF80",
-                                        color: "#ffffff",
-                                        textTransform: "none"
-                                    }}
-                                    onClick={() => props.setOpen(true)}
-                                >
-                                    Upload Data
-                                </Button>
-                            </Box>
-                        }
-
-                        <Box id="show_for_all_pages_menu_opt" display={"inline-flex"}>
-                            <Box id="search_field_in_App_bar">
-                                <Search>
-                                    <SearchIconWrapper>
-                                        <SearchIcon sx={{ fontSize: "18px" }} />
-                                    </SearchIconWrapper>
-                                    <StyledInputBase
-                                        placeholder="Search…"
-                                        inputProps={{ 'aria-label': 'search' }}
-                                    />
-                                </Search>
-                            </Box>
-                            <Box mr={1} id="notification_icon">
-                                <CircleNotificationsOutlinedIcon
-                                    sx={{ width: "30px", height: "30px", fontSize: '30px', color: "#333", opacity: 0.5 }} />
-                            </Box>
-                            <Box id="profile_icon">
-                                <Tooltip title="Open settings">
-                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar alt="Remy Sharp" sx={{ width: "30px", height: "30px" }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    sx={{ mt: '45px' }}
-                                    id="menu-appbar"
-                                    anchorEl={anchorElUser}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    open={Boolean(anchorElUser)}
-                                    onClose={() => handleCloseUserMenu()}
-                                >
-                                    {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
-                                            <Typography textAlign="center">{setting}</Typography>
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
-                            </Box>
-                        </Box>
-                    </Box> */}
-                    </Toolbar>
-                </AppBar>
+            {
+                !open&&<AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} width={'14%'}>
+                  
+                    <CardMedia
+                    className='blog-img'
+                    component="img"
+                    image={oLogo}
+                    alt="Image"
+                    sx={{ height:'40px',width:'40px' }}
+                    onClick={handleDrawerOpen}
+                />
                 
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
+                    color="primary">Microsoft</Typography>
+                
+                </Box>
+                
+                {/* <Box sx={{ flexGrow: 0, width: "60%" }} display="inline-flex"
+                    justifyContent={props.data.pageName === "Data" ? 'space-between' : "end"}
+                >
+                    {props.data.pageName === "Data" &&
+                        <Box id="file_upload_icon">
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: "#03CF80",
+                                    color: "#ffffff",
+                                    textTransform: "none"
+                                }}
+                                onClick={() => props.setOpen(true)}
+                            >
+                                Upload Data
+                            </Button>
+                        </Box>
+                    }
+
+                    <Box id="show_for_all_pages_menu_opt" display={"inline-flex"}>
+                        <Box id="search_field_in_App_bar">
+                            <Search>
+                                <SearchIconWrapper>
+                                    <SearchIcon sx={{ fontSize: "18px" }} />
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                    placeholder="Search…"
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />
+                            </Search>
+                        </Box>
+                        <Box mr={1} id="notification_icon">
+                            <CircleNotificationsOutlinedIcon
+                                sx={{ width: "30px", height: "30px", fontSize: '30px', color: "#333", opacity: 0.5 }} />
+                        </Box>
+                        <Box id="profile_icon">
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt="Remy Sharp" sx={{ width: "30px", height: "30px" }} />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={() => handleCloseUserMenu()}
+                            >
+                                {settings.map((setting) => (
+                                    <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                                        <Typography textAlign="center">{setting}</Typography>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>
+                    </Box>
+                </Box> */}
+                </Toolbar>
+            </AppBar>
+            }
+                
+                
+                {/* New sidebar  */}
                 <Box height={'100vh'} position={'fixed'} width={'90px'} display={'flex'} flexDirection={'column'} overflow={'hidden'}>
                     
-                    <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
+                    <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open?"normal":"hidden"}>
                         <CardMedia
                             className='blog-img'
                             component="img"
@@ -524,42 +530,55 @@ const LeftSideBar = (props) => {
                     
                     <Box bgcolor={'white'} height={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                         <Button onClick={()=>{navigatePage("chat")}} display='flex' flexDirection='column' sx={{
-                                color: feature === "chat" ? "#448DF0" : "#646464"
+                                color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464"
                             }}
                         >
                             <ChatTwoToneIcon fontSize='small'/>
                         </Button>
-                        <Typography sx={{color: feature === "chat" ? "#448DF0" : "#646464"}}>Chat</Typography>
+                        <Typography sx={{color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464"}}>Chat</Typography>
                     </Box>
 
 
 
                     <Box bgcolor={'white'} height={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                        <Button onClick={()=>{navigatePage("files/upload")}} display='flex' flexDirection='column' sx={{
-                                color: feature === "files" ? "#448DF0" : "#646464"
+                        <Button onClick={()=>{navigatePage("files/allFiles")}} display='flex' flexDirection='column' sx={{
+                                color: location.pathname.split(['/'])[1] === "files" ? "#448DF0" : "#646464"
                             }}
                         >
                             <ArticleOutlinedIcon fontSize='small'/>
                         </Button>
-                            <Typography sx={{color: feature === "files" ? "#448DF0" : "#646464"}}>Files</Typography>
+                            <Typography sx={{color: location.pathname.split(['/'])[1] === "files" ? "#448DF0" : "#646464"}}>Files</Typography>
                     </Box>
 
 
                 </Box>
+
+                
              
                 <Drawer
                     variant="permanent"
                     open={open}
-
+                    position='relative'
+                    
                 >   
+                    <Box position={'absolute'} right={'0%'} bottom={'20%'}>
+                        {/* <Typography onClick={handleDrawerClose}>asdf</Typography> */}
+                        {
+                            open?<ChevronLeftIcon sx={{fontSize:"1.5rem",bgcolor:'whitesmoke',boxShadow:'4px 0px 18px rgba(0, 0, 0, 0.06)',border:'1px solid rgba(0, 0, 0, 0.4)',color:'gray',borderRadius:"50%"}} onClick={()=>handleDrawerClose()} />:(
+                                <ChevronRightIcon  sx={{fontSize:"1.5rem",bgcolor:'gray',zIndex:9999 ,color:'white',borderRadius:"50%"}} onClick={handleDrawerOpen}/>
+                            )
+                        }
+                        
+                    </Box>
                     <DrawerHeader >
                         <Grid
                             container
                             display="flex"
                             justifyContent="center"
                             sx={{ transform: "translateX(-18px)" }}
+                          
                         >
-                            {/* {open &&
+                             {/* {open &&
                                 <IconButton onClick={handleDrawerClose} sx={{ padding: "12px" }}>
                                     {theme.direction === 'rtl' ?
                                     <ChevronRightIcon /> :
@@ -573,13 +592,23 @@ const LeftSideBar = (props) => {
                                 variant="subtitle1"
                                 sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
                                 color="primary">Microsoft</Typography>
-                            }
+                            } 
                         </Grid>
                     </DrawerHeader>
+
+                   
+
+                    {/* <Box display="flex" justifyContent="center" width={'100%'}>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
+                                color="primary">Microsoft</Typography>
+                            
+                    </Box> */}
                     <Divider />
                     
                     <FormControl sx={{ m: 1, minWidth: 120, paddingLeft: "15px", paddingRight: "15px", }}>
-                        <Box>
+                        {/* <Box>
                             <Typography
                                 variant="subtitle2"
                                 sx={{
@@ -590,7 +619,7 @@ const LeftSideBar = (props) => {
                             >
                                 <BusinessIcon /><span style={{ position: "absolute", marginTop: "3px", marginLeft: "5px", textTransform: "capitalize" }}>{comNameSave.length !== 0 && comNameSave[0].companyName}</span>
                             </Typography>
-                        </Box>
+                        </Box> */}
                         {/* <Select
                             value={age}
                             onChange={handleChange}
@@ -603,7 +632,7 @@ const LeftSideBar = (props) => {
                     </FormControl>
                     
                     {
-                        feature==="chat"&&(
+                        location.pathname.split(['/'])[1]==="chat"&&(
                             <>
                                 <Box id="channel_box">
                         <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
@@ -612,7 +641,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("groups"),setActiveChat("")}}
+                                onClick={() => {setActivePage("groups")&&setActiveChatId("")}}
                                 // onClick={() => navigatePage("")}
                                 variant={activePage === "groups" ? "contained" : "text"}
                                 size='small'
@@ -655,18 +684,18 @@ const LeftSideBar = (props) => {
                                         key={index}
                                             sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
                                             onClick={() =>
-                                                (location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d),setActiveChat(d._id),setActivePage("groups"))
+                                                (location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d),setActiveChatId(d._id),setActivePage("groups"))
                                             }
                                         >
                                             <ListItemText
                                                 primary={
                                                     //    d.Name.charAt(0).toUpperCase() + d.Name.slice(1)
                                                     Object.keys(d).length > 0 &&
-                                                    (d?.isGroupChat && (d?.chatName))
+                                                    (d?.isGroupChat && (`# ${d?.chatName}`))
                                                 }
                                                 sx={{
                                                     opacity: open ? 1 : 0, marginTop: "4px",
-                                                    marginBottom: "0px", "& span": { fontSize: "13px", fontWeight: activeChat==d?._id?700:500, color: activeChat==d?._id?"#3976C9":"#333333b5" }
+                                                    marginBottom: "0px", "& span": { fontSize: "13px", fontWeight: activeChatId==d?._id?700:500, color: activeChatId==d?._id?"#3976C9":"#333333b5" }
                                                 }}
                                             />
                                         </ListItem>
@@ -702,7 +731,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("inbox"),setActiveChat("")}}
+                                onClick={() => {setActivePage("inbox")&&setActiveChatId("")}}
                                 // onClick={() => {navigatePage(""),setActivePage("inbox")}}
                                 variant={activePage === "inbox" ? "contained" : "text"}
                                 size='small'
@@ -721,13 +750,25 @@ const LeftSideBar = (props) => {
                         <Box>
                             <List sx={{ padding: "0px" }} >
                                 {chats.length !== 0 && chats.map((d,index) =>
+                                
                                     <ListItem
                                         key={index}
                                         sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
                                         onClick={() =>
-                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d),setActiveChat(d?._id),setActivePage("inbox")}
+                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d)&&setActiveChatId(d?._id)&&setActivePage("inbox")}
                                         }
                                     >
+                                        {
+                                            Object.keys(d).length > 0 &&(
+                                                !d?.isGroupChat &&<Avatar
+                                                alt="Remy Sharp"
+                                                src="https://images.pexels.com/photos/839633/pexels-photo-839633.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                                sx={{ width: 12, height: 12,mr:'8px' }}
+                                                />
+                                            )
+                                            
+                                        }
+
                                         <ListItemText
                                             primary={
                                                 Object.keys(d).length > 0 &&
@@ -735,7 +776,7 @@ const LeftSideBar = (props) => {
                                             }
                                             sx={{
                                                 opacity: open ? 1 : 0, marginTop: "4px",
-                                                marginBottom: "0px", "& span": { fontSize: "13px", fontWeight: activeChat==d?._id?700:500, color:activeChat==d?._id?"#3976C9":"#333333b5"  }
+                                                marginBottom: "0px", "& span": { fontSize: "13px", fontWeight: activeChatId==d?._id?700:500, color:activeChatId==d?._id?"#3976C9":"#333333b5"  }
                                             }}
                                         />
                                     </ListItem>
@@ -770,128 +811,130 @@ const LeftSideBar = (props) => {
                     
 
                     {
-                        feature=='files'&&(
+                        location.pathname.split(['/'])[1]=='files'&&(
                             <>
+                            <Box id="all_files" mt={1}>
+                                    <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Button
+                                            id="all_file_button"
+                                            aria-controls={open ? 'basic-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                            // onClick={() => navigatePage("allFiles")}
+                                            // onClick={() => {navigatePage("files/allFiles"),setActivePage("allFiles")}}
+                                            onClick={() => navigatePage("files/allFiles")}
+                                            variant={location.pathname === "/files/allFiles" ? "contained" : "text"}
+                                            size='small'
+                                            sx={{
+                                                width: "100%", justifyContent: 'flex-start',
+                                                color: location.pathname === "/files/allFiles" ? "#ffffff" : "#646464"
+                                            }}
+                                        >
+                                            <TextSnippetIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
+                                            <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
+                                                All files
+                                            </span>
+                                        </Button>
+                                    </Box>
+                                </Box>
                                 <Box id="Upload_file_box" mt={1}>
-                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
-                                id="upload-file-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                // onClick={() => {navigatePage("files/upload"),setActivePage("upload")}}
-                                onClick={() => navigatePage("files/upload")}
-                                variant={section==="upload" ? "contained" : "text"}
-                                size='small'
-                                sx={{
-                                    width: "100%", justifyContent: 'flex-start',
-                                    color: section==="upload" ? "#ffffff" : "#646464"
-                                }}
-                            >
-                                <CloudUploadOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    Upload Data
-                                </span>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box id="all_files" mt={1}>
-                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
-                                id="all_file_button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                // onClick={() => navigatePage("allFiles")}
-                                // onClick={() => {navigatePage("files/allFiles"),setActivePage("allFiles")}}
-                                onClick={() => navigatePage("files/allFiles")}
-                                variant={section === "allFiles" ? "contained" : "text"}
-                                size='small'
-                                sx={{
-                                    width: "100%", justifyContent: 'flex-start',
-                                    color: section === "allFiles" ? "#ffffff" : "#646464"
-                                }}
-                            >
-                                <TextSnippetIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    All files
-                                </span>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box id="create_folder_box" mt={1}>
-                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
-                                id="create_folder-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                // onClick={() => navigatePage("create-folder")}
-                                // onClick={() => {navigatePage("files/create-folder"),setActivePage("createFolder")}}
-                                onClick={() => navigatePage("files/create-folder")}
-                                variant={section === "create-folder" ? "contained" : "text"}
-                                size='small'
-                                sx={{
-                                    width: "100%", justifyContent: 'flex-start',
-                                    color: section === "create-folder" ? "#ffffff" : "#646464"
-                                }}
-                            >
-                                <FolderOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    Create Folders
-                                </span>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box id="my_account_box" mt={1}>
-                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
-                                id="my-account-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={() => navigatePage("upload")}
-                                variant="contained"
-                                size='small'
-                                disabled={true}
-                                sx={{ width: "100%", justifyContent: 'flex-start' }}
-                            >
-                                <PersonIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    My Account
-                                </span>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box id="settings_box" mt={1}>
-                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
-                                id="setting-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={() => navigatePage("upload")}
-                                variant="contained"
-                                size='small'
-                                disabled={true}
-                                sx={{ width: "100%", justifyContent: 'flex-start' }}
-                            >
-                                <SettingsOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    Settings
-                                </span>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box id="StorageProgrssBar" mx={3.5} mt={2}>
-                        <Box sx={{ width: '100%' }}>
-                            <LinearProgress variant="determinate" value={20} />
-                        </Box>
-                        <Box display={'flex'} justifyContent={"space-between"}>
-                            <Typography sx={{ fontSize: "10px", fontWeight: "600" }} variant="body2">0 MB</Typography>
-                            <Typography sx={{ fontSize: "10px", fontWeight: "600" }} variant="body2">1 GB</Typography>
-                        </Box>
-                    </Box>
+                                    <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Button
+                                            id="upload-file-button"
+                                            aria-controls={open ? 'basic-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                            // onClick={() => {navigatePage("files/upload"),setActivePage("upload")}}
+                                            onClick={() => navigatePage("files/upload")}
+                                            variant={location.pathname === "/files/upload"? "contained" : "text"}
+                                            size='small'
+                                            sx={{
+                                                width: "100%", justifyContent: 'flex-start',
+                                                color: location.pathname === "/files/upload" ? "#ffffff" : "#646464"
+                                            }}
+                                        >
+                                            <CloudUploadOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
+                                            <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
+                                                Upload Data
+                                            </span>
+                                        </Button>
+                                    </Box>
+                                 </Box>
+                                
+                                <Box id="create_folder_box" mt={1}>
+                                    <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Button
+                                            id="create_folder-button"
+                                            aria-controls={open ? 'basic-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                            // onClick={() => navigatePage("create-folder")}
+                                            // onClick={() => {navigatePage("files/create-folder"),setActivePage("createFolder")}}
+                                            onClick={() => navigatePage("files/create-folder")}
+                                            variant={location.pathname === "/files/create-folder" ? "contained" : "text"}
+                                            size='small'
+                                            sx={{
+                                                width: "100%", justifyContent: 'flex-start',
+                                                color: location.pathname === "/files/create-folder" ? "#ffffff" : "#646464"
+                                            }}
+                                        >
+                                            <FolderOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
+                                            <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
+                                                Create Folders
+                                            </span>
+                                        </Button>
+                                    </Box>
+                                </Box>
+
+                                {/* <Box id="my_account_box" mt={1}>
+                                    <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Button
+                                            id="my-account-button"
+                                            aria-controls={open ? 'basic-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                            onClick={() => navigatePage("upload")}
+                                            variant="contained"
+                                            size='small'
+                                            disabled={true}
+                                            sx={{ width: "100%", justifyContent: 'flex-start' }}
+                                        >
+                                            <PersonIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
+                                            <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
+                                                My Account
+                                            </span>
+                                        </Button>
+                                    </Box>
+                                </Box>
+                                <Box id="settings_box" mt={1}>
+                                    <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Button
+                                            id="setting-button"
+                                            aria-controls={open ? 'basic-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                            onClick={() => navigatePage("upload")}
+                                            variant="contained"
+                                            size='small'
+                                            disabled={true}
+                                            sx={{ width: "100%", justifyContent: 'flex-start' }}
+                                        >
+                                            <SettingsOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
+                                            <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
+                                                Settings
+                                            </span>
+                                        </Button>
+                                    </Box>
+                                </Box>
+                                <Box id="StorageProgrssBar" mx={3.5} mt={2}>
+                                    <Box sx={{ width: '100%' }}>
+                                        <LinearProgress variant="determinate" value={20} />
+                                    </Box>
+                                    <Box display={'flex'} justifyContent={"space-between"}>
+                                        <Typography sx={{ fontSize: "10px", fontWeight: "600" }} variant="body2">0 MB</Typography>
+                                        <Typography sx={{ fontSize: "10px", fontWeight: "600" }} variant="body2">1 GB</Typography>
+                                    </Box>
+                                </Box> */}
                             </>
                         )
                     }
