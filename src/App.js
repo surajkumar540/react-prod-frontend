@@ -33,6 +33,7 @@ import GetStart from './components/AuthPages/GetStart';
 import ForgetPage from './components/AuthPages/ForgetPage';
 import OtpVerfPage from './components/AuthPages/OtpVerfPage';
 import ProjectName from './pages/ProjectName';
+import MyAccount from './pages/MyAccount';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
