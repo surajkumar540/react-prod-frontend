@@ -6,7 +6,7 @@ import createChannelPng from "../assets/BackgroundImages/create-channel-homepage
 import ContentModels from './ContentModels';
 
 const MyMessage = () => {
-
+    console.log("message load")
     ////////// active messaging part
     const [messagingActive, setMessagingActive] = useState(false);
     ///////// Selected Channel state declare

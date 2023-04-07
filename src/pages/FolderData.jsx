@@ -16,7 +16,36 @@ import { useDebounce } from 'use-debounce';
 
 
 const FolderData = () => {
-    const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
+    // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
+    const colorsCode={
+        a:'#ff7f47aa',
+        b:'#fcaf45aa',
+        c:'#808080aa',
+        d:'#ff5e6caa',
+        e:'#0171ceaa',
+        f:'#478559aa',
+        g:'#ff8928aa',
+        h:'#405de6aa',
+        i:'#78c802aa',
+        j:'#51d0deaa',
+        k:'#ffc202aa',
+        l:'#f13107aa',
+        m:'#c0ff2daa',
+        n:'#ffabb6aa',
+        o:'#ffaaabaa',
+        p:'#c89666aa',
+        q:'#8076a3aa',
+        r:'#a06919aa',
+        s:'#00beffaa',
+        t:'#ffcb00aa',
+        u:'#9bc400aa',
+        v:'#ec1f52aa',
+        w:'#009338aa',
+        x:'#f39308aa',
+        y:'#39a0caaa',
+        z:'#f95d9baa',
+    }
+
     const selectRandomColor = () => {
         return colorsCode[Math.floor(Math.random() * 10)];
     }
@@ -157,10 +186,10 @@ const FolderData = () => {
                                 <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography variant="subtitle1" fontWeight={"500"} >No folders added yet</Typography>
+                                <Typography variant="subtitle1" fontWeight={"600"} >No folders added yet</Typography>
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'} textTransform={'capitalize'}>
+                                <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
                                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                                 </Typography>
                             </Grid>
@@ -261,7 +290,7 @@ const FolderData = () => {
                                             <FolderIcon
                                                 sx={{
                                                     fontSize: '80px',
-                                                    color: "#f8d755"
+                                                    color: colorsCode[d.folderName.slice(0,1).toLowerCase()]||"red"
                                                     //selectRandomColor()
                                                     ,
                                                     cursor: "pointer"

@@ -132,18 +132,19 @@ function App() {
                             <Route path="/getStart" element={<GetStart serviceType='start' />} />
                             <Route path="/forget-password" element={<ForgetPage serviceType='forgetPassword' />} />
                             <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf' />} />
-
-                            {/* <Routes>
-            <Route path="/login" element={<AuthService serviceType="login" />} />
-            <Route path="/forget-password" element={<AuthService serviceType="forgetPassword" />} />
-            <Route path="/signup" element={<AuthService serviceType="signup" />} />
-          </Routes> */}
                         </Routes>
                     </ServiceProvider>
                     :
                     <ChatProvider>
-
                         <Routes>
+
+                            <Route path="/files/allFiles" element={<AllFiles />} />
+                            <Route path="/files/upload" element={<FileUpload />} />
+                            <Route path="/files/create-folder" element={<FolderData userId={userId} />} />
+                            <Route path="/chat" element={<MyMessage userId={userId} />} />
+                            <Route path="/account" element={<MyAccount />} />
+                            <Route path="*" element={<>404 page</>} />
+                            {/* <Route path="/" element={<MyMessage userId={userId} />} /> */}
                             {/* <Route path="/" element={<Dashboard />} /> */}
                             {/* <Route path="/data" element={<Data userId={userId} />} /> */}
                             {/** Delete code  aafter file upload feaature complete */}
@@ -151,36 +152,12 @@ function App() {
                             {/** Delete code after creaing new message feature complete */}
                             {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
                             {/** Delete code after folder feature complete */}
-                            {/* <Route path="/model" element={<ContentModels />} />
-              <Route path="/companyDetail" element={<CompanyDetails />} /> */}
 
+                            {/* <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/settings" element={<Setting />} />  */}
 
-                            {/* 
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/settings" element={<Setting />} /> 
-            */}
 
                         </Routes>
-
-                        {/* <LeftSideBar data={{leftSideData}} > */}
-                        {/* <LeftSideBarContext.Provider value={{setLeftSideData}}> */}
-                        <Routes>
-
-                            <Route path="/:feature/:section" element={<FileUpload />} />
-                            <Route path="/:feature/:section" element={<FolderData userId={userId} />} />
-                            <Route path="/" element={<MyMessage userId={userId} />} />
-                            <Route path="/:feature" element={<MyMessage userId={userId} />} />
-                            <Route path="/:feature/:section" element={<AllFiles />} />
-                            <Route path="*" element={<>404 page</>} />
-
-                            {/* <Route path="/files/allFiles" element={<AllFiles />} />
-              <Route path="/files/upload" element={<FileUpload />} />
-              <Route path="/files/create-folder" element={<FolderData userId={userId} />} />
-              <Route path="/chat" element={<MyMessage userId={userId} />} />
-              <Route path="*" element={<>404 page</>} /> */}
-                        </Routes>
-                        {/* </LeftSideBarContext.Provider> */}
-                        {/* </LeftSideBar> */}
                     </ChatProvider>
                 }
 

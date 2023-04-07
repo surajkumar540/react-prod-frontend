@@ -68,7 +68,7 @@ const FileUploadModal = ({ handleClose, open, setJsonData, handleClickOpen, user
                     toast.success(`File uploaded successfully`);
                     // ${response.data.Key.split(".")[0]}
                     handleClose();
-                    navigate("/allFiles");
+                    navigate("/files/allFiles");
                 } else {
                     setLoader(false);
                     toast.error("Something is wrong");
@@ -304,7 +304,7 @@ const FileUploadModal = ({ handleClose, open, setJsonData, handleClickOpen, user
                                 paddingLeft: "25px", paddingRight: '25px',
                                 backgroundColor: "#ffffff", textTransform: "capitalize", marginRight: "10px"
                             }}
-                                size='small' variant='outlined' >Cancel
+                                size='small' variant='outlined' onClick={handleClose}>Cancel
                             </Button>
                             <Button
                                 sx={{

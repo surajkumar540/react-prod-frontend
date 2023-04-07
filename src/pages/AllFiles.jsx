@@ -15,6 +15,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useMutation } from 'react-query';
 import { deleteFileApi } from '../api/InternalApi/OurDevApi';
 import { useDebounce } from 'use-debounce';
+import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 
 const AllFiles = () => {
     const navigate = useNavigate();
@@ -22,7 +23,42 @@ const AllFiles = () => {
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
 
-    const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
+    // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
+    const colorsCode={
+        doc:'#2892e7d6',
+        docx:'#2892e7d6',
+        png:'#7CB2D2aa',
+        jpeg:'#74BE73aa',
+        jpg:'#74BE73',
+        pdf:'#EE2F37',
+        mkv:'#478559aa',
+        exe:'#ff8928',
+        gif:'#405de6aa',
+        htm:'#539568',
+        html:'#539568',
+        jar:'#ffc202',
+        zip:'#F0BC2C',
+        bat:'#c0ff2d',
+        bin:'#ffabb6',
+        csv:'#ffaaab',
+        iso:'#c89666',
+        mp4:'#8076a3',
+        mp3:'#9950A6',
+        mpeg:'#00beffaa',
+        ppsx:'#ffcb00',
+        rar:'#9bc400aa',
+        tmp:'#ec1f52aa',
+        txt:'#5D68BF',
+        xls:'#67AA46',
+        ppt:'#F68852',
+        eps:'#EFA162',
+        wav:'#176E88',
+        css:'#95BCD4',
+        mov:'#006CB7',
+        psd:'#297CAF',
+    }
+
+
     const selectRandomColor = () => {
         return colorsCode[Math.floor(Math.random() * 10)];
     }
@@ -48,6 +84,10 @@ const AllFiles = () => {
         const FilesResponse = response.data;
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
+            FilesData.forEach((item)=>{
+                const ext=item.fileName.split(['.'])[1];
+                console.log(ext)
+            })
             setUserFiles(FilesData)
         } else {
             toast.error(FilesResponse.message);
@@ -110,14 +150,14 @@ const AllFiles = () => {
             <Box px={"20px"} sx={style.folderCreateMainBox}>
                 {userFiles.length === 0 &&
                     <Grid container>
-                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                        <Grid container item xs={12} mt={2} display="flex"  justifyContent={'center'}>
                             <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
                         </Grid>
                         <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                            <Typography variant="subtitle1" fontWeight={"500"} >No folders added yet</Typography>
+                            <Typography variant="subtitle1" fontWeight={"600"} >No files added yet</Typography>
                         </Grid>
                         <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                            <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'} textTransform={'capitalize'}>
+                            <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
                                 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                             </Typography>
                         </Grid>
@@ -126,7 +166,7 @@ const AllFiles = () => {
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 25px" }}
-                                onClick={() => navigate("/upload")}
+                                onClick={() => navigate("/files/upload")}
                             >
                                 Add File
                             </Button>
@@ -165,7 +205,7 @@ const AllFiles = () => {
                                         variant="contained"
                                         size='small'
                                         sx={{ padding: "5px 20px" }}
-                                        onClick={() => navigate("/upload")}
+                                        onClick={() => navigate("/files/upload")}
                                     >
                                         Add File
                                     </Button>
@@ -195,11 +235,12 @@ const AllFiles = () => {
                                         />
                                     </Box>
                                     <Box container display={'flex'} justifyContent="center">
-                                        <TextSnippetIcon sx={{
+                                        {/* <TextSnippetIcon sx={{
                                             fontSize: '80px',
-                                            color: "#2892e7d6"
+                                            color:colorsCode[d.fileName.split(['.'])[1]]||"#2892e7d6"
                                             //selectRandomColor() 
-                                        }} />
+                                        }} /> */}
+                                        <FileIcon ext={d.fileName.split(['.'])[1]}/>
                                     </Box>
                                     <Box container>
                                         <Typography align='center' variant="subtitle2" color={"#121212"}>
