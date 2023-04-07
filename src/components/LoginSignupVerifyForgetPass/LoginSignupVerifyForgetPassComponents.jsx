@@ -22,10 +22,10 @@ import {
 } from "../../api/CognitoApi/CognitoApi";
 import { passwordValidator } from '../../utils/validation';
 import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
-// import checkboxIcon from '../../assets/BackgroundImages/checkbox.png'
-// import GoogleIcon from '../../assets/svg/Google.svg'
-// import FacebookIcon from '../../assets/svg/Facebook.svg'
-// import AppleIcon from '../../assets/svg/Apple.svg'
+import checkboxIcon from '../../assets/BackgroundImages/checkbox.png'
+import GoogleIcon from '../../assets/svg/Google.svg'
+import FacebookIcon from '../../assets/svg/Facebook.svg'
+import AppleIcon from '../../assets/svg/Apple.svg'
 import { List, ListItem, ListItemText } from '@mui/material';
 
 const cssStyle = {
@@ -100,7 +100,7 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
             userLoginV1(email, password);
             setTimeout(() => {
                 setBtnDisabled(false);/////login , signup ,forget account btn disaabled after clicking
-                window.location = "/";
+                window.location = "/chat";
             }, [1500])
         } else {
             ////////user account created but user account not activated//////
@@ -350,23 +350,23 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
                                 <Typography variant='h5' paddingBottom={1} textAlign='center' fontWeight='bold' fontSize='20px'>Discover what sets us apart</Typography>
                                 <Box display='flex' flexDirection='column' justifyContent='center' >
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        {/* <img src={checkboxIcon} /> */}
+                                        <img src={checkboxIcon} />
                                         <Typography >Profile Creation</Typography>
                                     </Box>
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        {/* <img src={checkboxIcon} /> */}
+                                        <img src={checkboxIcon} />
                                         <Typography >Social Networking</Typography>
                                     </Box>
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        {/* <img src={checkboxIcon} /> */}
+                                        <img src={checkboxIcon} />
                                         <Typography >Media Sharing</Typography>
                                     </Box>
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        {/* <img src={checkboxIcon} /> */}
+                                        <img src={checkboxIcon} />
                                         <Typography >Groups and Communities</Typography>
                                     </Box>
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        {/* <img src={checkboxIcon} /> */}
+                                        <img src={checkboxIcon} />
                                         <Typography >Privacy Controls</Typography>
                                     </Box>
                                 </Box>

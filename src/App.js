@@ -100,8 +100,8 @@ function App() {
         console.log("error get in app.js", err);
         setIsAuthenticated(false);
         if (location.pathname === "/") {
-          navigate("/login");
-          // navigate("/start");
+          // navigate("/login");
+          navigate("/login")
         } else {
           navigate(location.pathname);
         }

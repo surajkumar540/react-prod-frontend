@@ -641,7 +641,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("groups")&&setActiveChatId("")}}
+                                onClick={() => {setActivePage("groups"),setActiveChatId("")}}
                                 // onClick={() => navigatePage("")}
                                 variant={activePage === "groups" ? "contained" : "text"}
                                 size='small'
@@ -731,7 +731,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("inbox")&&setActiveChatId("")}}
+                                onClick={() => {setActivePage("inbox"),setActiveChatId("")}}
                                 // onClick={() => {navigatePage(""),setActivePage("inbox")}}
                                 variant={activePage === "inbox" ? "contained" : "text"}
                                 size='small'
@@ -755,7 +755,7 @@ const LeftSideBar = (props) => {
                                         key={index}
                                         sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
                                         onClick={() =>
-                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d)&&setActiveChatId(d?._id)&&setActivePage("inbox")}
+                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d),setActiveChatId(d?._id),setActivePage("inbox")}
                                         }
                                     >
                                         {
