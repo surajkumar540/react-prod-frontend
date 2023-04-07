@@ -100,7 +100,7 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
             userLoginV1(email, password);
             setTimeout(() => {
                 setBtnDisabled(false);/////login , signup ,forget account btn disaabled after clicking
-                window.location = "/chat";
+                window.location = "/";
             }, [1500])
         } else {
             ////////user account created but user account not activated//////
@@ -416,20 +416,20 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
                                             </>
                                         }
-                                        </Box>
-                                        {serviceType === "signup" &&
-                                            <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                                <TextField
-                                                    id="login-signup-forgetPassword-email"
-                                                    label="Phone Number"
-                                                    variant='outlined'
-                                                    type="number"
-                                                    sx={cssStyle.btn_textfield}
-                                                    value={phoneNumber ? phoneNumber : ""}
-                                                    onChange={(e) => setPhoneNumber(e?.target?.value)}
-                                                />
-                                            </Grid>
-                                        }
+                                    </Box>
+                                    {serviceType === "signup" &&
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <TextField
+                                                id="login-signup-forgetPassword-email"
+                                                label="Phone Number"
+                                                variant='outlined'
+                                                type="number"
+                                                sx={cssStyle.btn_textfield}
+                                                value={phoneNumber ? phoneNumber : ""}
+                                                onChange={(e) => setPhoneNumber(e?.target?.value)}
+                                            />
+                                        </Grid>
+                                    }
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                         <TextField
                                             id="login-signup-forgetPassword-email"
@@ -666,52 +666,52 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
                                 </Grid>
                                 {serviceType === 'signup' &&
-                                <>
-                                
-                                    <Grid item xs={12} gap={2} >
-                                        <Typography fontWeight='bold' paddingBottom={1} >Password must have</Typography>
-                                        <Typography as='li' color='red'>At least 8 characters </Typography>
-                                        <Typography as='li' color='red'>At least 1 lestter (a,b,c...)</Typography>
-                                        <Typography as='li' color='red'>At least 1 number (1,2,3...)</Typography>
-                                        <Typography as='li' color='red'>Both uppercase & lowercase characters</Typography>
-                                    </Grid>
-                               
-                                    <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                        <Button
-                                            variant="contained"
-                                            sx={{
-                                                ...cssStyle.btn_textfield,
-                                                height: "50px", position: "relative",
-                                                backgroundColor: "primary",
-                                                '&:hover': {
-                                                    backgroundColor: '#1c529b' // background color on hover
-                                                }
-                                            }}
-                                            disabled={btnDisabed || isLoadingSignUpFun}
-                                            onClick={() => buttonAction(serviceType)}
+                                    <>
 
-                                        >
-                                            {(btnDisabed || isLoadingSignUpFun) && (
-                                                <CircularProgress
-                                                    size={24}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: '50%',
-                                                        right: '3%',
-                                                        marginTop: -12,
-                                                        marginLeft: -12,
-                                                        color: "primary"
-                                                    }}
-                                                />
-                                            )}
-                                            {serviceType === "login" && 'Login'}
-                                            {serviceType === "signup" && 'Create Account'}
-                                            {serviceType === "forgetPassword" && 'Send OTP'}
+                                        <Grid item xs={12} gap={2} >
+                                            <Typography fontWeight='bold' paddingBottom={1} >Password must have</Typography>
+                                            <Typography as='li' color='red'>At least 8 characters </Typography>
+                                            <Typography as='li' color='red'>At least 1 lestter (a,b,c...)</Typography>
+                                            <Typography as='li' color='red'>At least 1 number (1,2,3...)</Typography>
+                                            <Typography as='li' color='red'>Both uppercase & lowercase characters</Typography>
+                                        </Grid>
 
-                                        </Button>
+                                        <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    ...cssStyle.btn_textfield,
+                                                    height: "50px", position: "relative",
+                                                    backgroundColor: "primary",
+                                                    '&:hover': {
+                                                        backgroundColor: '#1c529b' // background color on hover
+                                                    }
+                                                }}
+                                                disabled={btnDisabed || isLoadingSignUpFun}
+                                                onClick={() => buttonAction(serviceType)}
 
-                                    </Grid>
-                                </>
+                                            >
+                                                {(btnDisabed || isLoadingSignUpFun) && (
+                                                    <CircularProgress
+                                                        size={24}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '50%',
+                                                            right: '3%',
+                                                            marginTop: -12,
+                                                            marginLeft: -12,
+                                                            color: "primary"
+                                                        }}
+                                                    />
+                                                )}
+                                                {serviceType === "login" && 'Login'}
+                                                {serviceType === "signup" && 'Create Account'}
+                                                {serviceType === "forgetPassword" && 'Send OTP'}
+
+                                            </Button>
+
+                                        </Grid>
+                                    </>
                                 }
                                 {serviceType === 'start' &&
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
