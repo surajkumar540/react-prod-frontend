@@ -9,6 +9,7 @@ const ChatProvider = ({ children }) => {
     const [currentChats, setCurrentChats] = useState([]);
     const [chats , setChats] = useState([]);
     const location = useLocation();
+    const [serviceType, setSeviceType] = useState();
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userInfo);
@@ -24,6 +25,7 @@ const ChatProvider = ({ children }) => {
         <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats ,chats , setChats }}>
             {children}
         </ChatContext.Provider>
+
     )
 }
 

@@ -20,11 +20,19 @@ import FileUpload from './pages/FileUpload';
 import FolderData from './pages/FolderData';
 import MyMessage from './pages/MyMessage';
 import CompanyDetails from './pages/CompanyDetails';
+import InviteTeam from './pages/InviteTeam';
 import ContentModels from './pages/ContentModels';
 import AllFiles from './pages/AllFiles';
 import ChatProvider from './Context/ChatProvider';
+import ServiceProvider from './Context/ServiceProvider';
 import LeftSideBar from './components/LeftSideBar/LeftSideBar';
 import { useContext } from 'react';
+import LoginPage from './components/AuthPages/LoginPage';
+import { SignupPage } from './components/AuthPages/SignupPage';
+import GetStart from './components/AuthPages/GetStart';
+import ForgetPage from './components/AuthPages/ForgetPage';
+import OtpVerfPage from './components/AuthPages/OtpVerfPage';
+import ProjectName from './pages/ProjectName';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
@@ -89,7 +97,8 @@ function App() {
                 console.log("error get in app.js", err);
                 setIsAuthenticated(false);
                 if (location.pathname === "/") {
-                    navigate("/start");
+                    // navigate("/login");
+                    navigate("/getStart");
                 } else {
                     navigate(location.pathname);
                 }
@@ -104,15 +113,33 @@ function App() {
 
     return (
         <>
+            <Routes>
+                <Route path="/model" element={<ContentModels />} />
+                <Route path="/companyDetail" element={<CompanyDetails />} />
+                <Route path="/invite" element={<InviteTeam />} />
+                <Route path="/projectName" element={<ProjectName />} />
+            </Routes>
             <ThemeProvider theme={theme}>
+
                 {!isAuthenticated
                     ?
-                    <Routes>
-                        <Route path="/login" element={<AuthService serviceType="login" />} />
-                        <Route path="/forget-password" element={<AuthService serviceType="forgetPassword" />} />
-                        <Route path="/start" element={<AuthService serviceType="start" />} />
-                        <Route path="/signup" element={<AuthService serviceType="signup" />} />
-                    </Routes>
+
+                    <ServiceProvider>
+
+                        <Routes>
+                            <Route path="/login" element={<LoginPage serviceType="login" />} />
+                            <Route path="/signup" element={<SignupPage serviceType="signup" />} />
+                            <Route path="/getStart" element={<GetStart serviceType='start' />} />
+                            <Route path="/forget-password" element={<ForgetPage serviceType='forgetPassword' />} />
+                            <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf' />} />
+
+                            {/* <Routes>
+            <Route path="/login" element={<AuthService serviceType="login" />} />
+            <Route path="/forget-password" element={<AuthService serviceType="forgetPassword" />} />
+            <Route path="/signup" element={<AuthService serviceType="signup" />} />
+          </Routes> */}
+                        </Routes>
+                    </ServiceProvider>
                     :
                     <ChatProvider>
 
@@ -124,15 +151,15 @@ function App() {
                             {/** Delete code after creaing new message feature complete */}
                             {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
                             {/** Delete code after folder feature complete */}
-                            <Route path="/model" element={<ContentModels />} />
-                            <Route path="/companyDetail" element={<CompanyDetails />} />
+                            {/* <Route path="/model" element={<ContentModels />} />
+              <Route path="/companyDetail" element={<CompanyDetails />} /> */}
 
 
                             {/* 
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/settings" element={<Setting />} /> 
             */}
-                            <Route path="/forget-password" element={<ForgetPassword />} />
+
                         </Routes>
 
                         {/* <LeftSideBar data={{leftSideData}} > */}
@@ -146,13 +173,18 @@ function App() {
                             <Route path="/:feature/:section" element={<AllFiles />} />
                             <Route path="*" element={<>404 page</>} />
 
+                            {/* <Route path="/files/allFiles" element={<AllFiles />} />
+              <Route path="/files/upload" element={<FileUpload />} />
+              <Route path="/files/create-folder" element={<FolderData userId={userId} />} />
+              <Route path="/chat" element={<MyMessage userId={userId} />} />
+              <Route path="*" element={<>404 page</>} /> */}
                         </Routes>
                         {/* </LeftSideBarContext.Provider> */}
                         {/* </LeftSideBar> */}
                     </ChatProvider>
                 }
 
-            </ThemeProvider>
+            </ThemeProvider >
 
         </>
     )
