@@ -298,7 +298,7 @@ export const SignupPage = () => {
 
                             <TextField
                                 id="signup-name-user"
-                                label="First Name"
+                                label="Full Name"
                                 variant='outlined'
                                 type="text"
                                 sx={cssStyle.btn_textfield}
