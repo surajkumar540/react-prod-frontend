@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useDebounce } from 'use-debounce';
-
+import DeleteModal from '../components/Chat/DeleteModal';
 
 const FolderData = () => {
     // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
@@ -76,8 +76,6 @@ const FolderData = () => {
     //////// Delete Folder
     const deleteFolder = async (folderData) => {
         const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-        const confarmDelete = window.confirm("Are you sure do u want to delete this folder.");
-        if (confarmDelete) {
             const response = await axios.delete('https://devorganaise.com/api/deleteFolder',
                 { data: { folderId: folderData, userId: UserId } }, {
                 headers: {
@@ -95,7 +93,6 @@ const FolderData = () => {
             } else {
                 toast.error("Something is wrong");
             }
-        }
     }
 
 
@@ -266,7 +263,7 @@ const FolderData = () => {
                                             />
                                              */}
 
-                                            <DeleteForeverIcon
+                                            {/* <DeleteForeverIcon
                                                 sx={{
                                                     fontSize: "19px",
                                                     cursor: "pointer",
@@ -274,7 +271,8 @@ const FolderData = () => {
                                                     color: "#e70f0fc2"
                                                 }}
                                                 onClick={() => ActionDelFolAndAddFile("deleteFolder", d)}
-                                            />
+                                            /> */}
+                                            <DeleteModal handleDelete={deleteFolder} value={d._id} type='folder'/>
                                             <NoteAddIcon
                                                 sx={{
                                                     fontSize: "18px",

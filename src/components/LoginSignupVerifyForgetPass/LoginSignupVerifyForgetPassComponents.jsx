@@ -70,11 +70,11 @@ const cssStyle = {
 
 const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
+    const [showPassword, setShowPassword] = useState(false);
     const [showConfPass, setShowConfPass] = useState(false);
     const [OtpValue, setOtpValue] = useState('');////otp value store here
     const [showOtpVeriCont, setShowVeriCon] = useState(false);
     /////Store email address
-    const [showPassword, setShowPassword] = useState(false);
     const [fullName, setFullName] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -291,10 +291,6 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
 
         if (serviceType === "forgetPassword") {
             updateNewPassword(emailAddress, OtpValue, password)
-        }
-
-        if(serviceType === "otpResend"){
-
         }
     }
 
@@ -819,8 +815,7 @@ const LoginSignupVerifyForgetPassComponents = ({ serviceType }) => {
                                     </Grid>
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                         <Typography variant="subtitle1" align='center' fontWeight='400' color="#333333">
-                                            Didn’t receive OTP? <span style={{ fontWeight: 700, color: "#1c529b" }} disabled={verifyBtnDisable}
-                                               >Resend</span>
+                                            Didn’t receive OTP? <span style={{ fontWeight: 700, color: "#1c529b" }}>Resend</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
