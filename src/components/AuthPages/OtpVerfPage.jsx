@@ -76,14 +76,15 @@ const OtpVerfPage = () => {
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
-    const [password, setPassword] = useState("");
+    const { serviceType, contextEmail, contextPassword } = ServiceState();
+    const [password, setPassword] = useState(contextPassword);
+    console.log()
     const [confirmPassword, setConfirmPassword] = useState("");
     /////// btn disabled until operation  not completed
     const [btnDisabed, setBtnDisabled] = useState(false);
     /////// Verify button disaabled until operation not complete
     const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
-    const { serviceType, setSeviceType } = ServiceState();
-    console.log(serviceType);
+    console.log(serviceType, contextEmail, 'tfs');
 
     ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
     const { mutateAsync: loginApiCall } = useMutation(userSignIn);
@@ -94,11 +95,17 @@ const OtpVerfPage = () => {
     ///////// Signup otp verification/////////
     const { mutateAsync: SignUpOtpVerification } = useMutation(SignUpOtpVarify);
     const signupVerificationOtp = async (email, getOtp) => {
+        console.log(email, 'email');
+        console.log(getOtp, "getOtp");
         setVerifyBtnDisabled(true);
         const userName = email.split('@')[0];
+        console.log(userName, 'usrname');
         const otpResponse = await SignUpOtpVerification({ username: userName, userOtp: getOtp });
+        console.log(otpResponse, '1')
         if (otpResponse.status) {
             const response = await loginApiCall({ username: userName, password: password });
+            console.log(password, 'pASSWORD ')
+            console.log(response, '2 ')
             if (response.status) {
                 toast.success("OTP verified successfully.Please wait we are setup your account.");
                 setTimeout(async () => {
@@ -115,14 +122,31 @@ const OtpVerfPage = () => {
             }
         } else {
             toast.error(otpResponse.error.message);
+            console.log('els condition running')
             setVerifyBtnDisabled(false);
         }
     }
 
+    const userLoginV1 = async (email, password) => {
+        try {
+            const response = await loginV1({ email, password });
+            if (response.status) {
+                localStorage.setItem("userInfo", JSON.stringify(response))
+            } else {
+                console.log("User not login in v1");
+            }
+
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
+
+    }
     ///////// resend otp 
     const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
     const resendOtpInMail = async (email) => {
+        console.log(email, '1')
         const response = await resetPasswordFunCall({ username: email.split("@")[0] });
+        console.log(response, 'resp1');
         if (response.status) {
             toast.info("Otp send in your mail please check your mail inbox.");
             setShowVeriCon(true);
@@ -135,9 +159,11 @@ const OtpVerfPage = () => {
     //////// change password api call or Reset password code here when user in forget passsword page 
     const { mutateAsync: updatePasswordWithOtp } = useMutation(otpWithResetPassword);
     const updateNewPassword = async (email, GetOtp, newPassword) => {
+        console.log(email, GetOtp, newPassword, 'email, getop');
         setVerifyBtnDisabled(true)
         let userName = email.split('@')[0]
         const updatePassword = await updatePasswordWithOtp({ username: userName, otp: GetOtp, password: newPassword });
+        console.log(updatePassword, '2');
         if (updatePassword.status) {
             toast.success("Password update successfullly.Please wait we are redirect in login page.");
             setTimeout(() => {
@@ -156,145 +182,118 @@ const OtpVerfPage = () => {
         setFirstName("");
         setLastName("")
         setEmailAddress("");
-        setPassword("");
+        // setPassword("");
         setConfirmPassword("");
     }, [serviceType])
 
-   
+
     const otpVerifyBtn = async (serviceType) => {
         if ((OtpValue === "") || (OtpValue.length !== 6)) {
             toast.error("Please enter six digit OTP.");
             return null;
         }
         if (serviceType === "login") {
-            await signupVerificationOtp(emailAddress, OtpValue);
+            await signupVerificationOtp(contextEmail, OtpValue, contextPassword);
         }
 
         if (serviceType === "signup") {
-            await signupVerificationOtp(emailAddress, OtpValue);
+            await signupVerificationOtp(contextEmail, OtpValue, contextPassword);
         }
 
         if (serviceType === "forgetPassword") {
-            updateNewPassword(emailAddress, OtpValue, password)
+            updateNewPassword(contextEmail, OtpValue, contextPassword)
         }
     }
-
-    const handleTogglePassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleToggleConfPassword = () => {
-        setShowConfPass(!showConfPass);
-    }
-
-
-    const bgImgForLoginSignUpForgetVarify = (serviceType) => {
-        switch (serviceType) {
-            case "login":
-                return <img src={loginPageBackgroundImg} style={{ width: "70%" }} alt="login-page-background-image" />
-                break;
-            case "start":
-                return <img src={loginPageBackgroundImg} style={{ width: "60%" }} alt="login-page-background-image" />
-                break;
-            case "signup":
-                return <img src={signupPageBgImg} style={{ width: "80%" }} alt="signUp-page-background-image" />
-                break;
-            case "forgetPassword":
-                return <img src={forgetPassPageBGImg} style={{ width: "100%" }} alt="forget-password-page-background-image" />
-                break;
-            case "verification":
-                return <img src={otpVerificationBgImg} style={{ width: "100%" }} alt="login-page-background-image" />
-                break;
-            default:
-                break;
-        }
-    }
-
 
 
 
     return (
-        <Box container sx={cssStyle.parent_box}  >
-            <Grid container >
-                <Grid item xs={12} sm={12} md={6} >
-                    <Box container sx={{ ...cssStyle.content_container_box, padding: "6% 5% 10% 20% !important" }}  >
-                        <Box >
+        <Box container display='flex' aligItems='center' height='100vh' >
+            <Grid container padding={7} >
+                <Grid item xs={12} sm={12} md={6} height='100%'>
+                    <Box container display='flex' flexDirection='column' height='80%'>
+                        <Box paddingLeft={4}>
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Box>
-                        <Box >
+                        <Box paddingLeft={4}>
                             <img src={otpVerificationBgImg} style={{ width: "100%" }} alt="login-page-background-image" />
                         </Box>
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6}>
-                    
-                        <Box container sx={{ ...cssStyle.content_container_box, padding: "15% 20%" }} >
-                            <Box>
-                                <Typography variant="h4" align='center' fontWeight='600' color="#333333">
-                                    OTP Verification
-                                </Typography>
+
+                <Grid item xs={12} sm={12} md={6} display={'flex'} justifyContent={'center'}    >
+                    <Box width='70%' height='80%'  >
+                        <Grid item xs={12}  >
+                            <Typography variant="h4" textAlign='center' fontWeight='600' color="#333333">
+                                OTP Verification
+                            </Typography>
+                            <Typography variant="subtitle1" fontWeight='600' textAlign='center' color="#333333">
+                                We’ve sent a code to {contextEmail}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Grid item xs={12} sx={cssStyle.grid_textBox_button} display='flex' justifyContent='center' paddingY={1}>
+                                <OtpField
+                                    value={OtpValue}
+                                    onChange={setOtpValue}
+                                    numInputs={6}
+                                    onChangeRegex={/^([0-9]{0,})$/}
+                                    autoFocus
+                                    // separator={<span>-</span>}
+                                    isTypeNumber
+                                    inputProps={{
+                                        className: `otp-field__input`,
+                                        disabled: false,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={3} display='flex' justifyContent='center' alignItems='center'>
                                 <Typography variant="subtitle1" align='center' fontWeight='400' color="#333333">
-                                    We’ve sent a code to {emailAddress}
+                                    Didn’t receive OTP?
+                                    {
+                                        console.log(contextEmail, 'otpMail')
+                                    }
                                 </Typography>
-                            </Box>
-                            <Box sx={cssStyle.box_container_form}>
-                                <Grid container>
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={2}>
-                                        <OtpField
-                                            value={OtpValue}
-                                            onChange={setOtpValue}
-                                            numInputs={6}
-                                            onChangeRegex={/^([0-9]{0,})$/}
-                                            autoFocus
-                                            // separator={<span>-</span>}
-                                            isTypeNumber
-                                            inputProps={{
-                                                className: `otp-field__input`,
-                                                disabled: false,
+                                <Button onClick={() => resendOtpInMail(contextEmail)} style={{ fontWeight: 700, color: "#1c529b" }}>
+                                    Resend
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} >
+                                <Button variant="contained"
+                                    sx={{
+                                        ...cssStyle.btn_textfield,
+                                        height: "50px", position: "relative",
+                                        backgroundColor: "primary",
+                                        '&:hover': {
+                                            backgroundColor: '#1c529b' // background color on hover
+                                        }
+                                    }}
+                                    disabled={verifyBtnDisable}
+                                    onClick={() => otpVerifyBtn(serviceType)}
+                                >
+
+                                    {verifyBtnDisable && (
+                                        <CircularProgress
+                                            size={24}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                right: '3%',
+                                                marginTop: -12,
+                                                marginLeft: -12,
+                                                color: "#1c529b"
                                             }}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={4}>
-                                        <Typography variant="subtitle1" align='center' fontWeight='400' color="#333333">
-                                            Didn’t receive OTP? <span style={{ fontWeight: 700, color: "#1c529b" }}>Resend</span>
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                        <Button variant="contained"
-                                            sx={{
-                                                ...cssStyle.btn_textfield,
-                                                height: "50px", position: "relative",
-                                                backgroundColor: "primary",
-                                                '&:hover': {
-                                                    backgroundColor: '#1c529b' // background color on hover
-                                                }
-                                            }}
-                                            disabled={verifyBtnDisable}
-                                            onClick={() => otpVerifyBtn(serviceType)}
-                                        >
-
-                                            {verifyBtnDisable && (
-                                                <CircularProgress
-                                                    size={24}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: '50%',
-                                                        right: '3%',
-                                                        marginTop: -12,
-                                                        marginLeft: -12,
-                                                        color: "#1c529b"
-                                                    }}
-                                                />
-                                            )}
-                                            Verify OTP
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                        </Box>
+                                    )}
+                                    Verify OTP
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>
