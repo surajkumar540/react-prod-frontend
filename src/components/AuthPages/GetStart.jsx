@@ -303,143 +303,168 @@ const GetStart = ({ serviceType }) => {
     }
 
 
+    const bgImgForLoginSignUpForgetVarify = (serviceType) => {
+        switch (serviceType) {
+            case "login":
+                return <img src={loginPageBackgroundImg} style={{ width: "70%" }} alt="login-page-background-image" />
+                break;
+            case "start":
+                return <img src={loginPageBackgroundImg} style={{ width: "60%" }} alt="login-page-background-image" />
+                break;
+            case "signup":
+                return <img src={signupPageBgImg} style={{ width: "80%" }} alt="signUp-page-background-image" />
+                break;
+            case "forgetPassword":
+                return <img src={forgetPassPageBGImg} style={{ width: "100%" }} alt="forget-password-page-background-image" />
+                break;
+            case "verification":
+                return <img src={otpVerificationBgImg} style={{ width: "100%" }} alt="login-page-background-image" />
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+
     return (
-        <Box container display='flex' aligItems='center' height='100vh' >
-            <Grid container padding={7}>
-                <Grid item xs={12} sm={12} md={6}  height='100%'>
-                    <Box container  display='flex' flexDirection='column' height='80%'>
-                        <Box paddingLeft={4} >
+        <Box container sx={cssStyle.parent_box}  >
+            <Grid container >
+                <Grid item xs={12} sm={12} md={6} >
+                    <Box container sx={{ ...cssStyle.content_container_box, padding: "6% 3% 10% 20% !important" }}  >
+                        <Box >
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Box>
-                        <Box paddingLeft={4} height='60%'>
-                            <img src={loginPageBackgroundImg} style={{ height: "100%" }} alt="login-page-background-image" />
+                        <Box >
+                            <img src={loginPageBackgroundImg} style={{ width: "60%" }} alt="login-page-background-image" />
                         </Box>
 
-                        <Grid xs={8} >
+                        <Box sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} paddingX={2} paddingY={1} borderRadius={4} width='60%'  >
 
-                            <Box  sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} paddingX={2} paddingY={1} borderRadius={4}  >
-                                <Typography variant='h5' paddingBottom={1} textAlign='center' fontWeight='bold' fontSize='20px'>Discover what sets us apart
-                                </Typography>
-                   
-                                <Box display='flex' flexDirection='column' justifyContent='center' >
-                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        <img src={checkboxIcon} />
-                                        <Typography >Profile Creation</Typography>
-                                    </Box>
-                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        <img src={checkboxIcon} />
-                                        <Typography >Social Networking</Typography>
-                                    </Box>
-                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        <img src={checkboxIcon} />
-                                        <Typography >Media Sharing</Typography>
-                                    </Box>
-                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        <img src={checkboxIcon} />
-                                        <Typography >Groups and Communities</Typography>
-                                    </Box>
-                                    <Box display='flex' alignItems='center' gap={2} padding={1}>
-                                        <img src={checkboxIcon} />
-                                        <Typography >Privacy Controls</Typography>
-                                    </Box>
+                            <Typography variant='h5' paddingBottom={1} textAlign='center' fontWeight='bold' fontSize='20px'>Discover what sets us apart</Typography>
+                            <Box display='flex' flexDirection='column' justifyContent='center' >
+                                <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                    <img src={checkboxIcon} />
+                                    <Typography >Profile Creation</Typography>
+                                </Box>
+                                <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                    <img src={checkboxIcon} />
+                                    <Typography >Social Networking</Typography>
+                                </Box>
+                                <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                    <img src={checkboxIcon} />
+                                    <Typography >Media Sharing</Typography>
+                                </Box>
+                                <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                    <img src={checkboxIcon} />
+                                    <Typography >Groups and Communities</Typography>
+                                </Box>
+                                <Box display='flex' alignItems='center' gap={2} padding={1}>
+                                    <img src={checkboxIcon} />
+                                    <Typography >Privacy Controls</Typography>
                                 </Box>
                             </Box>
-                        </Grid>
+                        </Box>
                     </Box>
                 </Grid>
+                <Grid item xs={12} sm={12} md={6}>
 
-                <Grid item xs={12} sm={12} md={6} display={'flex'} justifyContent={'center'}  >
-                    <Box width='70%' height='80%' display='flex' flexDirection='column'  justifyContent='center'  >
-                        <Grid item xs={12}   >
-                            <Box>
-                                <Typography variant="h4" fontWeight='600' color="#333333">
-                                    Get Started
-                                </Typography>
-                            </Box>
-                        </Grid>
+                    <Box container sx={cssStyle.content_container_box}  >
+                        <Box>
+                            <Typography variant="h4" fontWeight='600' color="#333333">
+                                Get Started
+                            </Typography>
+                        </Box>
+                        <Box sx={cssStyle.box_container_form}>
+                            <Grid container>
 
-                        <Grid item xs={12} sx={cssStyle.grid_textBox_button} >
-                            <TextField
-                                id="login-signup-forgetPassword-email"
-                                label="Email"
-                                variant='outlined'
-                                type="email"
-                                sx={cssStyle.btn_textfield}
-                                value={emailAddress ? emailAddress : ""}
-                                onChange={(e) => setEmailAddress(e?.target?.value)}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} sx={cssStyle.grid_textBox_button} >
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    ...cssStyle.btn_textfield,
-                                    height: "50px", position: "relative",
-                                    backgroundColor: "primary",
-                                    '&:hover': {
-                                        backgroundColor: '#1c529b' // background color on hover
-                                    }
-                                }}
-                                disabled={btnDisabed || isLoadingSignUpFun}
-                                onClick={() => buttonAction(serviceType)}
-
-                            >
-                                {(btnDisabed || isLoadingSignUpFun) && (
-                                    <CircularProgress
-                                        size={24}
-                                        style={{
-                                            position: 'absolute',
-                                            top: '50%',
-                                            right: '3%',
-                                            marginTop: -12,
-                                            marginLeft: -12,
-                                            color: "primary"
-                                        }}
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                    <TextField
+                                        id="login-signup-forgetPassword-email"
+                                        label="Email"
+                                        variant='outlined'
+                                        type="email"
+                                        sx={cssStyle.btn_textfield}
+                                        value={emailAddress ? emailAddress : ""}
+                                        onChange={(e) => setEmailAddress(e?.target?.value)}
                                     />
-                                )}
+                                </Grid>
 
-                                Continue
+                            </Grid>
 
-                            </Button>
 
-                        </Grid>
+                            <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        ...cssStyle.btn_textfield,
+                                        height: "50px", position: "relative",
+                                        backgroundColor: "primary",
+                                        '&:hover': {
+                                            backgroundColor: '#1c529b' // background color on hover
+                                        }
+                                    }}
+                                    disabled={btnDisabed || isLoadingSignUpFun}
+                                    onClick={() => buttonAction(serviceType)}
 
-                        <Grid item xs={12} display='flex' justifyContent='center' alignItems='center' gap={2}>
-                            <Box height='1px' width='45%' backgroundColor='gray' />
-                            <Typography>OR</Typography>
-                            <Box height='1px' width='45%' backgroundColor='gray' />
-                        </Grid>
+                                >
+                                    {(btnDisabed || isLoadingSignUpFun) && (
+                                        <CircularProgress
+                                            size={24}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                right: '3%',
+                                                marginTop: -12,
+                                                marginLeft: -12,
+                                                color: "primary"
+                                            }}
+                                        />
+                                    )}
 
-                        <Grid item xs={12} >
-                            <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
-                                <Box display='flex' justifyContent='center' alignItems='center' gap={2} padding={1}>
-                                    <img src={GoogleIcon} />
-                                    <Typography fontWeight='bold' >Continue with Google</Typography>
+                                    Continue
+
+                                </Button>
+
+                            </Grid>
+
+                            <Grid item xs={12} display='flex' justifyContent='center' alignItems='center' gap={2} marginY={5}>
+                                <Box height='1px' width='45%' backgroundColor='gray' />
+                                <Typography>OR</Typography>
+                                <Box height='1px' width='45%' backgroundColor='gray' />
+                            </Grid>
+
+                            <Grid item xs={12} >
+                                <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                    <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                        <img src={GoogleIcon} />
+                                        <Typography fontWeight='bold' >Continue with Google</Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
 
-                            <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
-                                <Box display='flex' justifyContent='center' alignItems='center' gap={2} padding={1}>
-                                    <img src={FacebookIcon} />
-                                    <Typography fontWeight='bold' textAlign='center'>Continue with Facebook</Typography>
+                                <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                    <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                        <img src={FacebookIcon} />
+                                        <Typography fontWeight='bold' textAlign='center'>Continue with Facebook</Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
 
-                            <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
-                                <Box display='flex' justifyContent='center' alignItems='center' gap={2} padding={1}>
-                                    <img src={AppleIcon} />
-                                    <Typography fontWeight='bold' textAlign='center'>Continue with Apple</Typography>
+                                <Box marginTop={3} sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} borderRadius={2}>
+                                    <Box display='flex' marginLeft={8} alignItems='center' gap={2} padding={1}>
+                                        <img src={AppleIcon} />
+                                        <Typography fontWeight='bold' textAlign='center'>Continue with Apple</Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </Grid>
+                            </Grid>
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>
-        </Box >
+        </Box>
     )
 }
 

@@ -16,6 +16,7 @@ import { useMutation } from 'react-query';
 import { deleteFileApi } from '../api/InternalApi/OurDevApi';
 import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
+import DeleteModal from '../components/Chat/DeleteModal';
 
 const AllFiles = () => {
     const navigate = useNavigate();
@@ -105,8 +106,7 @@ const AllFiles = () => {
     ///////////// Delete fie code add here
     const { mutateAsync: deleteFileApiCall, isLoading: delFileIsLoading } = useMutation(deleteFileApi)
     const ActionDelFile = async (data) => {
-        const confarmDelete = window.confirm("Are you sure do u want to delete this file.");
-        if (confarmDelete) {
+        
             // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
             const createDeleteObj = { fileId: data._id, userId: UserId };
             const resData = await deleteFileApiCall(createDeleteObj);
@@ -124,7 +124,7 @@ const AllFiles = () => {
             } else {
                 toast.error(resData.message);
             }
-        }
+   
 
     }
 
@@ -224,7 +224,7 @@ const AllFiles = () => {
                                 }}>
                                     <Box container display={'flex'} justifyContent="end">
                                         {/* <MoreVertIcon sx={{ fontSize: "18px", color: '#7A7A7A' }} /> */}
-                                        <DeleteForeverIcon
+                                        {/* <DeleteForeverIcon
                                             sx={{
                                                 fontSize: "19px",
                                                 cursor: "pointer",
@@ -232,7 +232,8 @@ const AllFiles = () => {
                                                 color: "#e70f0fc2"
                                             }}
                                             onClick={() => ActionDelFile(d)}
-                                        />
+                                        /> */}
+                                        <DeleteModal handleDelete={ActionDelFile} value={d} />
                                     </Box>
                                     <Box container display={'flex'} justifyContent="center">
                                         {/* <TextSnippetIcon sx={{
