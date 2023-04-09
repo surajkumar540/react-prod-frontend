@@ -6,7 +6,7 @@ import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 
 import organaiseLogo from "../assets/Logo/organaise-logo.png";
@@ -19,6 +19,7 @@ const CompanyDetails = () => {
     ];
 
     const [userId, setUserID] = useState("")
+    const navigate = useNavigate();
 
 
     const [companyName, setCompanyName] = useState("");
@@ -65,7 +66,8 @@ const CompanyDetails = () => {
             if (response.status) {
                 toast.success(response.message);
                 setTimeout(() => {
-                    window.location = "/";
+                    window.location = "/chat";
+                    navigate("/chat")
                 }, [500])
             } else {
                 toast.error(response.message);
@@ -76,6 +78,7 @@ const CompanyDetails = () => {
         }
 
     }
+
 
     return (
         <>
@@ -99,7 +102,7 @@ const CompanyDetails = () => {
                                 ))}
                             </Stepper>
                         </Box>
-                        
+
                         <Box container mt={2} width={"100%"}>
                             <Typography textAlign={'center'} variant="h4" fontWeight={"600"}>Please enter your Company name</Typography>
                         </Box>

@@ -7,7 +7,7 @@ const ChatProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [selectChatV1, setSelectedChatV1] = useState([]);
     const [currentChats, setCurrentChats] = useState([]);
-    const [chats , setChats] = useState([]);
+    const [chats, setChats] = useState([]);
     const location = useLocation();
     const [serviceType, setSeviceType] = useState();
     useEffect(() => {
@@ -22,7 +22,7 @@ const ChatProvider = ({ children }) => {
     }, [location])
 
     return (
-        <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats ,chats , setChats }}>
+        <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats }}>
             {children}
         </ChatContext.Provider>
 

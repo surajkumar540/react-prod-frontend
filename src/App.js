@@ -32,140 +32,142 @@ import { SignupPage } from './components/AuthPages/SignupPage';
 import GetStart from './components/AuthPages/GetStart';
 import ForgetPage from './components/AuthPages/ForgetPage';
 import OtpVerfPage from './components/AuthPages/OtpVerfPage';
+import NewPassword from './components/AuthPages/NewPassword';
+
 import ProjectName from './pages/ProjectName';
-import MyAccount from './pages/MyAccount';
+// import MyAccount from './pages/MyAccount';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
-  const [leftSideData, setLeftSideData] = useState("")
-  useEffect(() => {
-    console.log(leftSideData)
-  }, [leftSideData])
-  const { pageType } = useParams();
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#448DF0',
+    const [leftSideData, setLeftSideData] = useState("")
+    useEffect(() => {
+        console.log(leftSideData)
+    }, [leftSideData])
+    const { pageType } = useParams();
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#448DF0',
 
-      },
-      secondary: {
-        main: '#FF5353',
-        dark: "#333333",
-      }
-    },
-    typography: {
-      fontFamily: 'Nunito',
-      color: "#333333",
-      fontWeight: "600"
-    },
+            },
+            secondary: {
+                main: '#FF5353',
+                dark: "#333333",
+            }
+        },
+        typography: {
+            fontFamily: 'Nunito',
+            color: "#333333",
+            fontWeight: "600"
+        },
 
-  });
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [isAnonymous, setAnonymous] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState("")
+    });
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [isAnonymous, setAnonymous] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userId, setUserId] = useState("")
 
-  useEffect(() => {
-    configureAmplify();
-    getAwsCredentialsFromCognito();
-  }, [])
+    useEffect(() => {
+        configureAmplify();
+        getAwsCredentialsFromCognito();
+    }, [])
 
-  const setAuthenticatedUserFromCognito = () => {
-    ///// Its return the current userInfo
-    Auth.currentUserInfo()
-      .then(curUser => {
-        if (curUser.attributes?.profile === 'none') {
-          setIsAuthenticated(false);
-        } else {
-          setUserId(curUser.attributes.sub);
-          setIsAuthenticated(true);
-          navigate(location.pathname);
-        }
-      })
-      .catch((err) => {
-        console.log(`Failed to set authenticated user! ${err}`);
-      });
-    //getAwsCredentialsFromCognito();
-  };
+    const setAuthenticatedUserFromCognito = () => {
+        ///// Its return the current userInfo
+        Auth.currentUserInfo()
+            .then(curUser => {
+                if (curUser.attributes?.profile === 'none') {
+                    setIsAuthenticated(false);
+                } else {
+                    setUserId(curUser.attributes.sub);
+                    setIsAuthenticated(true);
+                    navigate(location.pathname);
+                }
+            })
+            .catch((err) => {
+                console.log(`Failed to set authenticated user! ${err}`);
+            });
+        //getAwsCredentialsFromCognito();
+    };
 
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(
-        setAuthenticatedUserFromCognito
-      )
-      .catch((err) => {
-        console.log("error get in app.js", err);
-        setIsAuthenticated(false);
-        if (location.pathname === "/") {
-          // navigate("/login");
-          navigate("/getStart");
-        } else {
-          navigate(location.pathname);
-        }
-
-
-      });
-  }, [Auth]);
+    useEffect(() => {
+        Auth.currentAuthenticatedUser()
+            .then(
+                setAuthenticatedUserFromCognito
+            )
+            .catch((err) => {
+                console.log("error get in app.js", err);
+                setIsAuthenticated(false);
+                if (location.pathname === "/") {
+                    // navigate("/login");
+                    navigate("/getStart");
+                } else {
+                    navigate(location.pathname);
+                }
 
 
+            });
+    }, [Auth]);
 
 
 
-  return (
-    <>
-      <Routes>
-        <Route path="/model" element={<ContentModels />} />
-        <Route path="/companyDetail" element={<CompanyDetails />} />
-        <Route path="/invite" element={<InviteTeam />} />
-        <Route path="/projectName" element={<ProjectName />} />
-      </Routes>
-      <ThemeProvider theme={theme}>
 
-        {!isAuthenticated
-          ?
 
-          <ServiceProvider>
-
+    return (
+        <>
             <Routes>
-              <Route path="/login" element={<LoginPage serviceType="login" />} />
-              <Route path="/signup" element={<SignupPage serviceType="signup" />} />
-              <Route path="/getStart" element={<GetStart serviceType='start' />} />
-              <Route path="/forget-password" element={<ForgetPage serviceType='forgetPassword' />} />
-              <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf' />} />
+                <Route path="/model" element={<ContentModels />} />
+                <Route path="/invite" element={<InviteTeam />} />
+                <Route path="/projectName" element={<ProjectName />} />
             </Routes>
-          </ServiceProvider>
-          :
-          <ChatProvider>
-            <Routes>
+            <ThemeProvider theme={theme}>
 
-              <Route path="/files/allFiles" element={<AllFiles />} />
-              <Route path="/files/upload" element={<FileUpload />} />
-              <Route path="/files/create-folder" element={<FolderData userId={userId} />} />
-              <Route path="/chat" element={<MyMessage userId={userId} />} />
-              <Route path="*" element={<>404 page</>} />
-              {/* <Route path="/account" element={<MyAccount />} /> */}
-              {/* <Route path="/" element={<MyMessage userId={userId} />} /> */}
-              {/* <Route path="/" element={<Dashboard />} /> */}
-              {/* <Route path="/data" element={<Data userId={userId} />} /> */}
-              {/** Delete code  aafter file upload feaature complete */}
-              {/* <Route path="/message" element={<Message />} /> */}
-              {/** Delete code after creaing new message feature complete */}
-              {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
-              {/** Delete code after folder feature complete */}
+                {!isAuthenticated
+                    ?
+                    
+                    <ServiceProvider>
 
-              {/* <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                        <Routes>
+                            <Route path="/login" element={<LoginPage serviceType="login" />} />
+                            <Route path="/signup" element={<SignupPage serviceType="signup" />} />
+                            <Route path="/getStart" element={<GetStart serviceType='start' />} />
+                            <Route path="/forget-password" element={<ForgetPage serviceType='forgetPassword' />} />
+                            <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf' />} />
+                            <Route path="/newPassword" element={<NewPassword serviceType='newPassword' />} />
+                        </Routes>
+                    </ServiceProvider>
+                    :
+                    <ChatProvider>
+                        <Routes>
+
+                            <Route path="/companyDetail" element={<CompanyDetails />} />
+                            <Route path="/files/allFiles" element={<AllFiles />} />
+                            <Route path="/files/upload" element={<FileUpload />} />
+                            <Route path="/files/create-folder" element={<FolderData userId={userId} />} />
+                            <Route path="/chat" element={<MyMessage userId={userId} />} />
+                            <Route path="*" element={<>404 page</>} />
+                            {/* <Route path="/account" element={<MyAccount />} /> */}
+                            {/* <Route path="/" element={<MyMessage userId={userId} />} /> */}
+                            {/* <Route path="/" element={<Dashboard />} /> */}
+                            {/* <Route path="/data" element={<Data userId={userId} />} /> */}
+                            {/** Delete code  aafter file upload feaature complete */}
+                            {/* <Route path="/message" element={<Message />} /> */}
+                            {/** Delete code after creaing new message feature complete */}
+                            {/* <Route path="/folder" element={<Folder userId={userId} />} /> */}
+                            {/** Delete code after folder feature complete */}
+
+                            {/* <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/settings" element={<Setting />} />  */}
 
+                        </Routes>
+                    </ChatProvider>
+                }
 
-            </Routes>
-          </ChatProvider>
-        }
+            </ThemeProvider >
 
-      </ThemeProvider >
-
-    </>
-  )
+        </>
+    )
 }
 
 export default App
