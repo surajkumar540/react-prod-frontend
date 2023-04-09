@@ -11,7 +11,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { useMutation } from 'react-query'
 import { ServiceState } from '../../Context/ServiceProvider';
-
 import {
   userSignIn, resendConfermationEMail,
   CognitoSignUp,
@@ -69,8 +68,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   // console.log(ServiceState);
-  const { serviceType, setSeviceType } = ServiceState();
-  // console.log(serviceType, setSeviceType);
+  const { serviceType, setSeviceType, setContextEmail, setContextPassword } = ServiceState();
+  // console.log(setSeviceType,setContextEmail, setContextPassword);
 
   ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
   const { mutateAsync: loginApiCall } = useMutation(userSignIn);
@@ -95,7 +94,10 @@ const LoginPage = () => {
           toast.info("Please check your mail inbox.");
           setBtnDisabled(false);
           setSeviceType('login')
+          setContextEmail(emailAddress);
+          setContextPassword(password)
           navigate("/otpVerf")
+
         } else {
           toast.error(mailApiRes.error.message);
           setBtnDisabled(false);
@@ -129,6 +131,7 @@ const LoginPage = () => {
       const response = await SignUpFunCallV1(createUserDetOject);
       if (response.status) {
         console.log("data created in v1");
+
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -153,8 +156,18 @@ const LoginPage = () => {
 
   const buttonAction = async () => {
 
-    if (emailAddress === "" || password === "") {
-      toast.error("Please fill all fields.")
+    if (emailAddress === "" && password === "") {
+      toast.error("Please fill all fields")
+      return null;
+    }
+
+    if (emailAddress === "") {
+      toast.error("Please fill your email")
+      return null;
+    }
+
+    if (password === "") {
+      toast.error("Please fill your password")
       return null;
     }
     loginAccount(emailAddress, password);
@@ -171,77 +184,86 @@ const LoginPage = () => {
     setShowConfPass(!showConfPass);
   }
 
-  // useEffect(() => {
-  //   // setFullName("");
-  //   setFirstName("");
-  //   setLastName("")
-  //   setEmailAddress("");
-  //   setPassword("");
-  //   setConfirmPassword("");
-  // }, [serviceType])
+  useEffect(() => {
+    // setFullName("");
+    setEmailAddress("");
+    setPassword("");
+  }, [serviceType])
 
 
   return (
-    <Box container sx={cssStyle.parent_box}  >
-      <Grid container >
-        <Grid item xs={12} sm={12} md={8} >
-          <Box container sx={{ ...cssStyle.content_container_box, padding: "6% 5% 10% 20% !important" }}  >
-            <Box >
+    <Box container  >
+      <Grid container padding={7}>
+        <Grid item xs={12} sm={12} md={6}  >
+          <Box container display='flex' flexDirection='column'>
+            <Box paddingLeft={4}>
               <img
                 src={organaiseLogo}
                 style={{ width: "150px" }}
                 alt="organaise-logo-login-page" />
             </Box>
-            <Box >
-              <img src={loginPageBackgroundImg} style={{ width: "70%" }} alt="login-page-background-image" />
+            <Box paddingLeft={4}>
+              <img src={loginPageBackgroundImg} style={{ width: "65%" }} alt="login-page-background-image" />
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={4} >
-          <Box sx={cssStyle.box_container_form}>
-            <Grid container>
-              <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                <TextField
-                  id="login-signup-forgetPassword-email"
-                  label="Email"
-                  variant='outlined'
-                  type="email"
-                  sx={cssStyle.btn_textfield}
-                  value={emailAddress ? emailAddress : ""}
-                  onChange={(e) => setEmailAddress(e?.target?.value)}
-                />
+        <Grid item xs={12} sm={12} md={6}   >
+          <Box display='flex' justifyContent='center' >
+            <Grid container xs={8}  >
+              <Grid item xs={12}  >
+                <Box paddingBottom={2}>
+                  <Typography variant="h4" fontWeight='600' color="#333333">
+                    Login Account
+                  </Typography>
+                </Box>
+
               </Grid>
 
 
-              <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                <TextField
-                  id="login-signup-forgetPassword-password"
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  variant='outlined'
-                  sx={cssStyle.btn_textfield}
-                  value={password ? password : ""}
-                  onChange={(e) => setPassword(e?.target?.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end"
-                        sx={{
-                          display: password !== "" ? "contents" : "none"
-                        }}
-                      >
-                        {password.length > 2
-                          ?
-                          <IconButton onClick={handleTogglePassword}>
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                          : null
-                        }
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+              <Grid item xs={12} >
+                <Box marginY={2} >
+                  <TextField
+                    id="login-signup-forgetPassword-email"
+                    label="Email"
+                    variant='outlined'
+                    type="email"
+                    sx={cssStyle.btn_textfield}
+                    value={emailAddress ? emailAddress : ""}
+                    onChange={(e) => setEmailAddress(e?.target?.value)}
+                  />
+                </Box>
 
-                <Typography variant="subtitle2" align='right'>
+                <Box>
+                  <TextField
+                    id="login-signup-forgetPassword-password"
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    variant='outlined'
+                    sx={cssStyle.btn_textfield}
+                    value={password ? password : ""}
+                    onChange={(e) => setPassword(e?.target?.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end"
+                          sx={{
+                            display: password !== "" ? "contents" : "none"
+                          }}
+                        >
+                          {password.length > 2
+                            ?
+                            <IconButton onClick={handleTogglePassword}>
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                            : null
+                          }
+                        </InputAdornment>
+                      ),
+                    }}
+
+                  />
+                </Box>
+
+                <Typography variant="subtitle2" align='right' >
                   <Link to="/forget-password" style={{ textDecoration: "none", color: "red" }}>
                     Forget Password?
                   </Link>
