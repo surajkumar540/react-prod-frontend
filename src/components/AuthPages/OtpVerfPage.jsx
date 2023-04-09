@@ -23,6 +23,7 @@ import {
 import { passwordValidator } from '../../utils/validation';
 import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
+import {useNavigate} from "react-router-dom"
 
 const cssStyle = {
     parent_box: {
@@ -65,7 +66,7 @@ const cssStyle = {
 }
 
 const OtpVerfPage = () => {
-
+    const navigate=useNavigate()
     const [showPassword, setShowPassword] = useState(false);
     const [showConfPass, setShowConfPass] = useState(false);
     const [OtpValue, setOtpValue] = useState('');////otp value store here
@@ -115,7 +116,8 @@ const OtpVerfPage = () => {
                         userLoginV1(email, password);
                         setVerifyBtnDisabled(false)
                         setTimeout(() => {
-                            window.location = "/companyDetail";
+                            // window.location = "/companyDetail";
+                            navigate("/companyDetail")
                         }, [1000])
                     }
                 }, [1000])

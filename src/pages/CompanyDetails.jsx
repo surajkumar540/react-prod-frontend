@@ -6,7 +6,7 @@ import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
+import {useNavigate} from "react-router-dom"
 
 
 import organaiseLogo from "../assets/Logo/organaise-logo.png";
@@ -17,7 +17,7 @@ const CompanyDetails = () => {
         'Invite Team',
         'Project Name',
     ];
-
+    const navigate=useNavigate()
     const [userId, setUserID] = useState("")
 
 
@@ -28,7 +28,7 @@ const CompanyDetails = () => {
             const responseGetCom = await getCompanyName(subUserId);
             if (responseGetCom.status) {
                 if (responseGetCom.data.length > 0) {
-                    window.location.href = "/"
+                    window.location.href = "/chat"
                 }
             } else {
                 toast.error(responseGetCom.message);
@@ -65,7 +65,8 @@ const CompanyDetails = () => {
             if (response.status) {
                 toast.success(response.message);
                 setTimeout(() => {
-                    window.location = "/";
+                    // window.location = "/";
+                    navigate("/chat")
                 }, [500])
             } else {
                 toast.error(response.message);
