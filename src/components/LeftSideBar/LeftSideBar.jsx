@@ -5,23 +5,25 @@ import {
     ListItemText, Grid, CssBaseline, Typography, Divider, IconButton, Tooltip, Avatar, Menu, MenuItem,
     Button, FormHelperText, FormControl, Select, LinearProgress, Paper,CardMedia
 } from '@mui/material/';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
+import MuiDrawer from "@mui/material/Drawer"
+import MenuIcon from '@mui/icons-material/Menu';
+import MuiAppBar from '@mui/material/AppBar';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import MuiAppBar from '@mui/material/AppBar';
-import MuiDrawer from "@mui/material/Drawer"
 import SearchIcon from '@mui/icons-material/Search';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -50,8 +52,9 @@ import { BorderLeft } from '@mui/icons-material';
 import oLogo from "../../assets/svg/oLogo.svg"
 import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import LogOutModal from '../Chat/LogOutModal';
 
-const drawerWidth = 250;
+const drawerWidth = '16%';
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -73,7 +76,7 @@ const closedMixin = (theme) => ({
     marginLeft:'5rem',
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(3)} + 0px)`,
+        width: `calc(${theme.spacing(3.1)} + 0px)`,
     },
 });
 
@@ -94,7 +97,6 @@ const AppBar = styled(MuiAppBar, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft:'5rem',
     ...(open && {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
@@ -262,6 +264,14 @@ const LeftSideBar = (props) => {
     };
 
     const handleCloseUserMenu = (data = "") => {
+        if(data==='Account')
+        {
+            navegate("/account")
+        }
+        if(data==='Dashboard')
+        {
+            navegate("/chat")
+        }
         if (data === "Logout") {
             localStorage.clear();
             window.location = "/login";
@@ -362,22 +372,6 @@ const LeftSideBar = (props) => {
         if (location.pathname === "/chat") {
             setActivePage("groups");
         }
-        // if (location.pathname === "files/upload") {
-        //     setActivePage("upload");
-        // }
-        // if (location.pathname === "/allFiles") {
-        //     setActivePage("allfiles");
-        // }
-        // if (location.pathname === "/create-folder") {
-        //     setActivePage("createFolder");
-        // }
-        // if (location.pathname === "/") {
-        //     setActivePage("groups");
-        // }
-        
-        // if (location.pathname === "/files") {
-        //     setActivePage("upload");
-        // }
         
     }, [location])
 
@@ -422,10 +416,11 @@ const LeftSideBar = (props) => {
                 <CssBaseline />
 
             {
-                !open&&<AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
+                <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} width={'14%'}>
-                  
+                <Box display={'flex'} width={drawerWidth&&drawerWidth} alignItems={'center'} justifyContent={'space-between'} >
+                    
+
                     <CardMedia
                     className='blog-img'
                     component="img"
@@ -433,14 +428,29 @@ const LeftSideBar = (props) => {
                     alt="Image"
                     sx={{ height:'40px',width:'40px' }}
                     onClick={handleDrawerOpen}
-                />
-                
+                    />
+                   
                   <Typography
                     variant="subtitle1"
                     sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
                     color="primary">Microsoft</Typography>
+
+                        
                 
                 </Box>
+
+                {/* <Box id="search_field_in_App_bar" pl='2rem'>
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon sx={{ fontSize: "18px" }} />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                            sx={{ border:'1px solid #BEBEBE'}}
+                        />
+                    </Search>
+                </Box> */}
                 
                 {/* <Box sx={{ flexGrow: 0, width: "60%" }} display="inline-flex"
                     justifyContent={props.data.pageName === "Data" ? 'space-between' : "end"}
@@ -461,23 +471,13 @@ const LeftSideBar = (props) => {
                         </Box>
                     }
 
-                    <Box id="show_for_all_pages_menu_opt" display={"inline-flex"}>
-                        <Box id="search_field_in_App_bar">
-                            <Search>
-                                <SearchIconWrapper>
-                                    <SearchIcon sx={{ fontSize: "18px" }} />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </Search>
+                    <Box id="show_for_all_pages_menu_opt" display={"inline-flex"} justifyContent={'space-between'} alignItems={'center'}>
+                        
+                        <Box id="notification_icon" px='1rem' display={'flex'} alignItems={'center'} >
+                            <NotificationsNoneOutlinedIcon
+                                sx={{ width: "28px", height: "28px", fontSize: '30px', color: "#333", opacity: 0.5 }} />
                         </Box>
-                        <Box mr={1} id="notification_icon">
-                            <CircleNotificationsOutlinedIcon
-                                sx={{ width: "30px", height: "30px", fontSize: '30px', color: "#333", opacity: 0.5 }} />
-                        </Box>
-                        <Box id="profile_icon">
+                        <Box id="profile_icon"  px='1rem'>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" sx={{ width: "30px", height: "30px" }} />
@@ -535,7 +535,7 @@ const LeftSideBar = (props) => {
                         >
                             <ChatTwoToneIcon fontSize='small'/>
                         </Button>
-                        <Typography sx={{color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464"}}>Chat</Typography>
+                        <Typography sx={{color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464",fontSize:'13px'}}>Chat</Typography>
                     </Box>
 
 
@@ -547,8 +547,18 @@ const LeftSideBar = (props) => {
                         >
                             <ArticleOutlinedIcon fontSize='small'/>
                         </Button>
-                            <Typography sx={{color: location.pathname.split(['/'])[1] === "files" ? "#448DF0" : "#646464"}}>Files</Typography>
+                            <Typography sx={{color: location.pathname.split(['/'])[1] === "files" ? "#448DF0" : "#646464",fontSize:'13px'}}>Files</Typography>
                     </Box>
+
+                    {/* <Box bgcolor={'white'} height={'5rem'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                        <Button onClick={()=>{navigatePage("account")}} display='flex' flexDirection='column' sx={{
+                                color: location.pathname === "/account" ? "#448DF0" : "#646464"
+                            }}
+                        >
+                            <AccountCircleOutlinedIcon fontSize='small'/>
+                        </Button>
+                            <Typography sx={{color: location.pathname.split(['/'])[1] === "account" ? "#448DF0" : "#646464",fontSize:'13px'}}>Account</Typography>
+                    </Box> */}
 
 
                 </Box>
@@ -565,12 +575,13 @@ const LeftSideBar = (props) => {
                         {/* <Typography onClick={handleDrawerClose}>asdf</Typography> */}
                         {
                             open?<ChevronLeftIcon sx={{fontSize:"1.5rem",bgcolor:'whitesmoke',boxShadow:'4px 0px 18px rgba(0, 0, 0, 0.06)',border:'1px solid rgba(0, 0, 0, 0.4)',color:'gray',borderRadius:"50%"}} onClick={()=>handleDrawerClose()} />:(
-                                <ChevronRightIcon  sx={{fontSize:"1.5rem",bgcolor:'gray',zIndex:9999 ,color:'white',borderRadius:"50%"}} onClick={handleDrawerOpen}/>
+                                <ChevronRightIcon  sx={{fontSize:"1.5rem",bgcolor:'whitesmoke',boxShadow:'4px 0px 18px rgba(0, 0, 0, 0.06)',border:'1px solid rgba(0, 0, 0, 0.4)',color:'gray',borderRadius:"50%"}} onClick={handleDrawerOpen}/>
                             )
                         }
                         
                     </Box>
-                    <DrawerHeader >
+
+                    {/* <DrawerHeader >
                         <Grid
                             container
                             display="flex"
@@ -578,7 +589,7 @@ const LeftSideBar = (props) => {
                             sx={{ transform: "translateX(-18px)" }}
                           
                         >
-                             {/* {open &&
+                             {open &&
                                 <IconButton onClick={handleDrawerClose} sx={{ padding: "12px" }}>
                                     {theme.direction === 'rtl' ?
                                     <ChevronRightIcon /> :
@@ -586,7 +597,7 @@ const LeftSideBar = (props) => {
                                     <MenuIcon />
                                 }
                                 </IconButton>
-                            } */}
+                            }
 
                             {open && <Typography
                                 variant="subtitle1"
@@ -594,9 +605,11 @@ const LeftSideBar = (props) => {
                                 color="primary">Microsoft</Typography>
                             } 
                         </Grid>
-                    </DrawerHeader>
+                    </DrawerHeader> */}
 
-                   
+                    <DrawerHeader/>
+
+                    {open&&<Box>
 
                     {/* <Box display="flex" justifyContent="center" width={'100%'}>
                             <Typography
@@ -641,7 +654,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("groups"),setActiveChatId("")}}
+                                onClick={() => {setActivePage("groups")&&setActiveChatId("")}}
                                 // onClick={() => navigatePage("")}
                                 variant={activePage === "groups" ? "contained" : "text"}
                                 size='small'
@@ -731,7 +744,7 @@ const LeftSideBar = (props) => {
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={() => {setActivePage("inbox"),setActiveChatId("")}}
+                                onClick={() => {setActivePage("inbox")&&setActiveChatId("")}}
                                 // onClick={() => {navigatePage(""),setActivePage("inbox")}}
                                 variant={activePage === "inbox" ? "contained" : "text"}
                                 size='small'
@@ -755,7 +768,7 @@ const LeftSideBar = (props) => {
                                         key={index}
                                         sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
                                         onClick={() =>
-                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d),setActiveChatId(d?._id),setActivePage("inbox")}
+                                            {location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d)&&setActiveChatId(d?._id)&&setActivePage("inbox")}
                                         }
                                     >
                                         {
@@ -940,10 +953,9 @@ const LeftSideBar = (props) => {
                     }
                     
 
-
                     <Box id="logout_box" sx={{ position: "absolute", bottom: "10px", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: "20px" }} mt={1}>
                         <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                            <Button
+                            {/* <Button
                                 id="logout-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
@@ -957,9 +969,11 @@ const LeftSideBar = (props) => {
                                 <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
                                     Logout
                                 </span>
-                            </Button>
+                            </Button> */}
+                            <LogOutModal handleLogout={handleLogout}/>
                         </Box>
                     </Box>
+
                     <List sx={{
                         paddingLeft: open ? "25px" : "5px",
                         paddingRight: open ? "25px" : "5px"
@@ -1012,6 +1026,8 @@ const LeftSideBar = (props) => {
                             </ListItem>
                         ))} */}
                     </List>
+
+                    </Box>}
                 </Drawer>
                 
                 

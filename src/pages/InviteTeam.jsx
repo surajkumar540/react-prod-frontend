@@ -3,23 +3,21 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
+
+import organaiseLogo from "../assets/Logo/organaise-logo.png";
+import InviteSkipModal from '../components/InviteSkipModal/InviteSkipModal';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
-
-
-import organaiseLogo from "../assets/Logo/organaise-logo.png";
-
-const CompanyDetails = () => {
-    const steps = [
-        'Company Name',
-        'Invite Team',
-        'Project Name',
-    ];
+const InviteTeam = () => {
 
     const [userId, setUserID] = useState("")
-
+    
+        const steps = [
+            'Company Name',
+            'Invite Team',
+            'Project Name',
+        ];
 
     const [companyName, setCompanyName] = useState("");
     /////// get Company data
@@ -91,7 +89,7 @@ const CompanyDetails = () => {
                     <Grid container display={{ xs: "none", md: "block" }} md={3} item></Grid>
                     <Grid container item xs={12} md={6} >
                         <Box sx={{ width: '100%' }}>
-                            <Stepper activeStep={0} alternativeLabel>
+                            <Stepper activeStep={1} alternativeLabel>
                                 {steps.map((label) => (
                                     <Step key={label}>
                                         <StepLabel>{label}</StepLabel>
@@ -99,22 +97,21 @@ const CompanyDetails = () => {
                                 ))}
                             </Stepper>
                         </Box>
-                        
+
                         <Box container mt={2} width={"100%"}>
-                            <Typography textAlign={'center'} variant="h4" fontWeight={"600"}>Please enter your Company name</Typography>
+                            <Typography fontSize={"30px"} textAlign={'center'} variant="h4" fontWeight={"600"}>Please invite new team members
+                                via email</Typography>
                         </Box>
                         <Box container mt={2} width={"100%"}>
-                            <Typography textAlign={'center'} variant="subtitle1" fontWeight={"600"}>
-                                This will be the name of your workspace
+                            <Typography textAlign={'center'} fontWeight={"200"} fontSize='13px'>Add email address of team members
                             </Typography>
                         </Box>
                         <Box container mt={4} width={"100%"} display="flex" justifyContent={"center"}>
                             <TextField
                                 id="company_name_here"
-                                label="Company name"
-                                placeholder='Please enter company name'
-                                size='medium'
-                                sx={{ width: "75%" }}
+                                label="Eg. olivia@gmail.com"
+                                placeholder='Eg. olivia@gmail.com'
+                                sx={{ width: "75%"}}
                                 value={companyName}
                                 onChange={(e) => setCompanyName(e.target.value)}
                             />
@@ -125,7 +122,17 @@ const CompanyDetails = () => {
                                 sx={{ width: "75%", paddingTop: "10px", paddingBottom: "10pxsss" }}
                                 onClick={() => createCompany()}
                             >
-                                Create company
+                                Next
+                            </Button>
+                        </Box>
+
+                        <Box container mt={4} width={"100%"} display="flex" justifyContent={"center"}>
+                            <Button
+                                variant='text'
+                                sx={{ width: "75%", paddingTop: "10px", paddingBottom: "10pxsss" }}
+                                // onClick={() => createCompany()}
+                            >
+                               < InviteSkipModal/>
                             </Button>
                         </Box>
                     </Grid>
@@ -136,4 +143,4 @@ const CompanyDetails = () => {
     )
 }
 
-export default CompanyDetails
+export default InviteTeam
