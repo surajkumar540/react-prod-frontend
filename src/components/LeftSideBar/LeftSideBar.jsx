@@ -418,7 +418,7 @@ const LeftSideBar = (props) => {
             {
                 <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box display={'flex'} width={drawerWidth&&drawerWidth} alignItems={'center'} justifyContent={'space-between'} >
+                <Box display={'flex'} width={'300px'} alignItems={'center'} justifyContent={'space-between'} >
                     
 
                     <CardMedia
