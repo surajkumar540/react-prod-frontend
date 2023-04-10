@@ -76,7 +76,7 @@ const closedMixin = (theme) => ({
     marginLeft:'5rem',
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(3)} + 0px)`,
+        width: `calc(${theme.spacing(3.2)} + 0px)`,
     },
 });
 
