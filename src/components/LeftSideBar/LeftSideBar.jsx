@@ -76,7 +76,7 @@ const closedMixin = (theme) => ({
     marginLeft:'5rem',
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(3)} + 0px)`,
+        width: `calc(${theme.spacing(3.2)} + 0px)`,
     },
 });
 
@@ -418,7 +418,7 @@ const LeftSideBar = (props) => {
             {
                 <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box display={'flex'} width={drawerWidth&&drawerWidth} alignItems={'center'} justifyContent={'space-between'} >
+                <Box display={'flex'} width={'300px'} alignItems={'center'} justifyContent={'space-between'} >
                     
 
                     <CardMedia
