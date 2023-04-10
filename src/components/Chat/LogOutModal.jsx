@@ -70,7 +70,7 @@ const LogOut = ({handleLogout}) => {
           aria-describedby="modal-modal-description"
         >
             
-          <Box sx={{...style, width: {xs:'100%',sm:350,md:520}, }}>
+          <Box sx={{...style, width: {xs:'100%',sm:350,md:535}, }}>
           
        
             
