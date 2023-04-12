@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
-import { Button, Box, Grid, Typography, InputAdornment, IconButton } from '@mui/material/';
+import { Button, Box, Grid, Typography, InputAdornment } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/folder-data.png";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import FolderIcon from '@mui/icons-material/Folder';
 import TextField from '@mui/material/TextField'
-import { AccountCircle } from '@mui/icons-material';
 import { Search } from '@mui/icons-material';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useMutation } from 'react-query';
 import { deleteFileApi } from '../api/InternalApi/OurDevApi';
 import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
-import DeleteModal from '../components/Chat/DeleteModal';
 import DotMenu from '../components/Chat/DotMenu';
 
-const AllFiles = () => {
+const FolderFiles = () => {
     const navigate = useNavigate();
-
+    const {fid}=useParams();
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
-
-    // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
     const colorsCode={
         doc:'#2892e7d6',
         docx:'#2892e7d6',
@@ -60,10 +52,8 @@ const AllFiles = () => {
         psd:'#297CAF',
     }
 
+    const [randomName,setRandomName]=useState(Object.keys(colorsCode))
 
-    const selectRandomColor = () => {
-        return colorsCode[Math.floor(Math.random() * 10)];
-    }
     const style = {
         folderCreateMainBox: {
             minHeight: "500px", backgroundColor: "transparent",
@@ -71,31 +61,33 @@ const AllFiles = () => {
     }
 
     useEffect(() => {
-        const UserId =localStorage.getItem("userInfo");
+        const UserId =localStorage.getItem("sub");
         setUserId(UserId);
     }, [])
 
     /////// Get files of this user
-    const getFilesOfUser = async () => {
-        // const userID = { userId: userId }
-        const response = await axios.get('https://devorganaise.com/api/v2/file/getfiles', {
+    const getFilesOfUser = async (userId) => {
+        const userID = { userId: userId }
+        const response = await axios.get(`/v2/folder/?folderId=${fid}`, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        const FilesResponse = response.data;
-        if (FilesResponse.status) {
-            const FilesData = FilesResponse.data;
+        const FilesResponse = response;
+        if (FilesResponse.status==200) {
+            const FilesData = FilesResponse?.data?.data[0]?.filesList;
             // FilesData.forEach((item)=>{
             //     const ext=item.fileName.split(['.'])[1];
             //     console.log(ext)
             // })
             setUserFiles(FilesData)
+            
         } else {
             toast.error(FilesResponse.message);
         }
 
     }
+
 
     useEffect(() => {
         // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
@@ -109,7 +101,7 @@ const AllFiles = () => {
     const ActionDelFile = async (data) => {
         
             // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-            const createDeleteObj = { fileId: data._id};
+            const createDeleteObj = { fileId: data._id, userId: UserId };
             const resData = await deleteFileApiCall(createDeleteObj);
             if (resData.status) {
                 toast.success(resData.message);
@@ -120,7 +112,7 @@ const AllFiles = () => {
                         SetSrcFileText("");
                     }
                 } else {
-                    getFilesOfUser();
+                    getFilesOfUser(UserId);
                 }
             } else {
                 toast.error(resData.message);
@@ -138,7 +130,7 @@ const AllFiles = () => {
             setUserFiles(searchingFiles);
         } else {
             if (UserId !== "") {
-                getFilesOfUser();
+                getFilesOfUser(UserId);
             }
 
         }
@@ -215,7 +207,7 @@ const AllFiles = () => {
                             </Box>
                         </Grid>
                         <Grid container item mt={3} xs={12} display={'flex'} >
-                            {userFiles.length !== 0 && userFiles.map((d) =>
+                            {userFiles.length !== 0 && userFiles.map((d,index) =>
                                 <Box marginRight={"25px"} my={"10px"} sx={{
                                     width: "170px",
                                     height: "170px",
@@ -229,17 +221,19 @@ const AllFiles = () => {
                                     </Box>
                                     <Box container display={'flex'} justifyContent="center">
                                       
-                                        <FileIcon ext={d.fileName.split(['.'])[1]}/>
+                                        <FileIcon ext={d?.fileName?.split(['.'])[1]}/>
                                     </Box>
                                     <Box container>
                                         <Typography align='center' variant="subtitle2" color={"#121212"}>
-                                            {d.fileName.split(".")[0].length > 15 ? d.fileName.split(".")[0].substring(0, 14) : d.fileName.split(".")[0]}
+                                            {/* {d.fileName.split(".")[0].length > 15 ? d.fileName.split(".")[0].substring(0, 14) : d.fileName.split(".")[0]} */}
+                                            {randomName[index] }
                                         </Typography>
                                     </Box>
                                     <Box container>
                                         <Typography align='center' variant="subtitle2" fontSize={"13px"}
                                             color={"#CDCDCD"}>
-                                            {`${Math.abs(parseInt(d.fileSize) / 1000000) % 1 !== 0 ? Math.abs(parseInt(d.fileSize) / 1000000).toFixed(2) : Math.floor(Math.abs(parseInt(d.fileSize) / 1000000))} MB`}
+                                            {/* {`${Math.abs(parseInt(d?.fileSize) / 1000000) % 1 !== 0 ? Math.abs(parseInt(d?.fileSize) / 1000000).toFixed(2) : Math.floor(Math.abs(parseInt(d?.fileSize) / 1000000))} MB`} */}
+                                            1.00 MB
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -252,4 +246,4 @@ const AllFiles = () => {
     )
 }
 
-export default AllFiles
+export default FolderFiles

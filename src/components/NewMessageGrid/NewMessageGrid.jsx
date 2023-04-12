@@ -2,15 +2,15 @@ import { Box, Grid, Typography, Avatar, Stack, Button, TextField } from '@mui/ma
 import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
-import {
-    createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-    sendChannelMessage, listChannelMessages
-}
-    from "../../api/ChimeApi/ChimeApi";
+// import {
+//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
+//     sendChannelMessage, listChannelMessages
+// }
+//     from "../../api/ChimeApi/ChimeApi";
 
-import appConfig from "../../Config";
+// import appConfig from "../../Config";
 //////////get the all users from congnito ///////////////////
-import { IdentityService } from '../../services/IdentityService.js';
+// import { IdentityService } from '../../services/IdentityService.js';
 import ContentModels from '../../pages/ContentModels';
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
@@ -43,9 +43,9 @@ const NewMessageGrid = ({ selectedChannel }) => {
     //////////// Store the userid of user ////////
     const [UserId, setUserId] = useState("");
     ////////// Create and store Identity service //////
-    const [IdentityServiceObject] = useState(
-        () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
-    );
+    // const [IdentityServiceObject] = useState(
+    //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
+    // );
 
     useEffect(() => {
         setActiveChannel(selectedChannel);
@@ -77,15 +77,15 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
 
     //////////When this page render then user_id store , nad channel list also load
-    useEffect(() => {
-        getAwsCredentialsFromCognito();
-        IdentityServiceObject.setupClient();
-        let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-        let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-        let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-        setUserId(userid)
-        setMember({ username: getLoginUserName, userId: userid });
-    }, [])
+    // useEffect(() => {
+    //     getAwsCredentialsFromCognito();
+    //     IdentityServiceObject.setupClient();
+    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
+    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
+    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
+    //     setUserId(userid)
+    //     setMember({ username: getLoginUserName, userId: userid });
+    // }, [])
 
     /////////when user click on the channel/////////////
     //////// Here we are store the active channel //////
@@ -95,13 +95,13 @@ const NewMessageGrid = ({ selectedChannel }) => {
     const [messageInterval, setmessageInterval] = useState(null);
 
     /////////// Get the channel messaages///////
-    const GetMessagesListOnEverySec = (ActiveChannel, user_id) => {
-        listChannelMessages(ActiveChannel.ChannelArn, user_id, undefined, null).then((md) => {
-            setAllMessgesOfChannel(md.Messages)
-        }).catch((error) => {
-            console.log("error", error);
-        })
-    }
+    // const GetMessagesListOnEverySec = (ActiveChannel, user_id) => {
+    //     listChannelMessages(ActiveChannel.ChannelArn, user_id, undefined, null).then((md) => {
+    //         setAllMessgesOfChannel(md.Messages)
+    //     }).catch((error) => {
+    //         console.log("error", error);
+    //     })
+    // }
 
     // useEffect(() => {
     //     console.log("messageInterval val", messageInterval)
@@ -214,20 +214,20 @@ const NewMessageGrid = ({ selectedChannel }) => {
     }
 
     ////////// Send message here //////
-    const sendMessageByUser = async (ActiveChannel, sendingMessgeHere, member) => {
-        await sendChannelMessage(ActiveChannel.ChannelArn, sendingMessgeHere, "PERSISTENT", "STANDARD", member, undefined, null)
-            .then((messData) => {
-                listChannelMessages(ActiveChannel.ChannelArn, UserId, undefined, null).then((md) => {
-                    setNewMessage("");
-                    setAllMessgesOfChannel(md.Messages);
-                }).catch((error) => {
-                    console.log("error", error);
-                })
-            }).catch((error) => {
-                console.log("message Sending error", error)
-            })
+    // const sendMessageByUser = async (ActiveChannel, sendingMessgeHere, member) => {
+    //     await sendChannelMessage(ActiveChannel.ChannelArn, sendingMessgeHere, "PERSISTENT", "STANDARD", member, undefined, null)
+    //         .then((messData) => {
+    //             listChannelMessages(ActiveChannel.ChannelArn, UserId, undefined, null).then((md) => {
+    //                 setNewMessage("");
+    //                 setAllMessgesOfChannel(md.Messages);
+    //             }).catch((error) => {
+    //                 console.log("error", error);
+    //             })
+    //         }).catch((error) => {
+    //             console.log("message Sending error", error)
+    //         })
 
-    }
+    // }
 
     ////////// send message in new version //////
     const { mutateAsync: sendingMessageV1 } = useMutation(sendV1Message);

@@ -49,21 +49,22 @@ const FileUploadModal = ({ handleClose, open, setJsonData, handleClickOpen, user
 
     const uploadFileData = async () => {
         setLoader(true);
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const UserId = localStorage.getItem("userInfo");
         for (let index = 0; index < ShowFiles.length; index++) {
             let fileData = ShowFiles[index];
             const formData = new FormData();
             formData.append('fileData', fileData);
             formData.append('userId', UserId);
             formData.append('fileSize', fileData.size);
-            const response = await axios.post('https://devorganaise.com/api/upload', formData, {
+            const response = await axios.post('v2/file/uploadfile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
 
             if (ShowFiles.length - 1 === index) {
-                if (response?.data?.Key) {
+                console.log(response.data.data)
+                if (response?.data?.data?.Key) {
                     setLoader(false)
                     toast.success(`File uploaded successfully`);
                     // ${response.data.Key.split(".")[0]}
@@ -133,7 +134,7 @@ const FileUploadModal = ({ handleClose, open, setJsonData, handleClickOpen, user
         // id is get by useparams
         (acceptedFiles) => {
             let allFiles = [];
-            const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+            const UserId = localStorage.getItem("sub");
             acceptedFiles.forEach((file, index) => {
                 let fileData = new FormData();
                 fileData.append(`file_${index}`, file);

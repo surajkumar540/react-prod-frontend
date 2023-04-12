@@ -8,3 +8,8 @@ export const passwordValidator = (pass_word) => {
     }
     return true;
 }
+
+export const clearLocalStorage=()=>{
+    localStorage.removeItem("userInfo")
+    localStorage.removeItem("token")
+}

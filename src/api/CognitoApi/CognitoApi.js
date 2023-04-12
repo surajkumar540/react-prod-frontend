@@ -1,7 +1,7 @@
 import { Auth } from "@aws-amplify/auth";
 import { Credentials } from "@aws-amplify/core";
 import appConfig from "../../Config";
-const AWS = require("aws-sdk");
+import AWS  from "aws-sdk";
 
 
 export const getAwsCredentialsFromCognito = async () => {

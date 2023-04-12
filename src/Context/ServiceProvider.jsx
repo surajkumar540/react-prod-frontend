@@ -6,13 +6,11 @@ const ServiceProvider = ({ children }) => {
     const [serviceType, setSeviceType] = useState("");
     const [contextEmail, setContextEmail] = useState("");
     const [contextPassword, setContextPassword] = useState("");
-    useEffect(() => {
-        console.log(serviceType)
-        console.log(contextEmail)
-    }, [serviceType])
+    const [contextName, setContextName] = useState("");
+    const [contextOtp, setContextOtp] = useState("");
 
     return (
-        <ServiceContext.Provider value={{ serviceType, setSeviceType, contextEmail, setContextEmail, contextPassword, setContextPassword }}>
+        <ServiceContext.Provider value={{ serviceType, setSeviceType, contextEmail, setContextEmail, contextPassword, setContextPassword,contextName,setContextName,contextOtp ,setContextOtp }}>
             {children}
         </ServiceContext.Provider>
 

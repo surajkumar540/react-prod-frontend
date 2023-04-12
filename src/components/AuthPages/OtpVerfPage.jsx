@@ -15,15 +15,15 @@ import OtpField from 'react-otp-field';
 import { toast } from 'react-toastify';
 /////Import react query functions
 import { useMutation } from 'react-query'
-import {
-    userSignIn, resendConfermationEMail,
-    CognitoSignUp, SignUpOtpVarify,
-    otpWithResetPassword, resetPasswordFun
-} from "../../api/CognitoApi/CognitoApi";
+// import {
+//     userSignIn, resendConfermationEMail,
+//     CognitoSignUp, SignUpOtpVarify,
+//     otpWithResetPassword, resetPasswordFun
+// } from "../../api/CognitoApi/CognitoApi";
 import { passwordValidator } from '../../utils/validation';
-import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
+import { userLoginAccount, otpSignUpVerify } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const cssStyle = {
     parent_box: {
@@ -65,128 +65,143 @@ const cssStyle = {
     },
 }
 
-const OtpVerfPage = () => {
-    const navigate=useNavigate()
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfPass, setShowConfPass] = useState(false);
+const OtpVerfPage = ({  setIsAuthenticated}) => {
+    const navigate = useNavigate()
+    const { serviceType, contextEmail, contextPassword, contextName } = ServiceState();
     const [OtpValue, setOtpValue] = useState('');////otp value store here
     const [showOtpVeriCont, setShowVeriCon] = useState(false);
-    /////Store email address
-    const [fullName, setFullName] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [emailAddress, setEmailAddress] = useState("");
-    const { serviceType, contextEmail, contextPassword } = ServiceState();
-    const [password, setPassword] = useState(contextPassword);
-    console.log()
-    const [confirmPassword, setConfirmPassword] = useState("");
+
     /////// btn disabled until operation  not completed
     const [btnDisabed, setBtnDisabled] = useState(false);
     /////// Verify button disaabled until operation not complete
     const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
-    console.log(serviceType, contextEmail, 'tfs');
+    // console.log(serviceType, contextEmail, contextName, contextPassword);
 
     ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
-    const { mutateAsync: loginApiCall } = useMutation(userSignIn);
+    const { mutateAsync: loginApiCall } = useMutation(userLoginAccount);
     const { mutateAsync: loginV1 } = useMutation(userLoginAccount);
-    const { mutateAsync: resendVerificationMail } = useMutation(resendConfermationEMail);
+    // const { mutateAsync: resendVerificationMail } = useMutation(resendConfermationEMail);
 
-
+    // serviceType === "createAccount"
+    // serviceType === "createAccount"
+    // serviceType === "loginVerification"
     ///////// Signup otp verification/////////
-    const { mutateAsync: SignUpOtpVerification } = useMutation(SignUpOtpVarify);
-    const signupVerificationOtp = async (email, getOtp) => {
-        console.log(email, 'email');
-        console.log(getOtp, "getOtp");
+    const { mutateAsync: SignUpOtpVerification } = useMutation(otpSignUpVerify);
+
+    const signupVerificationOtp = async (getOtp, email, userName='jai', password) => {
+        console.log("enterrrrr in function")
+        const postData = {
+            "email": email,
+            "codeEmailVerify": getOtp,
+            "name": userName,
+            "password": password,
+            'serviceType': serviceType
+        }
         setVerifyBtnDisabled(true);
-        const userName = email.split('@')[0];
-        console.log(userName, 'usrname');
-        const otpResponse = await SignUpOtpVerification({ username: userName, userOtp: getOtp });
-        console.log(otpResponse, '1')
-        if (otpResponse.status) {
-            const response = await loginApiCall({ username: userName, password: password });
-            console.log(password, 'pASSWORD ')
-            console.log(response, '2 ')
-            if (response.status) {
-                toast.success("OTP verified successfully.Please wait we are setup your account.");
-                setTimeout(async () => {
-                    localStorage.clear();
-                    const AgainLoginresponse = await loginApiCall({ username: userName, password: password });
-                    if (AgainLoginresponse.status) {
-                        userLoginV1(email, password);
-                        setVerifyBtnDisabled(false)
-                        setTimeout(() => {
-                            // window.location = "/companyDetail";
-                            navigate("/companyDetail")
-                        }, [1000])
-                    }
-                }, [1000])
-            }
-        } else {
-            toast.error(otpResponse.error.message);
-            console.log('els condition running')
-            setVerifyBtnDisabled(false);
-        }
-    }
-
-    const userLoginV1 = async (email, password) => {
         try {
-            const response = await loginV1({ email, password });
-            if (response.status) {
-                localStorage.setItem("userInfo", JSON.stringify(response))
+            console.log(serviceType,"our service before verify")
+            const otpResponse = await SignUpOtpVerification({ ...postData });
+
+            if (otpResponse.status == true) {
+                const response = await loginApiCall({ email, password });
+
+                if (response.status == true) {
+
+                    toast.success("OTP verified successfully.Please wait we are setup your account.");
+                    setTimeout(async () => {
+                        localStorage.clear();
+                        const AgainLoginresponse = await loginApiCall({ email, password });
+                        if (AgainLoginresponse.status == true) {
+                            // userLoginV1(email, password);
+                            setIsAuthenticated(true)
+                            localStorage.setItem("token", AgainLoginresponse?.token)
+                            localStorage.setItem("userInfo", AgainLoginresponse?._id)
+                            setVerifyBtnDisabled(false)
+                            setTimeout(() => {
+                                // window.location = "/companyDetail";
+                                navigate("/companyDetail")
+                            }, [1000])
+                        }
+                    }, [1000])
+                }
             } else {
-                console.log("User not login in v1");
+                toast.error(otpResponse.error.message);
+                console.log('els condition running')
+                setVerifyBtnDisabled(false);
             }
-
         } catch (error) {
-            console.log(error.response.data.message);
+            console.log("error occured")
         }
 
     }
+    // const signupVerificationOtp = async (email, getOtp) => {
+    //     console.log(email, 'email');
+    //     console.log(getOtp, "getOtp");
+    //     setVerifyBtnDisabled(true);
+    //     const userName = email.split('@')[0];
+    //     console.log(userName, 'usrname');
+    //     const otpResponse = await SignUpOtpVerification({ username: userName, userOtp: getOtp });
+    //     console.log(otpResponse, '1')
+    //     if (otpResponse.status) {
+    //         const response = await loginApiCall({ username: userName, password: password });
+    //         console.log(password, 'pASSWORD ')
+    //         console.log(response, '2 ')
+    //         if (response.status) {
+    //             toast.success("OTP verified successfully.Please wait we are setup your account.");
+    //             setTimeout(async () => {
+    //                 localStorage.clear();
+    //                 const AgainLoginresponse = await loginApiCall({ username: userName, password: password });
+    //                 if (AgainLoginresponse.status) {
+    //                     userLoginV1(email, password);
+    //                     setVerifyBtnDisabled(false)
+    //                     setTimeout(() => {
+    //                         // window.location = "/companyDetail";
+    //                         navigate("/companyDetail")
+    //                     }, [1000])
+    //                 }
+    //             }, [1000])
+    //         }
+    //     } else {
+    //         toast.error(otpResponse.error.message);
+    //         console.log('els condition running')
+    //         setVerifyBtnDisabled(false);
+    //     }
+    // }
+
     ///////// resend otp 
-    const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
-    const resendOtpInMail = async (email) => {
-        console.log(email, '1')
-        const response = await resetPasswordFunCall({ username: email.split("@")[0] });
-        console.log(response, 'resp1');
-        if (response.status) {
-            toast.info("Otp send in your mail please check your mail inbox.");
-            setShowVeriCon(true);
-        } else {
-            toast.error(response.error.message);
-        }
-    }
+    // const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
+    // const resendOtpInMail = async (email) => {
+    //     console.log(email, '1')
+    //     const response = await resetPasswordFunCall({ username: email.split("@")[0] });
+    //     console.log(response, 'resp1');
+    //     if (response.status) {
+    //         toast.info("Otp send in your mail please check your mail inbox.");
+    //         setShowVeriCon(true);
+    //     } else {
+    //         toast.error(response.error.message);
+    //     }
+    // }
 
 
     //////// change password api call or Reset password code here when user in forget passsword page 
-    const { mutateAsync: updatePasswordWithOtp } = useMutation(otpWithResetPassword);
-    const updateNewPassword = async (email, GetOtp, newPassword) => {
-        console.log(email, GetOtp, newPassword, 'email, getop');
-        setVerifyBtnDisabled(true)
-        let userName = email.split('@')[0]
-        const updatePassword = await updatePasswordWithOtp({ username: userName, otp: GetOtp, password: newPassword });
-        console.log(updatePassword, '2');
-        if (updatePassword.status) {
-            toast.success("Password update successfullly.Please wait we are redirect in login page.");
-            setTimeout(() => {
-                setVerifyBtnDisabled(false)
-                window.location = "/login";
-            }, [3000])
-        } else {
-            toast.error(updatePassword.error.message);
-            setVerifyBtnDisabled(false)
-        }
-    }
-
-    ///////Service type  change then useEffect Run
-    useEffect(() => {
-        // setFullName("");
-        setFirstName("");
-        setLastName("")
-        setEmailAddress("");
-        // setPassword("");
-        setConfirmPassword("");
-    }, [serviceType])
+    // const { mutateAsync: updatePasswordWithOtp } = useMutation(otpWithResetPassword);
+    // const updateNewPassword = async (email, GetOtp, newPassword) => {
+    //     console.log(email, GetOtp, newPassword, 'email, getop');
+    //     setVerifyBtnDisabled(true)
+    //     let userName = email.split('@')[0]
+    //     const updatePassword = await updatePasswordWithOtp({ username: userName, otp: GetOtp, password: newPassword });
+    //     console.log(updatePassword, '2');
+    //     if (updatePassword.status) {
+    //         toast.success("Password update successfullly.Please wait we are redirect in login page.");
+    //         setTimeout(() => {
+    //             setVerifyBtnDisabled(false)
+    //             window.location = "/login";
+    //         }, [3000])
+    //     } else {
+    //         toast.error(updatePassword.error.message);
+    //         setVerifyBtnDisabled(false)
+    //     }
+    // }
 
 
     const otpVerifyBtn = async (serviceType) => {
@@ -194,17 +209,15 @@ const OtpVerfPage = () => {
             toast.error("Please enter six digit OTP.");
             return null;
         }
-        if (serviceType === "login") {
-            await signupVerificationOtp(contextEmail, OtpValue, contextPassword);
+
+        if (serviceType === "createAccount" || serviceType === "loginVerification") {
+            await signupVerificationOtp(OtpValue, contextEmail, contextName, contextPassword);
+            return null;
         }
 
-        if (serviceType === "signup") {
-            await signupVerificationOtp(contextEmail, OtpValue, contextPassword);
-        }
-
-        if (serviceType === "forgetPassword") {
-            updateNewPassword(contextEmail, OtpValue, contextPassword)
-        }
+        // if (serviceType === "forgetPassword") {
+        //     updateNewPassword(contextEmail, OtpValue, contextPassword)
+        // }
     }
 
 
@@ -260,7 +273,9 @@ const OtpVerfPage = () => {
                                         console.log(contextEmail, 'otpMail')
                                     }
                                 </Typography>
-                                <Button onClick={() => resendOtpInMail(contextEmail)} style={{ fontWeight: 700, color: "#1c529b" }}>
+                                <Button 
+                                // onClick={() => resendOtpInMail(contextEmail)}
+                                 style={{ fontWeight: 700, color: "#1c529b" }}>
                                     Resend
                                 </Button>
                             </Grid>

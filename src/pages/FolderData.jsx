@@ -14,9 +14,11 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useDebounce } from 'use-debounce';
 import DeleteModal from '../components/Chat/DeleteModal';
+import DotMenu from "../components/Chat/DotMenu"
+import { useNavigate } from 'react-router-dom';
 
 const FolderData = () => {
-    // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
+    const navigate=useNavigate()
     const colorsCode={
         a:'#ff7f47aa',
         b:'#fcaf45aa',
@@ -75,9 +77,9 @@ const FolderData = () => {
     /////////deletaing folder
     //////// Delete Folder
     const deleteFolder = async (folderData) => {
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-            const response = await axios.delete('https://devorganaise.com/api/deleteFolder',
-                { data: { folderId: folderData, userId: UserId } }, {
+        const UserId = localStorage.getItem("userInfo");
+            const response = await axios.delete('v2/folder/deleteFolder',
+                { data: { folderId: folderData} }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -113,23 +115,22 @@ const FolderData = () => {
     /////////////// get the folder data here  /////
     const [folderDataStore, setFoldersData] = useState([]);
     const getFoldersData = async (userId) => {
-        const userID = { userId: userId }
         try {
-            const response = await axios.post('https://devorganaise.com/api/getFolders', userID, {
-                headers: {
+            const response = await axios.get('v2/folder', {    
+            headers: {
                     'Content-Type': 'application/json'
                 }
             });
             const folderResponse = response.data;
-            if (folderResponse.status) {
+            if (folderResponse.status==true) {
                 const foldersData = folderResponse.data;
                 setFoldersData(foldersData)
             } else {
-                toast.error(folderResponse.message);
+                toast.error(folderResponse?.message);
             }
         } catch (error) {
             if (!error.response.data.status) {
-                console.log(error.response.data.message);
+                console.log(error?.response?.data?.message||"Get folder data not working");
                 setFoldersData([])
             }
 
@@ -137,7 +138,7 @@ const FolderData = () => {
     }
 
     const getFolderDataFun = () => {
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const UserId =localStorage.getItem("userInfo");
         if (UserId) {
             getFoldersData(UserId);
         }
@@ -272,8 +273,10 @@ const FolderData = () => {
                                                 }}
                                                 onClick={() => ActionDelFolAndAddFile("deleteFolder", d)}
                                             /> */}
-                                            <DeleteModal handleDelete={deleteFolder} value={d._id} type='folder'/>
-                                            <NoteAddIcon
+                                            {/* <DeleteModal handleDelete={deleteFolder} value={d._id} 
+                                            type='folder'/> */}
+                                            <DotMenu handleDelete={deleteFolder} value={d._id} pageName='folder' handleAddFile={()=>ActionDelFolAndAddFile("addFile",d)}/>
+                                            {/* <NoteAddIcon
                                                 sx={{
                                                     fontSize: "18px",
                                                     cursor: "pointer",
@@ -281,10 +284,10 @@ const FolderData = () => {
                                                     color: "#0d4503bf"
                                                 }}
                                                 onClick={() => ActionDelFolAndAddFile("addFile", d)}
-                                            />
+                                            /> */}
 
                                         </Box>
-                                        <Box container display={'flex'} justifyContent="center">
+                                        <Box container display={'flex'} justifyContent="center"> 
                                             <FolderIcon
                                                 sx={{
                                                     fontSize: '80px',
@@ -293,8 +296,8 @@ const FolderData = () => {
                                                     ,
                                                     cursor: "pointer"
                                                 }}
-                                                onClick={() => ActionDelFolAndAddFile("ShowFilesInFolderModel", d)}
-                                            />
+                                                onClick={() =>navigate(`/files/folder/${d._id}`)}
+                                                />
                                         </Box>
                                         <Box container>
                                             <Typography align='center' variant="subtitle2" color={"#121212"}>{d.folderName}</Typography>
@@ -330,3 +333,4 @@ const FolderData = () => {
 }
 
 export default FolderData
+

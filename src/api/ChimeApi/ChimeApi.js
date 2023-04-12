@@ -1,9 +1,10 @@
 import appConfig from "../../Config";
 import { Auth } from "@aws-amplify/auth";
 import { Credentials } from "@aws-amplify/core";
-const ChimeIdentity = require("aws-sdk/clients/chimesdkidentity");
-const ChimeMessaging = require("aws-sdk/clients/chimesdkmessaging");
-const AWS = require("aws-sdk");
+
+import ChimeIdentity from "aws-sdk/clients/chimesdkidentity";
+import ChimeMessaging from "aws-sdk/clients/chimesdkmessaging";
+import AWS from "aws-sdk";
 
 ////////// Crete member ARN
 export const createMemberArn = (userId) =>
