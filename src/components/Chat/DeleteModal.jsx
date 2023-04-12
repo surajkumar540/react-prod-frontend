@@ -40,15 +40,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 
-const DeleteModal = ({handleDelete,value,type=""}) => {
-    console.log(type)
+const DeleteModal = ({handleDelete,value,pageName,closeParentModal}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-  
+ 
     return (
       <div>
-        <DeleteForeverIcon
+        {/* <DeleteForeverIcon
             sx={{
                 fontSize: "19px",
                 cursor: "pointer",
@@ -56,12 +55,13 @@ const DeleteModal = ({handleDelete,value,type=""}) => {
                 color: "#e70f0fc2"
             }}
             onClick={handleOpen}
-        /> 
+        />  */}
+        <Typography onClick={handleOpen} color={'red'}>Delete</Typography>
 
         
         <Modal
           open={open}
-          onClose={handleClose}
+          onClose={()=>{handleClose();closeParentModal()}}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -72,7 +72,7 @@ const DeleteModal = ({handleDelete,value,type=""}) => {
             
             <Box display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
             <Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
-            Are you sure do you want to delete this {type==='folder'?"folder":"file"} ?
+            Are you sure do you want to delete this {pageName==='folder'?"folder":"file"} ?
             </Typography>
             <Typography mt='1rem' width={'95%'} color='#777777' fontWeight={400} id="modal-modal-title" textAlign={'center'} fontSize={'16px'} lineHeight={'148.19%'}>
             It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
@@ -81,18 +81,15 @@ const DeleteModal = ({handleDelete,value,type=""}) => {
      
             
             <Box mt='1.2rem' mb='.5rem' display={'flex'} justifyContent={'space-between'}>
-            <Button variant="outlined" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={handleClose} >
+            <Button variant="outlined" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleClose();closeParentModal();}} >
                 Cancel
             </Button>
             
-            {
-              type==='folder'?<Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();}}>
-              Delete
-          </Button>:
-            <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();}}>
+         
+            <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();closeParentModal();}}>
             Delete
           </Button>
-            }
+            
             
             
             

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { getAllUsersFromCognitoIdp } from "../../api/CognitoApi/CognitoApi";
-import appConfig from "../../Config";
+// import { getAllUsersFromCognitoIdp } from "../../api/CognitoApi/CognitoApi";
+// import appConfig from "../../Config";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -10,7 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography'
 import { toast } from 'react-toastify';
-import { createChannelMembership } from "../../api/ChimeApi/ChimeApi"
+// import { createChannelMembership } from "../../api/ChimeApi/ChimeApi"
 
 
 
@@ -40,24 +40,24 @@ export default function ModelAddMemberInChannel({ AddMemberModel, setMemberModel
 
 
   ///////// when click on the subscribe button
-  const AddMemberButton = async (selectChannel, selectUser, user_id) => {
-    try {
-      const membership = await createChannelMembership(
-        selectChannel.ChannelArn,
-        `${appConfig.appInstanceArn}/user/${selectUser.value}`,
-        user_id,
-        undefined //activeChannel.SubChannelId
-      );
-      const memberships = []  ///activeChannelMemberships;
-      memberships.push({ Member: membership });
-      handleClose();
-      return { status: true, data: memberships }
-    } catch (err) {
-      toast.error("Something is wrong please try after some time");
-      console.log("error in adding member in channel", err);
-      return { status: false, error: err };
-    }
-  }
+  // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
+  //   try {
+  //     const membership = await createChannelMembership(
+  //       selectChannel.ChannelArn,
+  //       `${appConfig.appInstanceArn}/user/${selectUser.value}`,
+  //       user_id,
+  //       undefined //activeChannel.SubChannelId
+  //     );
+  //     const memberships = []  ///activeChannelMemberships;
+  //     memberships.push({ Member: membership });
+  //     handleClose();
+  //     return { status: true, data: memberships }
+  //   } catch (err) {
+  //     toast.error("Something is wrong please try after some time");
+  //     console.log("error in adding member in channel", err);
+  //     return { status: false, error: err };
+  //   }
+  // }
 
 
   return (
@@ -84,7 +84,9 @@ export default function ModelAddMemberInChannel({ AddMemberModel, setMemberModel
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={() => AddMemberButton(ActiveChannel, AddChannelUserSelect, user_id)}>Subscribe</Button>
+        <Button 
+        // onClick={() => AddMemberButton(ActiveChannel, AddChannelUserSelect, user_id)}
+        >Subscribe</Button>
       </DialogActions>
     </Dialog >
   );

@@ -11,11 +11,11 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 /////Import react query functions
 import { useMutation } from 'react-query'
-import {
-    CognitoSignUp,
-    otpWithResetPassword, resetPasswordFun
-} from "../../api/CognitoApi/CognitoApi";
-import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
+// import {
+//     CognitoSignUp,
+//     otpWithResetPassword, resetPasswordFun
+// } from "../../api/CognitoApi/CognitoApi";
+import { userCreateAccount, forgetPasswordVerify } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 import { useNavigate, Link } from 'react-router-dom';
 const cssStyle = {
@@ -61,73 +61,57 @@ const cssStyle = {
 const ForgetPage = () => {
 
 
+    const { serviceType, contextEmail} = ServiceState();
     const [showConfPass, setShowConfPass] = useState(false);
     const [showOtpVeriCont, setShowVeriCon] = useState(false);
     /////Store email address
-    const [emailAddress, setEmailAddress] = useState("");
+    const [emailAddress, setEmailAddress] = useState(contextEmail);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [password, setPassword] = useState("");
+    const [otp, setOtp] = useState("");
     /////// btn disabled until operation  not completed
     const [btnDisabed, setBtnDisabled] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     /////// Verify button disaabled until operation not complete
     const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
 
-    const { serviceType, setSeviceType, setContextEmail, setContextPassword } = ServiceState();
     const navigate = useNavigate();
-    const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
-    const resendOtpInMail = async (email) => {
-        const response = await resetPasswordFunCall({ username: email.split("@")[0] });
-        if (response.status) {
-            toast.info("Otp send in your mail please check your mail inbox.");
-            setShowVeriCon(true);
-            setSeviceType('forgetPassword');
-            setContextEmail(emailAddress);
-            setContextPassword(password)
-            navigate("/otpVerf")
+    const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(forgetPasswordVerify);
+    
+    const updateNewPassword = async () => {
+        setVerifyBtnDisabled(true)
+        // let userName = email.split('@')[0]
+        const forgetData={
+            "email":emailAddress,
+            "otp":otp,
+            "password":password
+        }
+        const updatePassword = await resetPasswordFunCall({ ...forgetData });
+      
+        if (updatePassword.statusCode==200) {
+            toast.success("Password update successfullly.Please wait we are redirect in login page.");
+            setTimeout(() => {
+                setVerifyBtnDisabled(false)
+                window.location = "/login";
+            }, [3000])
         } else {
-            toast.error(response.error.message);
+            toast.error(updatePassword?.error?.message||"Something is wrong");
+            setVerifyBtnDisabled(false)
         }
-    }
-
-    const { mutateAsync: SignUpFunCall, isLoading: isLoadingSignUpFun } = useMutation(CognitoSignUp);
-    const { mutateAsync: SignUpFunCallV1, isLoading: isLoadingSignUpFunV1 } = useMutation(userCreateAccount);
-    const createAccount = async (name, email, password) => {
-        const userName = email.split('@')[0];
-        const userEmail = email;
-        const userPassword = password;
-        const response = await SignUpFunCall({ username: userName, email: userEmail, password: userPassword })
-        if (response.status && response.data.userSub) {
-            toast.info("Please check your inbox");
-            await userInsertv1(email);
-        } else {
-            toast.error(response.error.message);
-        }
-
-    }
-
-    const userInsertv1 = async (name, email, password) => {
-        const createUserDetOject = { name, email, password };
-        try {
-            setShowVeriCon(true);
-            const response = await SignUpFunCallV1(createUserDetOject);
-            if (response.status) {
-                console.log("data created in v1");
-            }
-        } catch (error) {
-            console.log(error.response.data.message);
-        }
-
     }
 
     const buttonAction = async () => {
 
-        if (emailAddress === "") {
+        if (password === "") {
             toast.error("Please fill email.")
             return null;
         }
+        if (password != confirmPassword) {
+            toast.error("Please match confirm password")
+            return null;
+        }
 
-        resendOtpInMail(emailAddress);
+        updateNewPassword(emailAddress);
     }
 
     const handleTogglePassword = () => {
@@ -178,7 +162,22 @@ const ForgetPage = () => {
                                         sx={cssStyle.btn_textfield}
                                         value={emailAddress ? emailAddress : ""}
                                         onChange={(e) => setEmailAddress(e?.target?.value)}
+                                        disabled
                                     />
+                                </Grid>
+
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                    <TextField
+                                        id="login-signup-forgetPassword-password"
+                                        label="Otp"
+                                        type={'text'}
+                                        variant='outlined'
+                                        sx={cssStyle.btn_textfield}
+                                        value={otp ? otp : ""}
+                                        onChange={(e) => setOtp(e?.target?.value)}
+                                    
+                                    />
+
                                 </Grid>
 
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
@@ -209,15 +208,6 @@ const ForgetPage = () => {
                                         }}
                                     />
 
-                                    {
-                                        serviceType === "login" &&
-                                        <Typography variant="subtitle2" align='right'>
-                                            <Link to="/forget-password" style={{ textDecoration: "none", color: "red" }}>
-                                                Forget Password?
-                                            </Link>
-                                        </Typography>
-
-                                    }
                                 </Grid>
 
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
@@ -261,11 +251,11 @@ const ForgetPage = () => {
                                                 backgroundColor: '#1c529b' // background color on hover
                                             }
                                         }}
-                                        disabled={btnDisabed || isLoadingSignUpFun}
+                                        disabled={btnDisabed||resetPasswordIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >
-                                        {(btnDisabed || isLoadingSignUpFun) && (
+                                        {(btnDisabed||resetPasswordIsLoading) && (
                                             <CircularProgress
                                                 size={24}
                                                 style={{
@@ -279,7 +269,7 @@ const ForgetPage = () => {
                                             />
                                         )}
 
-                                        Send OTP
+                                       Change Password  
 
                                     </Button>
                                     <Typography marginTop={3} variant="subtitle2" align='center'>

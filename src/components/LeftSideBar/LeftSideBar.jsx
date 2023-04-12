@@ -34,11 +34,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ContentModels from '../../pages/ContentModels';
-import {
-    createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-    sendChannelMessage, listChannelMessages
-}
-    from "../../api/ChimeApi/ChimeApi";
+// import {
+//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
+//     sendChannelMessage, listChannelMessages
+// }
+//     from "../../api/ChimeApi/ChimeApi";
 import appConfig from "../../Config";
 //////////get the all users from congnito ///////////////////
 import { IdentityService } from '../../services/IdentityService.js';
@@ -53,6 +53,7 @@ import oLogo from "../../assets/svg/oLogo.svg"
 import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogOutModal from '../Chat/LogOutModal';
+import { clearLocalStorage } from '../../utils/validation';
 
 const drawerWidth = '16%';
 
@@ -182,7 +183,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const LeftSideBar = (props) => {
 
     ////// use conetext use here
-    const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
+    const { user, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats,compNameContext,setCompNameContext } = ChatState();
     const theme = useTheme();
     const navegate = useNavigate();
     const location = useLocation();
@@ -204,21 +205,21 @@ const LeftSideBar = (props) => {
     const [UserId, setUserId] = useState("");
     const [subUserId, setSubUserId] = useState("");
     ////////// Create and store Identity service //////
-    const [IdentityServiceObject] = useState(
-        () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
-    );
+    // const [IdentityServiceObject] = useState(
+    //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
+    // );
     //////////When this page render then user_id store , and channel list also load
-    useEffect(() => {
-        getAwsCredentialsFromCognito();
-        IdentityServiceObject.setupClient();
-        let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-        let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-        let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-        let GetsubUserId = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "sub")).Value;
-        setUserId(userid)
-        setSubUserId(GetsubUserId);
-        //setMember({ username: getLoginUserName, userId: userid });
-    }, [])
+    // useEffect(() => {
+    //     getAwsCredentialsFromCognito();
+    //     IdentityServiceObject.setupClient();
+    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
+    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
+    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
+    //     let GetsubUserId = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "sub")).Value;
+    //     setUserId(userid)
+    //     setSubUserId(GetsubUserId);
+    //     //setMember({ username: getLoginUserName, userId: userid });
+    // }, [])
 
     useEffect(() => {
         if (props?.data?.pageName === "Folder") {
@@ -230,19 +231,21 @@ const LeftSideBar = (props) => {
     //////// here we are call api to getting company name
     const [comNameSave, SetComName] = useState([]);
     const { mutateAsync: getComName, isLoading: GetComNameIsLoading } = useMutation(getCompanyName);
-    const getComFun = async (subUserId) => {
+    
+    const getComFun = async (subUserId=localStorage.getItem("userInfo")) => {
         const responseGetCom = await getComName(subUserId);
-        if (responseGetCom.status) {
-            SetComName(responseGetCom.data)
+        if (responseGetCom.status==true) {
+            SetComName(responseGetCom?.data[0]?.companyName)
+            setCompNameContext(responseGetCom?.data[0]?.companyName)
         } else {
             toast.error(responseGetCom.message);
         }
     }
     useEffect(() => {
-        if (subUserId !== "") {
+        if (compNameContext === "") {
             getComFun(subUserId);
         }
-    }, [subUserId])
+    }, [compNameContext])
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -335,20 +338,20 @@ const LeftSideBar = (props) => {
     const [channelList, setChannelList] = useState([]);
     ///////  Here store channel interval
     const [ChannelInterval, setChannelInterval] = useState(null);
-    const channelListFunction = async (userid) => {
-        const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
-            userid
-        );
-        const userChannelList = userChannelMemberships.map(
-            (channelMembership) => {
-                const channelSummary = channelMembership.ChannelSummary;
-                channelSummary.SubChannelId =
-                    channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
-                return channelSummary;
-            }
-        );
-        setChannelList(userChannelList);
-    }
+    // const channelListFunction = async (userid) => {
+    //     const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
+    //         userid
+    //     );
+    //     const userChannelList = userChannelMemberships.map(
+    //         (channelMembership) => {
+    //             const channelSummary = channelMembership.ChannelSummary;
+    //             channelSummary.SubChannelId =
+    //                 channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
+    //             return channelSummary;
+    //         }
+    //     );
+    //     setChannelList(userChannelList);
+    // }
 
     /////// run first time and get the channel list and store it
 
@@ -407,6 +410,7 @@ const LeftSideBar = (props) => {
     ////// If selected chat  value change then  this use effect run
     useEffect(() => {
         fetchChat();
+        setSubUserId(localStorage.getItem("userInfo"))
     }, [])
 
 
@@ -418,7 +422,7 @@ const LeftSideBar = (props) => {
             {
                 <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box display={'flex'} width={drawerWidth&&drawerWidth} alignItems={'center'} justifyContent={'space-between'} >
+                            <Box display={'flex'} width={drawerWidth && drawerWidth} alignItems={'center'} justifyContent={'space-between'} >
                     
 
                     <CardMedia
@@ -433,7 +437,9 @@ const LeftSideBar = (props) => {
                   <Typography
                     variant="subtitle1"
                     sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464',textTransform:"capitalize"}}
-                    color="primary">{comNameSave?.length !== 0 && comNameSave[0]?.companyName}</Typography>
+                    color="primary">
+                        {compNameContext || comNameSave?.length !== 0 && comNameSave}
+                    </Typography>
 
                         
                 
@@ -535,7 +541,7 @@ const LeftSideBar = (props) => {
                         >
                             <ChatTwoToneIcon fontSize='small'/>
                         </Button>
-                        <Typography sx={{color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464",fontSize:'13px'}}>Chat</Typography>
+                        <Typography sx={{color: location.pathname.split(['/'])[1] === "chat" ? "#448DF0" : "#646464",fontSize:'13px' }}>Chat</Typography>
                     </Box>
 
 
@@ -889,12 +895,12 @@ const LeftSideBar = (props) => {
                                             aria-expanded={open ? 'true' : undefined}
                                             // onClick={() => navigatePage("create-folder")}
                                             // onClick={() => {navigatePage("files/create-folder"),setActivePage("createFolder")}}
-                                            onClick={() => navigatePage("files/create-folder")}
-                                            variant={location.pathname === "/files/create-folder" ? "contained" : "text"}
+                                            onClick={() => navigatePage("files/folder")}
+                                            variant={location.pathname === "/files/folder" ? "contained" : "text"}
                                             size='small'
                                             sx={{
                                                 width: "100%", justifyContent: 'flex-start',
-                                                color: location.pathname === "/files/create-folder" ? "#ffffff" : "#646464"
+                                                color: location.pathname === "/files/folder" ? "#ffffff" : "#646464"
                                             }}
                                         >
                                             <FolderOutlinedIcon sx={{ fontSize: "18px", marginRight: "8px" }} />

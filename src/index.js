@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from "react-query"
 import { Provider } from "react-redux"
 import store from "./Redux/Store/store";
@@ -25,33 +24,16 @@ const queryClient = new QueryClient({
 
 
 // if (process.env.NODE_ENV === 'development') {
-//   axios.defaults.baseURL = process.env.REACT_APP_API_LOCAL_ENDPOINT;
+axios.defaults.baseURL = "https://devorganaise.com/api/";
 // } else if (process.env.NODE_ENV === 'production') {
 //   axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
 // }
 
-
-// if (process.env.NODE_ENV === 'development') 
-// {
-//   axios.defaults.baseURL = "https://devorganaise.com/api";
-// } 
-// else if (process.env.NODE_ENV === 'production') 
-// {
-//   axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
-// }
-
-
-if(process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = "https://devorganaise.com/api";
-} else if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
-} 
-
 ///// add  intercepter 
 axios.interceptors.request.use(
   function (config) {
-    if ("userInfo" in localStorage) {
-      config.headers["Auth-Token"] = `Bearer ${(JSON.parse(localStorage.userInfo)).token}`;
+    if ("token" in localStorage) {
+      config.headers["auth-token"] = `Bearer ${localStorage.getItem("token")}`;
     }
     return config;
   },
@@ -62,8 +44,9 @@ axios.interceptors.request.use(
 
 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ToastContainer autoClose={2000} />
     <QueryClientProvider client={queryClient}>
@@ -73,10 +56,5 @@ root.render(
         </BrowserRouter>
       </Provider>
     </QueryClientProvider>
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  </React.StrictMode>,
+)

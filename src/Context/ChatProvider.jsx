@@ -4,14 +4,15 @@ import { useLocation } from "react-router-dom";
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(localStorage.getItem("userInfo"));
     const [selectChatV1, setSelectedChatV1] = useState([]);
     const [currentChats, setCurrentChats] = useState([]);
     const [chats, setChats] = useState([]);
     const location = useLocation();
     const [serviceType, setSeviceType] = useState();
+    const [compNameContext,setCompNameContext]=useState("")
     useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        const userInfo = localStorage.getItem("userInfo");
         setUser(userInfo);
         if (!userInfo) {
             if (location.pathname !== "login") {
@@ -22,7 +23,7 @@ const ChatProvider = ({ children }) => {
     }, [location])
 
     return (
-        <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats }}>
+        <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats,setCompNameContext,compNameContext }}>
             {children}
         </ChatContext.Provider>
 

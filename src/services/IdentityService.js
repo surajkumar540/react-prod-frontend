@@ -2,7 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import Auth from '@aws-amplify/auth';
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 /**
  * @class IdentityService

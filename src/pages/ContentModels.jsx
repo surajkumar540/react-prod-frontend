@@ -12,15 +12,15 @@ import { useDebounce } from 'use-debounce';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess } from '../api/InternalApi/OurDevApi';
-import appConfig from "../Config";
-import {
-    createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-    sendChannelMessage, listChannelMessages, createChannelMembership
-}
-    from "../api/ChimeApi/ChimeApi";
+// import appConfig from "../Config";
+// import {
+//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
+//     sendChannelMessage, listChannelMessages, createChannelMembership
+// }
+//     from "../api/ChimeApi/ChimeApi";
 
 
-import { getAllUsersFromCognitoIdp, setAuthenticatedUserFromCognito } from "../api/CognitoApi/CognitoApi";
+// import { getAllUsersFromCognitoIdp, setAuthenticatedUserFromCognito } from "../api/CognitoApi/CognitoApi";
 
 //////////get the all users from congnito ///////////////////
 import { IdentityService } from '../services/IdentityService.js';
@@ -42,16 +42,15 @@ const ContentModels = ({
     const navigate = useNavigate();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('xs');
-    console.log(activeModel)
 
     ////// use conetext use here
     const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
 
     const location = useLocation();
     ////////// Create and store Identity service //////
-    const [IdentityServiceObject] = useState(
-        () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
-    );
+    // const [IdentityServiceObject] = useState(
+    //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
+    // );
 
 
     const handleClickOpen = () => {
@@ -72,17 +71,17 @@ const ContentModels = ({
     ]
 
     //////////// Store the userid of user ////////
-    const [user_id, setUserID] = useState("");
+    const [user_id, setUserID] = useState(localStorage.getItem("userInfo"));
 
     //////////When this page render then user_id store , nad channel list also load
-    useEffect(() => {
-        getAwsCredentialsFromCognito();
-        IdentityServiceObject.setupClient();
-        let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-        let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-        let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-        setUserID(userid)
-    }, [])
+    // useEffect(() => {
+    //     getAwsCredentialsFromCognito();
+    //     IdentityServiceObject.setupClient();
+    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
+    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
+    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
+    //     setUserID(userid)
+    // }, [])
 
     ////////// channel state value save here
 
@@ -91,53 +90,53 @@ const ContentModels = ({
     const [channelName, setChannelName] = useState("");
     const [channelDiscription, setChannelDiscription] = useState("");
 
-    const createChannelFun = async () => {
-        if (channelName === "") {
-            toast.info("Please enter channel name");
-            return;
-        }
-        if (channelName != null && channelName !== "") {
-            const creatChannelObj = {
-                "instenceArn": `${appConfig.appInstanceArn}`,
-                "metaData": null,
-                "newName": `${channelName}`,
-                "mode": "RESTRICTED",
-                "privacy": "PRIVATE",
-                "elasticChannelConfiguration": null,
-                "userId": `${user_id}`
-            }//////// These object types value pass in createChannel function 
-            const channelArn = await createChannel(`${appConfig.appInstanceArn}`, null,
-                `${channelName}`, "RESTRICTED", "PRIVATE", null, `${user_id}`);/////////By this function we are  creating the channnel
-            if (channelArn) {
-                const channel = await describeChannel(channelArn, user_id);
-                if (channel) {
-                    // await channelListFunction(user_id);
-                    toast.success("Channel created successfully.");
-                } else {
-                    console.log('Error, could not retrieve channel information.');
-                }
-            } else {
-                console.log('Error, could not create new channel.');
-            }
-        }
-        handleClose();
-    }
+    // const createChannelFun = async () => {
+    //     if (channelName === "") {
+    //         toast.info("Please enter channel name");
+    //         return;
+    //     }
+    //     if (channelName != null && channelName !== "") {
+    //         const creatChannelObj = {
+    //             "instenceArn": `${appConfig.appInstanceArn}`,
+    //             "metaData": null,
+    //             "newName": `${channelName}`,
+    //             "mode": "RESTRICTED",
+    //             "privacy": "PRIVATE",
+    //             "elasticChannelConfiguration": null,
+    //             "userId": `${user_id}`
+    //         }//////// These object types value pass in createChannel function 
+    //         const channelArn = await createChannel(`${appConfig.appInstanceArn}`, null,
+    //             `${channelName}`, "RESTRICTED", "PRIVATE", null, `${user_id}`);/////////By this function we are  creating the channnel
+    //         if (channelArn) {
+    //             const channel = await describeChannel(channelArn, user_id);
+    //             if (channel) {
+    //                 // await channelListFunction(user_id);
+    //                 toast.success("Channel created successfully.");
+    //             } else {
+    //                 console.log('Error, could not retrieve channel information.');
+    //             }
+    //         } else {
+    //             console.log('Error, could not create new channel.');
+    //         }
+    //     }
+    //     handleClose();
+    // }
 
     /////////// Get the channel list 
-    const channelListFunction = async (userid) => {
-        const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
-            userid
-        );
-        const userChannelList = userChannelMemberships.map(
-            (channelMembership) => {
-                const channelSummary = channelMembership.ChannelSummary;
-                channelSummary.SubChannelId =
-                    channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
-                return channelSummary;
-            }
-        );
-        setChannelList(userChannelList);
-    }
+    // const channelListFunction = async (userid) => {
+    //     const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
+    //         userid
+    //     );
+    //     const userChannelList = userChannelMemberships.map(
+    //         (channelMembership) => {
+    //             const channelSummary = channelMembership.ChannelSummary;
+    //             channelSummary.SubChannelId =
+    //                 channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
+    //             return channelSummary;
+    //         }
+    //     );
+    //     setChannelList(userChannelList);
+    // }
 
     ///////// Create folder function and aadd staates here
     const [folderName, setFolderName] = useState("");
@@ -149,22 +148,23 @@ const ContentModels = ({
             return;
         }
         if (folderName) {
-            const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+            const UserId = localStorage.getItem("userInfo").sub;
             const folderData = {
-                folderName: folderName,
-                folderDiscription: folderDiscription,
-                userId: UserId
+                "folderName":folderName,
+                "folderDiscription":folderDiscription,
+                "filesList":"[]"
             }
 
-            const response = await axios.post('https://devorganaise.com/api/createFolder', folderData, {
+            const response = await axios.post('v2/folder/create', folderData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             const folderResponse = response.data;
+            
             if (folderResponse.status) {
                 toast.success(folderResponse.message);
-                const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+                const UserId = localStorage.getItem("userInfo");
                 getFoldersData(UserId);
                 handleClose();
             } else {
@@ -183,7 +183,7 @@ const ContentModels = ({
     const [userFiles, setUserFiles] = useState([]);
     const getFilesOfUser = async (userId) => {
         const userID = { userId: userId }
-        const response = await axios.post('https://devorganaise.com/api/getfiles', userID, {
+        const response = await axios.get('v2/file/getfiles', {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -191,9 +191,13 @@ const ContentModels = ({
         const FilesResponse = response.data;
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
-            const newCheckedArray = FilesData.map(checkbox => {
-                const match = folderSelect.filesList.find(obj2 => checkbox.fileId === obj2.fileId);
-                return match ? { ...checkbox, checked: true } : { ...checkbox, checked: false };
+            const newCheckedArray = FilesData.filter(checkbox => {
+                
+                const match = folderSelect.filesList.find((obj2) => {
+                    return checkbox._id === obj2
+                });
+
+                return !match ? { ...checkbox, checked: false } :null;
             });
             setUserFiles(newCheckedArray);
         } else {
@@ -202,7 +206,7 @@ const ContentModels = ({
 
     }
     const callGetAllFileFun = () => {
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const UserId =localStorage.getItem("userInfo");
         if (UserId) {
             getFilesOfUser(UserId);
         }
@@ -229,7 +233,7 @@ const ContentModels = ({
     //////////////////////////////////////////////
     ///////// adding flie in folder first staging
     //////////////////////////////////////////////
-    //// Remov the dublicate from arrayof object
+    //// Remov the duplicate from arrayof object
     function removeDuplicateObjectFromArray(array, key) {
         var check = new Set();
         return array.filter(obj => !check.has(obj[key]) && check.add(obj[key]));
@@ -237,6 +241,7 @@ const ContentModels = ({
 
     const [selectedFile, setSelectedFile] = useState([]);
     const addFileInFolder = (event, fileData) => {
+        
         const updatedCheckboxes = userFiles.map((checkbox) => {
             if (checkbox.fileId === fileData.fileId) {
                 return {
@@ -254,10 +259,13 @@ const ContentModels = ({
 
     //////////// adding file api call here
     ////// Add file in folder
-    const addIngFileInFolder = async (userId, fileId, selectedFolder) => {
-
-        const addFileInFolderObject = { userId: userId, folderId: selectedFolder, fileId: fileId }
-        const response = await axios.post('https://devorganaise.com/api/addFileInFolder', addFileInFolderObject, {
+    const addIngFileInFolder = async (userId, fileArr, selectedFolder) => {
+       const addFileInFolderObject = {
+         folderId: selectedFolder,
+         fileId: JSON.stringify(fileArr),
+       };
+        // const addFileInFolderObject = { userId: userId, folderId: selectedFolder, fileId: fileId }
+        const response = await axios.put('v2/folder/FileAddFolder', addFileInFolderObject, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -265,7 +273,10 @@ const ContentModels = ({
 
         const AddFilesResponse = response.data;
         if (AddFilesResponse.status) {
-            //nothing here
+            toast.success("Files added successfully");
+            setAddBtnDisable(false);
+            getFoldersData(localStorage.getItem("userInfo"));
+            handleClose();
         } else {
             toast.error(AddFilesResponse.message);
         }
@@ -279,17 +290,21 @@ const ContentModels = ({
             return null;
         }
         setAddBtnDisable(true);
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const UserId =localStorage.getItem("userInfo");
+        console.log(folderSelect)
+        let filesArr=[...folderSelect.filesList]
         for (let index = 0; index < selectedFile.length; index++) {
-            await addIngFileInFolder(UserId, selectedFile[index], folderSelect._id);
-            if (selectedFile.length - 1 === index) {
-                toast.success("Files added successfully");
-                setAddBtnDisable(false);
-                getFoldersData(UserId);
-                handleClose();
-            }
-
+            
+            filesArr.push(selectedFile[index]._id)
         }
+
+        await addIngFileInFolder(UserId,filesArr, folderSelect._id);
+        // if (selectedFile.length - 1 === index) {
+            // toast.success("Files added successfully");
+            // setAddBtnDisable(false);
+            // getFoldersData(UserId);
+            // handleClose();
+        // }
     }
 
 
@@ -299,18 +314,21 @@ const ContentModels = ({
     const [folderFiles, setFolderFiles] = useState([]);
     useEffect(() => {
         if (activeModel === "ShowFilesInFolderModel") {
+            console.log(folderSelect)
             setFolderFiles(folderSelect.filesList);
         }
     }, [activeModel, folderSelect])
 
     ////////// remove file from folder
     const removeFileApiFun = async (folderId, fileData) => {
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const UserId = localStorage.getItem("userInfo");
+        console.log(folderId)
         const createObj = { folderId: folderId, userId: UserId, fileId: fileData }
         try {
             const callRemoveFileApi = await removeFileApi(createObj);
             if (callRemoveFileApi.status) {
                 const leftFilesData = folderSelect.filesList.filter((fileDa) => fileDa.fileId !== fileData.fileId);
+                console.log(leftFilesData)
                 setFolderFiles(leftFilesData);
                 toast.success(callRemoveFileApi.message);
                 getFoldersData(UserId);
@@ -329,22 +347,22 @@ const ContentModels = ({
     //////// All users list store here //////
     const [AddAllUsers, SetAllUsersList] = useState([]);
     ////////// Whenn user id set then this useEffect run
-    useEffect(() => {
-        if ((user_id !== "") && (location.pathname === "/")) {
-            //setChannelInterval
-            channelListFunction(user_id);
-            getAllUsersFromCognitoIdp(IdentityServiceObject).then((uData) => {
-                if (uData.status) {
-                    SetAllUsersList(uData.data)
-                } else {
-                    toast.error("Something is wrong.");
-                    console.log("Something is wrong", uData);
-                }
-            }).catch((err) => {
-                console.log("Something is wrong error get  when user list get", err);
-            });
-        }
-    }, [user_id, location]);
+    // useEffect(() => {
+    //     if ((user_id !== "") && (location.pathname === "/")) {
+    //         //setChannelInterval
+    //         channelListFunction(user_id);
+    //         getAllUsersFromCognitoIdp(IdentityServiceObject).then((uData) => {
+    //             if (uData.status) {
+    //                 SetAllUsersList(uData.data)
+    //             } else {
+    //                 toast.error("Something is wrong.");
+    //                 console.log("Something is wrong", uData);
+    //             }
+    //         }).catch((err) => {
+    //             console.log("Something is wrong error get  when user list get", err);
+    //         });
+    //     }
+    // }, [user_id, location]);
 
 
 
@@ -352,33 +370,33 @@ const ContentModels = ({
     const [selectUserSave, setAddUserObj] = useState(null);
 
     /////////// When click on the select user then this function run here
-    const selectUserFun = async () => {
-        const response = await AddMemberButton(ActiveChannel, selectUserSave, user_id);
-        if (response.status) {
-            toast.success("Member added successfully");
-        } else {
-            toast.error("Something is wrong.Member not add in channel");
-        }
-    }
+    // const selectUserFun = async () => {
+    //     const response = await AddMemberButton(ActiveChannel, selectUserSave, user_id);
+    //     if (response.status) {
+    //         toast.success("Member added successfully");
+    //     } else {
+    //         toast.error("Something is wrong.Member not add in channel");
+    //     }
+    // }
 
-    const AddMemberButton = async (selectChannel, selectUser, user_id) => {
-        try {
-            const membership = await createChannelMembership(
-                selectChannel.ChannelArn,
-                `${appConfig.appInstanceArn}/user/${selectUser.value}`,
-                user_id,
-                undefined //activeChannel.SubChannelId
-            );
-            const memberships = []  ///activeChannelMemberships;
-            memberships.push({ Member: membership });
-            handleClose();
-            return { status: true, data: memberships }
-        } catch (err) {
-            toast.error("Something is wrong please try after some time");
-            console.log("error in adding member in channel", err);
-            return { status: false, error: err };
-        }
-    }
+    // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
+    //     try {
+    //         const membership = await createChannelMembership(
+    //             selectChannel.ChannelArn,
+    //             `${appConfig.appInstanceArn}/user/${selectUser.value}`,
+    //             user_id,
+    //             undefined //activeChannel.SubChannelId
+    //         );
+    //         const memberships = []  ///activeChannelMemberships;
+    //         memberships.push({ Member: membership });
+    //         handleClose();
+    //         return { status: true, data: memberships }
+    //     } catch (err) {
+    //         toast.error("Something is wrong please try after some time");
+    //         console.log("error in adding member in channel", err);
+    //         return { status: false, error: err };
+    //     }
+    // }
 
 
     ////////// search member  in new version 1 and start single chatting
@@ -540,7 +558,7 @@ const ContentModels = ({
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 30px" }}
-                                onClick={() => createChannelFun()}
+                                // onClick={() => createChannelFun()}
                             >
                                 Create Channel
                             </Button>
@@ -715,7 +733,7 @@ const ContentModels = ({
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 30px" }}
-                                onClick={() => selectUserFun()}
+                                // onClick={() => selectUserFun()}
                             >
                                 Add
                             </Button>
@@ -898,7 +916,8 @@ const ContentModels = ({
                                             label={`${fd.fileName}`}
                                         /> */}
                                         <Typography variant="subtitle2">
-                                            {fd.fileName}
+                                            {/* {fd.fileName} */}
+                                            {fd}
                                         </Typography>
                                         <Tooltip title="Remove file from folder" placement="top" arrow>
                                             <CancelIcon

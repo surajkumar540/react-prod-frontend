@@ -6,7 +6,7 @@ import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 import organaiseLogo from "../assets/Logo/organaise-logo.png";
@@ -17,37 +17,40 @@ const CompanyDetails = () => {
         'Invite Team',
         'Project Name',
     ];
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [userId, setUserID] = useState("")
 
 
     const [companyName, setCompanyName] = useState("");
     /////// get Company data
     const getComFun = async (subUserId) => {
+        console.log(subUserId)
         try {
             const responseGetCom = await getCompanyName(subUserId);
-            if (responseGetCom.status) {
+            
+            if (responseGetCom.status==true) {
                 if (responseGetCom.data.length > 0) {
-                    window.location.href = "/chat"
+                    localStorage.setItem("sub",responseGetCom?.data[0]?.companyName)
+                    navigate("/chat")
                 }
             } else {
                 toast.error(responseGetCom.message);
             }
         } catch (error) {
-            console.log(error.response.message);
+            console.log(error?.response?.message);
         }
     }
 
-    // useEffect(() => {
-    //     const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-    //     setUserID(UserId);
-    // }, [])
+    useEffect(() => {
+        const UserId = localStorage.getItem("userInfo");
+        setUserID(UserId);
+    }, [])
 
-    // useEffect(() => {
-    //     if (userId !== "") {
-    //         getComFun(userId);
-    //     }
-    // }, [userId])
+    useEffect(() => {
+        if (userId !== "") {
+            getComFun(userId);
+        }
+    }, [userId])
 
 
 
@@ -59,13 +62,13 @@ const CompanyDetails = () => {
             toast.info("Please enter company name");
             return;
         }
-        const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        // const UserId = JSON.parse(localStorage.getItem("userId"));
         try {
-            const response = await postCompannyName({ userId: UserId, companyName: companyName })
+            const response = await postCompannyName({ companyName: companyName })
             if (response.status) {
                 toast.success(response.message);
                 setTimeout(() => {
-                    // window.location = "/";
+                    localStorage.setItem("sub",companyName)
                     navigate("/chat")
                 }, [500])
             } else {
@@ -91,7 +94,7 @@ const CompanyDetails = () => {
                 <Grid container mt={7}>
                     <Grid container display={{ xs: "none", md: "block" }} md={3} item></Grid>
                     <Grid container item xs={12} md={6} >
-                        <Box sx={{ width: '100%' }}>
+                        {/* <Box sx={{ width: '100%' }}>
                             <Stepper activeStep={0} alternativeLabel>
                                 {steps.map((label) => (
                                     <Step key={label}>
@@ -99,8 +102,8 @@ const CompanyDetails = () => {
                                     </Step>
                                 ))}
                             </Stepper>
-                        </Box>
-                        
+                        </Box> */}
+
                         <Box container mt={2} width={"100%"}>
                             <Typography textAlign={'center'} variant="h4" fontWeight={"600"}>Please enter your Company name</Typography>
                         </Box>
