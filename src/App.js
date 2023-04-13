@@ -12,8 +12,8 @@ import Login from "./pages/Login"; ////// Delete this page after creating Login 
 import ForgetPassword from './pages/ForgetPassword';
 import SignUp from './pages/signup';/////Delete this page after creating signup system in authservice Page 
 import { useEffect } from 'react';
-import { getAwsCredentialsFromCognito } from "./api/CognitoApi/CognitoApi";
-import { Auth } from "@aws-amplify/auth";
+// import { getAwsCredentialsFromCognito } from "./api/CognitoApi/CognitoApi";
+// import { Auth } from "@aws-amplify/auth";
 import configureAmplify from './services/servicesConfig';/////////// Here we are configure the authication of server
 // import AuthService from './pages/AuthService';
 import FileUpload from './pages/FileUpload';
@@ -117,7 +117,7 @@ function App() {
         if(userId)
         {
             setIsAuthenticated(true)
-            if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/getstart'||pathname=='/forgetEmail'||pathname=='/forget-password')
+            if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/getstart'||pathname=='/forgetEmail'||pathname=='/forget-password'||pathname=='/')
             {
                 navigate("/chat")
             }
@@ -134,7 +134,6 @@ function App() {
 
     useEffect(()=>{
         checkAuthentication()
-        console.log(isAuthenticated,"auth")
     },[isAuthenticated])
 
     return (

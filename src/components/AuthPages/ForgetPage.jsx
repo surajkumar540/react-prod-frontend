@@ -168,7 +168,7 @@ const ForgetPage = () => {
 
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                     <TextField
-                                        id="login-signup-forgetPassword-password"
+                                        id="login-signup-forgetPassword-otp"
                                         label="Otp"
                                         type={'text'}
                                         variant='outlined'
