@@ -130,11 +130,11 @@ const NewMessageGrid = ({ selectedChannel }) => {
         timeRecMess: { fontSize: "10px", lineHeight: "25px", paddingLeft: "5px" },
         recRealMess: {
             paddingRight: "30px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "12px", lineHeight: "15px", background: " #ECF4FF", color: "#323232", borderRadius: "0px 10px 10px 10px"
+            fontSize: "12px", lineHeight: "15px",  color: "#323232", background: " #F8F8F8", borderRadius: "0px 10px 10px 10px"
         },
         sendRealMess: {
             paddingRight: "10px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "12px", lineHeight: "15px", color: "#323232", background: " #F8F8F8", borderRadius: "10px 0px 10px 10px",
+            fontSize: "12px", lineHeight: "15px",background: " #ECF4FF", color: "#323232", borderRadius: "10px 0px 10px 10px",
         },
         sendMessInput: {
             "& input": {
@@ -458,8 +458,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     {currentChats.length > 0 &&
                         <>
                             {currentChats.map((mes, index) => {
-
-                                if (mes.sender._id !== user._id) {
+                                if (mes?.sender?._id === MyActiveChat?.users[0]?._id) {
                                     return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
