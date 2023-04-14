@@ -238,7 +238,8 @@ const LeftSideBar = (props) => {
             SetComName(responseGetCom?.data[0]?.companyName)
             setCompNameContext(responseGetCom?.data[0]?.companyName)
         } else {
-            toast.error(responseGetCom.message);
+            toast.info(responseGetCom?.message||"Company name is required");
+            navegate("/companyDetail")
         }
     }
     useEffect(() => {

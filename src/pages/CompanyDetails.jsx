@@ -24,7 +24,6 @@ const CompanyDetails = () => {
     const [companyName, setCompanyName] = useState("");
     /////// get Company data
     const getComFun = async (subUserId) => {
-        console.log(subUserId)
         try {
             const responseGetCom = await getCompanyName(subUserId);
             
@@ -34,10 +33,10 @@ const CompanyDetails = () => {
                     navigate("/chat")
                 }
             } else {
-                toast.error(responseGetCom.message);
+                toast.error(responseGetCom?.message||"Company name is not set");
             }
         } catch (error) {
-            console.log(error?.response?.message);
+            console.log(error?.response?.message||"Something is wrong");
         }
     }
 
