@@ -378,7 +378,6 @@ const LeftSideBar = (props) => {
 
     //when user in another page and want to acccess messaging part
     const InanotherPage = async (type, data) => {
-        console.log("another",type,data)
         if (type === "1") {
             setSelectedChatV1(data);
             // props.data.setSelectedChannel(data);
@@ -399,7 +398,6 @@ const LeftSideBar = (props) => {
         try {
             const response = await userGroupFetchChat();
             if (response) {
-                console.log(response)
                 setChats(response);
                 // setLoggedUser(localStorage.getItem("userInfo"));
             }

@@ -91,6 +91,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
         {
           toast.info(response?.response)
           // navigate("/signup")
+          setBtnDisabled(false)
           return;
         }
         ////////user account created but user account not activated//////

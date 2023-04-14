@@ -378,6 +378,7 @@ const ContentModels = ({
        console.log(data)
         const response = await AddMemberInGroup(data);
         if (response) {
+            setSelectedChatV1(response)
             toast.success("Member added successfully");
         } else {
             toast.error("Something is wrong.Member not add in channel");
@@ -428,7 +429,7 @@ const ContentModels = ({
         const selectUserIdMem = selectSrcMember._id;
         try {
             const response = await creatSingleMemChatV1({ userId: selectUserIdMem });
-            console.log(response)
+            // console.log(response,)
             if (response) {
                 setSelectedChatV1(response);
                 InanotherPage("1", response);

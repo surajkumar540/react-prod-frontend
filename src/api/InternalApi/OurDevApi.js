@@ -140,7 +140,7 @@ export const SingleUserchatAccess = async (getData) => {
 ////////// fetch chat of group or user//////////
 //////////-------------------------------////////
 
-export const fetchAllChatSingleUserOrGroup = async (getData) => {
+export const fetchAllChatSingleUserOrGroup = async () => {
     const response = await axios.get(`${ChatApiVersion}`, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");

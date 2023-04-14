@@ -49,14 +49,15 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteM
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const { chats, setChats } = ChatState();
+    const { setSelectedChatV1, setChats } = ChatState();
 
     const fetchChat = async () => {
       try {
           const response = await fetchAllChatSingleUserOrGroup();
           if (response) {
-              console.log(response)
+              console.log(response,"fetchhhhhhhh")
               setChats(response);
+              setSelectedChatV1(response)
               // setLoggedUser(localStorage.getItem("userInfo"));
           }
       } catch (error) {
@@ -108,7 +109,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteM
             </Button>
             
          
-           {type=='list'? <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete();fetchChat();handleClose();}}>
+           {type=='list'? <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete();handleClose();}}>
             Remove
           </Button>:<Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();closeParentModal();}}>
             Delete
