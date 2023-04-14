@@ -6,8 +6,8 @@ const localUrl = "http://localhost:8000/api";
 
 const UserApiVersion = "signup";
 const OtpApiVersion = "verify";
-const ChatApiVersion = "v1/chat";
-const MessageApiVersion = "v1/message";
+const ChatApiVersion = "v2/chat";
+const MessageApiVersion = "v2/message";
 
 // axios.interceptors.request.use(config => {
 //     config.headers['Content-Type'] = 'application/json';
@@ -21,6 +21,28 @@ const headerData =
     }
 }
 
+//////-------------------------------///////////
+/////user verification already exists or not api call in new  version////
+//////-------------------------------///////////
+
+export const userTokenVerify = async () => {
+    const response = await axios.get(`tokenVerification`, headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}
+//////-------------------------------///////////
+/////user verification already exists or not api call in new  version////
+//////-------------------------------///////////
+
+export const getStartedVerify = async (getData) => {
+    const response = await axios.post(`emailCheck`, getData, headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}
 //////-------------------------------///////////
 /////user inserting api call in new  version////
 //////-------------------------------///////////
@@ -93,7 +115,7 @@ export const forgetPasswordVerify = async (getData) => {
 
 export const searchUserV1 = async (getData) => {
 
-    const response = await axios.get(`${UserApiVersion}/?search=${getData.search}`, headerData);
+    const response = await axios.get(`v2/chat/searchUser?search=${getData.search}`, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -130,6 +152,22 @@ export const fetchAllChatSingleUserOrGroup = async (getData) => {
 
 export const createGroupChat = async (getData) => {
     const response = await axios.post(`${ChatApiVersion}/group`, getData, headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}
+
+export const AddMemberInGroup = async (getData) => {
+    const response = await axios.put(`v2/chat/groupadd`, getData, headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}
+
+export const RemoveMemberInGroup = async (getData) => {
+    const response = await axios.put(`v2/chat/groupremove`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }

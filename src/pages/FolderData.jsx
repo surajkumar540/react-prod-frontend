@@ -16,9 +16,11 @@ import { useDebounce } from 'use-debounce';
 import DeleteModal from '../components/Chat/DeleteModal';
 import DotMenu from "../components/Chat/DotMenu"
 import { useNavigate } from 'react-router-dom';
+import Loader from '../components/Tools/Loader';
 
 const FolderData = () => {
     const navigate=useNavigate()
+    const [loading,setLoading]=useState(true)
     const colorsCode={
         a:'#ff7f47aa',
         b:'#fcaf45aa',
@@ -48,9 +50,6 @@ const FolderData = () => {
         z:'#f95d9baa',
     }
 
-    const selectRandomColor = () => {
-        return colorsCode[Math.floor(Math.random() * 10)];
-    }
     const style = {
         folderCreateMainBox: {
             minHeight: "500px", backgroundColor: "transparent",
@@ -114,7 +113,8 @@ const FolderData = () => {
 
     /////////////// get the folder data here  /////
     const [folderDataStore, setFoldersData] = useState([]);
-    const getFoldersData = async (userId) => {
+    const getFoldersData = async () => {
+        setLoading(true)
         try {
             const response = await axios.get('v2/folder', {    
             headers: {
@@ -135,15 +135,11 @@ const FolderData = () => {
             }
 
         }
+        setLoading(false)
     }
 
-    const getFolderDataFun = () => {
-        const UserId =localStorage.getItem("userInfo");
-        if (UserId) {
-            getFoldersData(UserId);
-        }
-    }
-
+   
+    console.log(loading)
 
     ///////// Search Folder code  Here
     const [srcFolderText, SetSrcFolderText] = useState("");
@@ -153,7 +149,7 @@ const FolderData = () => {
             const searchingFiles = folderDataStore.filter((srcFolders) => srcFolders.folderName.toLowerCase().startsWith(debouncedSearchTerm.toLowerCase()));
             setFoldersData(searchingFiles);
         } else {
-            getFolderDataFun();
+            getFoldersData();
         }
 
     }, [debouncedSearchTerm])
@@ -172,6 +168,15 @@ const FolderData = () => {
         } else {
             return 0;
         }
+    }
+
+    if(loading)
+    {
+        return(
+        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+            <Loader/>
+        </LeftSideBar>
+        )
     }
 
     return (

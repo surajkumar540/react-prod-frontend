@@ -6,6 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
+import { ChatState } from '../../Context/ChatProvider';
 
 const style = {
   position: 'absolute',
@@ -40,11 +42,28 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 
-const DeleteModal = ({handleDelete,value,pageName,closeParentModal}) => {
+
+
+
+const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteModal,type,refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
- 
+    const { chats, setChats } = ChatState();
+
+    const fetchChat = async () => {
+      try {
+          const response = await fetchAllChatSingleUserOrGroup();
+          if (response) {
+              console.log(response)
+              setChats(response);
+              // setLoggedUser(localStorage.getItem("userInfo"));
+          }
+      } catch (error) {
+          console.log("NewMessageGrid", error.response);
+      }
+    }
+
     return (
       <div>
         {/* <DeleteForeverIcon
@@ -56,7 +75,8 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal}) => {
             }}
             onClick={handleOpen}
         />  */}
-        <Typography onClick={handleOpen} color={'red'}>Delete</Typography>
+         {type=='list'?<CloseIcon  onClick={handleOpen} sx={{color:'red'}}/>
+         :<Typography onClick={handleOpen} color={'red'}>Delete</Typography>}
 
         
         <Modal
@@ -71,9 +91,11 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal}) => {
        
             
             <Box display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
-            <Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
+            {type=='list'?<Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
+            Are you sure do you want to remove this user ?
+            </Typography>:<Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
             Are you sure do you want to delete this {pageName==='folder'?"folder":"file"} ?
-            </Typography>
+            </Typography>}
             <Typography mt='1rem' width={'95%'} color='#777777' fontWeight={400} id="modal-modal-title" textAlign={'center'} fontSize={'16px'} lineHeight={'148.19%'}>
             It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
             </Typography>
@@ -86,9 +108,11 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal}) => {
             </Button>
             
          
-            <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();closeParentModal();}}>
+           {type=='list'? <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete();fetchChat();handleClose();}}>
+            Remove
+          </Button>:<Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();closeParentModal();}}>
             Delete
-          </Button>
+          </Button>}
             
             
             

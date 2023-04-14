@@ -1,32 +1,23 @@
 import {
     Box, Grid, Typography, TextField,
-    Button, IconButton, InputAdornment
+    Button
 } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
 import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroundImg.png"
-import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
-import signupPageBgImg from "../../assets/BackgroundImages/signupBackgroundImg.png"
-import otpVerificationBgImg from "../../assets/BackgroundImages/otpVerificationBgImg.png"
-import { Link } from 'react-router-dom';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import OtpField from 'react-otp-field';
-import { toast } from 'react-toastify';
-/////Import react query functions
 import { useMutation } from 'react-query'
-// import {
-//     userSignIn, resendConfermationEMail,
-//     CognitoSignUp, SignUpOtpVarify,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
-import { passwordValidator } from '../../utils/validation';
-import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
 import checkboxIcon from '../../assets/BackgroundImages/checkbox.png'
 import GoogleIcon from '../../assets/svg/Google.svg'
 import FacebookIcon from '../../assets/svg/Facebook.svg'
 import AppleIcon from '../../assets/svg/Apple.svg'
-import { List, ListItem, ListItemText } from '@mui/material';
+import { getStartedVerify } from '../../api/InternalApi/OurDevApi';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { ServiceState } from '../../Context/ServiceProvider';
+import { updateEmail } from '../../Redux/Reducers/CreateAccountSlice';
+import { useDispatch } from 'react-redux';
 
 const cssStyle = {
     parent_box: {
@@ -70,217 +61,54 @@ const cssStyle = {
 
 const GetStart = ({ serviceType }) => {
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfPass, setShowConfPass] = useState(false);
-    const [OtpValue, setOtpValue] = useState('');////otp value store here
-    const [showOtpVeriCont, setShowVeriCon] = useState(false);
-    /////Store email address
-    const [fullName, setFullName] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const dispatch=useDispatch()
+     /////Store email address
     const [emailAddress, setEmailAddress] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     /////// btn disabled until operation  not completed
     const [btnDisabed, setBtnDisabled] = useState(false);
-    /////// Verify button disaabled until operation not complete
-    const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
-
-
-    ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
-    // const { mutateAsync: loginApiCall } = useMutation(userSignIn);
-    // const { mutateAsync: loginV1 } = useMutation(userLoginAccount);
-    // const { mutateAsync: resendVerificationMail } = useMutation(resendConfermationEMail);
-    // const loginAccount = async (email, password) => {
-    //     setBtnDisabled(true);
-    //     const response = await loginApiCall({ username: email.split("@")[0], password: password });
-    //     if (response.status) {
-    //         toast.success("Login successfully");
-    //         userLoginV1(email, password);
-    //         setTimeout(() => {
-    //             setBtnDisabled(false);/////login , signup ,forget account btn disaabled after clicking
-    //             window.location = "/";
-    //         }, [1500])
-    //     } else {
-    //         ////////user account created but user account not activated//////
-    //         if (response.error.message === "User is not confirmed.") {
-    //             setShowVeriCon(true);
-    //             const mailApiRes = await resendVerificationMail({ username: email.split("@")[0] });
-    //             if (mailApiRes.status) {
-    //                 toast.info("Please check your mail inbox.");
-    //                 setBtnDisabled(false);
-    //             } else {
-    //                 toast.error(mailApiRes.error.message);
-    //                 setBtnDisabled(false);
-    //             }
-    //         } else {
-    //             setBtnDisabled(false)
-    //             toast.error(response.error.message);
-    //         }
-    //     }
-    // }
-
-    ///////// when click on the signup button then code run 
-    // const { mutateAsync: SignUpFunCall, isLoading: isLoadingSignUpFun } = useMutation(CognitoSignUp);
-    // const { mutateAsync: SignUpFunCallV1, isLoading: isLoadingSignUpFunV1 } = useMutation(userCreateAccount);
-    // const createAccount = async (name, email, password) => {
-    //     const userName = email.split('@')[0];
-    //     const userEmail = email;
-    //     const userPassword = password;
-    //     const response = await SignUpFunCall({ username: userName, email: userEmail, password: userPassword })
-    //     if (response.status && response.data.userSub) {
-    //         toast.info("Please check your inbox");
-    //         await userInsertv1(name, email, password);
-    //     } else {
-    //         toast.error(response.error.message);
-    //     }
-
-    // }
-    // const userInsertv1 = async (name, email, password) => {
-    //     const createUserDetOject = { name, email, password };
-    //     try {
-    //         setShowVeriCon(true);
-    //         const response = await SignUpFunCallV1(createUserDetOject);
-    //         if (response.status) {
-    //             console.log("data created in v1");
-    //         }
-    //     } catch (error) {
-    //         console.log(error.response.data.message);
-    //     }
-
-    // }
-
-    // const userLoginV1 = async (email, password) => {
-    //     try {
-    //         const response = await loginV1({ email, password });
-    //         if (response.status) {
-    //             localStorage.setItem("userInfo", JSON.stringify(response))
-    //         } else {
-    //             console.log("User not login in v1");
-    //         }
-
-    //     } catch (error) {
-    //         console.log(error.response.data.message);
-    //     }
-
-    // }
-
-    ///////// Signup otp verification/////////
-    // const { mutateAsync: SignUpOtpVerification } = useMutation(SignUpOtpVarify);
-    // const signupVerificationOtp = async (email, getOtp) => {
-    //     setVerifyBtnDisabled(true);
-    //     const userName = email.split('@')[0];
-    //     const otpResponse = await SignUpOtpVerification({ username: userName, userOtp: getOtp });
-    //     if (otpResponse.status) {
-    //         const response = await loginApiCall({ username: userName, password: password });
-    //         if (response.status) {
-    //             toast.success("OTP verified successfully.Please wait we are setup your account.");
-    //             setTimeout(async () => {
-    //                 localStorage.clear();
-    //                 const AgainLoginresponse = await loginApiCall({ username: userName, password: password });
-    //                 if (AgainLoginresponse.status) {
-    //                     userLoginV1(email, password);
-    //                     setVerifyBtnDisabled(false)
-    //                     setTimeout(() => {
-    //                         window.location = "/companyDetail";
-    //                     }, [1000])
-    //                 }
-    //             }, [1000])
-    //         }
-    //     } else {
-    //         toast.error(otpResponse.error.message);
-    //         setVerifyBtnDisabled(false);
-    //     }
-    // }
-
-    ///////// resend otp 
-    // const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
-    // const resendOtpInMail = async (email) => {
-    //     const response = await resetPasswordFunCall({ username: email.split("@")[0] });
-    //     if (response.status) {
-    //         toast.info("Otp send in your mail please check your mail inbox.");
-    //         setShowVeriCon(true);
-    //     } else {
-    //         toast.error(response.error.message);
-    //     }
-    // }
-
-
-    //////// change password api call or Reset password code here when user in forget passsword page 
-    // const { mutateAsync: updatePasswordWithOtp } = useMutation(otpWithResetPassword);
-    // const updateNewPassword = async (email, GetOtp, newPassword) => {
-    //     setVerifyBtnDisabled(true)
-    //     let userName = email.split('@')[0]
-    //     const updatePassword = await updatePasswordWithOtp({ username: userName, otp: GetOtp, password: newPassword });
-    //     if (updatePassword.status) {
-    //         toast.success("Password update successfullly.Please wait we are redirect in login page.");
-    //         setTimeout(() => {
-    //             setVerifyBtnDisabled(false)
-    //             window.location = "/login";
-    //         }, [3000])
-    //     } else {
-    //         toast.error(updatePassword.error.message);
-    //         setVerifyBtnDisabled(false)
-    //     }
-    // }
-
-    ///////Service type  change then useEffect Run
-    useEffect(() => {
-        // setFullName("");
-        setFirstName("");
-        setLastName("")
-        setEmailAddress("");
-        setPassword("");
-        setConfirmPassword("");
-    }, [serviceType])
+    const navigate = useNavigate();
+    const {mutateAsync:getStartedApi,isLoading:getStartedIsLoading}=useMutation(getStartedVerify)
+    const {setContextEmail } = ServiceState();
+    
+    const handleSubmit = async() =>{
+        try{
+            const dummyData={
+                "email":emailAddress
+               }
+            const response = await getStartedApi(dummyData)
+            if(response.status)
+            {
+                dispatch(updateEmail(emailAddress))
+                toast.success("Please login");
+                navigate("/login")
+            }else{
+                dispatch(updateEmail(emailAddress))
+                toast.info("Create new account");
+                navigate("/signup")
+            }
+        }catch(error)
+        {
+            toast.error("Something is wrong");
+            Navigate("/login")
+        }
+    }
 
     /////////// when clickk on the button Like -  login , signup , forget password
-    const buttonAction = async (serviceType) => {
-        // if (serviceType === "login") {
-        //     if (emailAddress === "" || password === "") {
-        //         toast.error("Please fill all fields.")
-        //         return null;
-        //     }
-        //     // loginAccount(emailAddress, password);
-        // }
-
-        // if (serviceType === "signup") {
-        //     if (firstName === "" || lastName === "" || emailAddress === "" || password === "" || confirmPassword === "") {
-        //         toast.error("Please fill all fields.")
-        //         return null;
-        //     }
-        //     if (password !== confirmPassword) {
-        //         toast.error("Password and confirm password not matched.")
-        //         return null;
-        //     }
-        //     if (!passwordValidator(password) || !passwordValidator(confirmPassword)) {
-        //         return null;
-        //     }
-        //     await createAccount(firstName, lastName, emailAddress, password);
-        //     // await createAccount(firstName, lastName, emailAddress, password);
-        // }
-
-        // if (serviceType === "forgetPassword") {
-        //     if (emailAddress === "" || password === "" || confirmPassword === "") {
-        //         toast.error("Please fill all fields.")
-        //         return null;
-        //     }
-        //     if (password != confirmPassword) {
-        //         toast.error("Password and confirm password not matched.")
-        //         return null;
-        //     }
-        //     resendOtpInMail(emailAddress);
-        // }
-
+    const buttonAction = async () => {
+        if(emailAddress==="")
+        {
+            toast.error("Please fill all fields.")
+            return null;
+        }
+        handleSubmit()
     }
 
 
     return (
         <Box container display='flex' aligItems='center' height='100vh' >
             <Grid container padding={7}>
-                <Grid item xs={12} sm={12} md={6}  height='100%'>
-                    <Box container  display='flex' flexDirection='column' height='80%'>
+                <Grid item xs={12} sm={12} md={6} height='100%'>
+                    <Box container display='flex' flexDirection='column' height='80%'>
                         <Box paddingLeft={4} >
                             <img
                                 src={organaiseLogo}
@@ -293,10 +121,10 @@ const GetStart = ({ serviceType }) => {
 
                         <Grid xs={8} >
 
-                            <Box  sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} paddingX={2} paddingY={1} borderRadius={4}  >
+                            <Box sx={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} paddingX={2} paddingY={1} borderRadius={4}  >
                                 <Typography variant='h5' paddingBottom={1} textAlign='center' fontWeight='bold' fontSize='20px'>Discover what sets us apart
                                 </Typography>
-                   
+
                                 <Box display='flex' flexDirection='column' justifyContent='center' >
                                     <Box display='flex' alignItems='center' gap={2} padding={1}>
                                         <img src={checkboxIcon} />
@@ -325,7 +153,7 @@ const GetStart = ({ serviceType }) => {
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6} display={'flex'} justifyContent={'center'}  >
-                    <Box width='70%' height='80%' display='flex' flexDirection='column'  justifyContent='center'  >
+                    <Box width='70%' height='80%' display='flex' flexDirection='column' justifyContent='center'  >
                         <Grid item xs={12}   >
                             <Box>
                                 <Typography variant="h4" fontWeight='600' color="#333333">
@@ -357,11 +185,11 @@ const GetStart = ({ serviceType }) => {
                                         backgroundColor: '#1c529b' // background color on hover
                                     }
                                 }}
-                                // disabled={btnDisabed || isLoadingSignUpFun}
-                                // onClick={() => buttonAction(serviceType)}
+                            disabled={btnDisabed||getStartedIsLoading}
+                            onClick={() => buttonAction()}
 
                             >
-                                {(btnDisabed ) && (
+                                {(btnDisabed) && (
                                     <CircularProgress
                                         size={24}
                                         style={{

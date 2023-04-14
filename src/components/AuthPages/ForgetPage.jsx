@@ -61,7 +61,7 @@ const cssStyle = {
 const ForgetPage = () => {
 
 
-    const { serviceType, contextEmail} = ServiceState();
+    const { serviceType, contextEmail } = ServiceState();
     const [showConfPass, setShowConfPass] = useState(false);
     const [showOtpVeriCont, setShowVeriCon] = useState(false);
     /////Store email address
@@ -77,25 +77,25 @@ const ForgetPage = () => {
 
     const navigate = useNavigate();
     const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(forgetPasswordVerify);
-    
+
     const updateNewPassword = async () => {
         setVerifyBtnDisabled(true)
         // let userName = email.split('@')[0]
-        const forgetData={
-            "email":emailAddress,
-            "otp":otp,
-            "password":password
+        const forgetData = {
+            "email": emailAddress,
+            "otp": otp,
+            "password": password
         }
         const updatePassword = await resetPasswordFunCall({ ...forgetData });
-      
-        if (updatePassword.statusCode==200) {
+
+        if (updatePassword.statusCode == 200) {
             toast.success("Password update successfullly.Please wait we are redirect in login page.");
             setTimeout(() => {
                 setVerifyBtnDisabled(false)
                 window.location = "/login";
             }, [3000])
         } else {
-            toast.error(updatePassword?.error?.message||"Something is wrong");
+            toast.error(updatePassword?.error?.message || "Something is wrong");
             setVerifyBtnDisabled(false)
         }
     }
@@ -175,7 +175,7 @@ const ForgetPage = () => {
                                         sx={cssStyle.btn_textfield}
                                         value={otp ? otp : ""}
                                         onChange={(e) => setOtp(e?.target?.value)}
-                                    
+
                                     />
 
                                 </Grid>
@@ -251,11 +251,11 @@ const ForgetPage = () => {
                                                 backgroundColor: '#1c529b' // background color on hover
                                             }
                                         }}
-                                        disabled={btnDisabed||resetPasswordIsLoading}
+                                        disabled={btnDisabed || resetPasswordIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >
-                                        {(btnDisabed||resetPasswordIsLoading) && (
+                                        {(btnDisabed || resetPasswordIsLoading) && (
                                             <CircularProgress
                                                 size={24}
                                                 style={{
@@ -269,7 +269,7 @@ const ForgetPage = () => {
                                             />
                                         )}
 
-                                       Change Password  
+                                        Change Password
 
                                     </Button>
                                     <Typography marginTop={3} variant="subtitle2" align='center'>

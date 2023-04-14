@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useDebounce } from 'use-debounce';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess } from '../api/InternalApi/OurDevApi';
+import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess,AddMemberInGroup } from '../api/InternalApi/OurDevApi';
 // import appConfig from "../Config";
 // import {
 //     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
@@ -23,7 +23,7 @@ import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess } fr
 // import { getAllUsersFromCognitoIdp, setAuthenticatedUserFromCognito } from "../api/CognitoApi/CognitoApi";
 
 //////////get the all users from congnito ///////////////////
-import { IdentityService } from '../services/IdentityService.js';
+// import { IdentityService } from '../services/IdentityService.js';
 import { useMutation } from 'react-query';
 import { ChatState } from '../Context/ChatProvider';
 
@@ -150,9 +150,9 @@ const ContentModels = ({
         if (folderName) {
             const UserId = localStorage.getItem("userInfo").sub;
             const folderData = {
-                "folderName":folderName,
-                "folderDiscription":folderDiscription,
-                "filesList":"[]"
+                "folderName": folderName,
+                "folderDiscription": folderDiscription,
+                "filesList": "[]"
             }
 
             const response = await axios.post('v2/folder/create', folderData, {
@@ -161,7 +161,7 @@ const ContentModels = ({
                 }
             });
             const folderResponse = response.data;
-            
+
             if (folderResponse.status) {
                 toast.success(folderResponse.message);
                 const UserId = localStorage.getItem("userInfo");
@@ -192,12 +192,12 @@ const ContentModels = ({
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
             const newCheckedArray = FilesData.filter(checkbox => {
-                
+
                 const match = folderSelect.filesList.find((obj2) => {
                     return checkbox._id === obj2
                 });
 
-                return !match ? { ...checkbox, checked: false } :null;
+                return !match ? { ...checkbox, checked: false } : null;
             });
             setUserFiles(newCheckedArray);
         } else {
@@ -206,7 +206,7 @@ const ContentModels = ({
 
     }
     const callGetAllFileFun = () => {
-        const UserId =localStorage.getItem("userInfo");
+        const UserId = localStorage.getItem("userInfo");
         if (UserId) {
             getFilesOfUser(UserId);
         }
@@ -241,7 +241,7 @@ const ContentModels = ({
 
     const [selectedFile, setSelectedFile] = useState([]);
     const addFileInFolder = (event, fileData) => {
-        
+
         const updatedCheckboxes = userFiles.map((checkbox) => {
             if (checkbox.fileId === fileData.fileId) {
                 return {
@@ -260,10 +260,10 @@ const ContentModels = ({
     //////////// adding file api call here
     ////// Add file in folder
     const addIngFileInFolder = async (userId, fileArr, selectedFolder) => {
-       const addFileInFolderObject = {
-         folderId: selectedFolder,
-         fileId: JSON.stringify(fileArr),
-       };
+        const addFileInFolderObject = {
+            folderId: selectedFolder,
+            fileId: JSON.stringify(fileArr),
+        };
         // const addFileInFolderObject = { userId: userId, folderId: selectedFolder, fileId: fileId }
         const response = await axios.put('v2/folder/FileAddFolder', addFileInFolderObject, {
             headers: {
@@ -290,20 +290,20 @@ const ContentModels = ({
             return null;
         }
         setAddBtnDisable(true);
-        const UserId =localStorage.getItem("userInfo");
+        const UserId = localStorage.getItem("userInfo");
         console.log(folderSelect)
-        let filesArr=[...folderSelect.filesList]
+        let filesArr = [...folderSelect.filesList]
         for (let index = 0; index < selectedFile.length; index++) {
-            
+
             filesArr.push(selectedFile[index]._id)
         }
 
-        await addIngFileInFolder(UserId,filesArr, folderSelect._id);
+        await addIngFileInFolder(UserId, filesArr, folderSelect._id);
         // if (selectedFile.length - 1 === index) {
-            // toast.success("Files added successfully");
-            // setAddBtnDisable(false);
-            // getFoldersData(UserId);
-            // handleClose();
+        // toast.success("Files added successfully");
+        // setAddBtnDisable(false);
+        // getFoldersData(UserId);
+        // handleClose();
         // }
     }
 
@@ -370,14 +370,20 @@ const ContentModels = ({
     const [selectUserSave, setAddUserObj] = useState(null);
 
     /////////// When click on the select user then this function run here
-    // const selectUserFun = async () => {
-    //     const response = await AddMemberButton(ActiveChannel, selectUserSave, user_id);
-    //     if (response.status) {
-    //         toast.success("Member added successfully");
-    //     } else {
-    //         toast.error("Something is wrong.Member not add in channel");
-    //     }
-    // }
+    const selectUserFun = async () => {
+        const data={
+            "chatId":selectChatV1._id, 
+            "userId":selectSrcMember._id
+       }
+       console.log(data)
+        const response = await AddMemberInGroup(data);
+        if (response) {
+            toast.success("Member added successfully");
+        } else {
+            toast.error("Something is wrong.Member not add in channel");
+        }
+        handleClose()
+    }
 
     // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
     //     try {
@@ -422,9 +428,11 @@ const ContentModels = ({
         const selectUserIdMem = selectSrcMember._id;
         try {
             const response = await creatSingleMemChatV1({ userId: selectUserIdMem });
+            console.log(response)
             if (response) {
                 setSelectedChatV1(response);
-                InanotherPage("1", response)
+                InanotherPage("1", response);
+                setChats([response, ...chats]);
                 handleClose();
             }
         } catch (error) {
@@ -479,6 +487,7 @@ const ContentModels = ({
         } catch (error) {
             console.log(error.response);
         }
+        handleClose();
     }
 
 
@@ -558,7 +567,7 @@ const ContentModels = ({
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 30px" }}
-                                // onClick={() => createChannelFun()}
+                            // onClick={() => createChannelFun()}
                             >
                                 Create Channel
                             </Button>
@@ -669,7 +678,7 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Add Teammates</Typography>
+                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Add New Teammate</Typography>
                             <Box >
                                 <Typography variant="subtitle2" >
                                     Start a chat conversation with adding teammates via email
@@ -681,29 +690,31 @@ const ContentModels = ({
                             <Box container sx={{ width: "100%" }}>
                                 <Autocomplete
                                     freeSolo
-                                    id="search_teammate_and_add"
+                                    id="search_member_and_add"
                                     disableClearable
-                                    options={AddAllUsers}
+                                    options={listNewMembers}
                                     onChange={(event, newValue) => {
-                                        setAddUserObj(newValue);
+                                        setSelectSrcMem(newValue);
                                     }}
-                                    getOptionLabel={(option) => option.label}
-                                    getOptionSelected={(option, value) => option.value === value.value}
+                                    getOptionLabel={(option) => option.name}
+                                    //getOptionSelected={(option, value) => option.email === value.email}
                                     renderOption={(props, option) => (
                                         <div {...props}>
-                                            <div>{option.label}</div>
+                                            <div>{option.name}</div>
                                             {/* <div>{option.value}</div> */}
                                         </div>
                                     )}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label="Username"
+                                            label="Name Or Email"
                                             InputProps={{
                                                 ...params.InputProps,
                                                 type: 'search',
                                             }}
-                                        />
+                                            onChange={(event, newValue) => {
+                                                SetSrcMemberText(event.target.value);
+                                            }}/>
                                     )}
                                 />
                             </Box>
@@ -733,7 +744,7 @@ const ContentModels = ({
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 30px" }}
-                                // onClick={() => selectUserFun()}
+                                onClick={() => selectUserFun()}
                             >
                                 Add
                             </Button>
@@ -985,7 +996,7 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Search Member </Typography>
+                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Start Conversation </Typography>
                             <Box >
                                 <Typography variant="subtitle2" >
                                     Start a chat conversation with your member just search thee member via email or name.
@@ -1155,7 +1166,7 @@ const ContentModels = ({
                                 variant="contained"
                                 size='small'
                                 sx={{ padding: "5px 30px" }}
-                                onClick={() => createGroupFun()}
+                                onClick={() => {createGroupFun();}}
                             >
                                 Create Group
                             </Button>

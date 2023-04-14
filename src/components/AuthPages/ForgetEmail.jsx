@@ -15,7 +15,7 @@ import { useMutation } from 'react-query'
 //     CognitoSignUp,
 //     otpWithResetPassword, resetPasswordFun
 // } from "../../api/CognitoApi/CognitoApi";
-import { userCreateAccount, ForgetEmailOtp } from '../../api/InternalApi/OurDevApi';
+import { getStartedVerify, ForgetEmailOtp } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 import { useNavigate, Link } from 'react-router-dom';
 const cssStyle = {
@@ -67,19 +67,33 @@ const ForgetEmail = () => {
 
     const { serviceType, setSeviceType, setContextEmail, setContextOtp } = ServiceState();
     const navigate = useNavigate();
+    const { mutateAsync: checkUserApi, isLoading: checkUserIsLoading } = useMutation(getStartedVerify);
     const { mutateAsync: ForgetEmailApi, isLoading: ForgetEmailOtpIsLoading } = useMutation(ForgetEmailOtp);
-    
+
     const forgetOtpInMail = async (email) => {
-        const response = await ForgetEmailApi({ email });
-        if (response.statusCode==200) {
-            toast.info("Otp send in your mail please check your mail inbox.");
-            setSeviceType('forgetPassword');
-            setContextEmail(emailAddress);
-            navigate("/forget-password")
-            console.log("here")
-        } else {
-            toast.error(response?.error?.message||"Something wrong in forget email");
+        try{
+            const checkResponse=await checkUserApi({email:emailAddress})
+            if(checkResponse.status)
+            {
+                const response = await ForgetEmailApi({ email });
+                if (response.statusCode == 200) {
+                    toast.info("Otp send in your mail please check your mail inbox.");
+                    setSeviceType('forgetPassword');
+                    setContextEmail(emailAddress);
+                    navigate("/forget-password")
+                } else {
+                    toast.error(response?.error?.message || "Something wrong in forget email");
+                }
+            }else{
+                toast.error("User not exist");
+                return;
+            }
+        }catch(error)
+        {
+
         }
+
+        
     }
 
 
@@ -93,7 +107,7 @@ const ForgetEmail = () => {
         forgetOtpInMail(emailAddress);
     }
 
-   
+
 
     return (
         <Box container  >
@@ -150,7 +164,7 @@ const ForgetEmail = () => {
                                                 backgroundColor: '#1c529b' // background color on hover
                                             }
                                         }}
-                                        disabled={ForgetEmailOtpIsLoading}
+                                        disabled={ForgetEmailOtpIsLoading||checkUserIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >

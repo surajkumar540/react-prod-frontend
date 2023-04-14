@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Grid, Typography, Box, TextField, Avatar } from '@mui/material'
 import appConfig from "../../Config";
 //////////get the all users from congnito ///////////////////
-import { IdentityService } from '../../services/IdentityService.js';
+// import { IdentityService } from '../../services/IdentityService.js';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import AttachFileIcon from '@mui/icons-material/AttachFile';

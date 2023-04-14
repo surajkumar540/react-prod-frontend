@@ -4,10 +4,9 @@ import {
 } from '@mui/material'
 
 import CircularProgress from '@mui/material/CircularProgress';
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
-import { updateCreateAccountData } from "../../Redux/Reducers/CreateAccountSlice";
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroundImg.png"
 import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
 import signupPageBgImg from "../../assets/BackgroundImages/signupBackgroundImg.png"
@@ -72,21 +71,15 @@ export const SignupPage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfPass, setShowConfPass] = useState(false);
-    // const [OtpValue, setOtpValue] = useState('');////otp value store here
-    // const [showOtpVeriCont, setShowVeriCon] = useState(false);
-    /////Store email address
-    const { setSeviceType, setContextEmail, setContextPassword, setContextName } = ServiceState();
-    // const [fullName, setFullName] = useState("");
+    const { contextEmail,setSeviceType, setContextEmail, setContextPassword, setContextName } = ServiceState();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    // const [phoneNumber, setPhoneNumber] = useState("");
-    // const [btnDisabed, setBtnDisabled] = useState(false);
-    // const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
 
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
+    const emailRedux=useSelector((state)=>state.CreateAccountUserData.email)
     const { mutateAsync: userPostApiFun, isLoading: userPostApiIsLoading } = useMutation(userCreateAccount);
 
     const createAccount = async () => {
@@ -143,6 +136,15 @@ export const SignupPage = () => {
     const handleToggleConfPassword = () => {
         setShowConfPass(!showConfPass);
     }
+
+    useEffect(()=>{
+        if(emailRedux!=="")
+        {
+            console.log(emailRedux,"get in signup")
+            setEmailAddress(emailRedux)
+        }
+      },[emailRedux])
+
     return (
         <Box container   >
             <Grid container padding={7}>

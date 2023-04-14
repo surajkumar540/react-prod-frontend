@@ -271,6 +271,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                 //sendMessageByUser(ActiveChannel, newMessage, member)
                 sendMessagev1(newMessage);
             }
+            // setCurrentChats
 
         }
     };
@@ -350,19 +351,21 @@ const NewMessageGrid = ({ selectedChannel }) => {
                         </Box>
 
 
-                        <Box display={'flex'} alignItems={'center'} >
-                            <Button
-                                sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
-                                variant="outlined"
-                                size="small"
-                                onClick={() => modelOpens()}>
-                                Add Member
-                            </Button>
-                            {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
-                                List Of People
-                            </Button> */}
-                            <ListModal buttonStyle={cssStyle.listofPeopeBtn}/>
-                        </Box>
+                       {
+                        (selectChatV1?.isGroupChat==='true'||selectChatV1?.isGroupChat===true)&&<Box display={'flex'} alignItems={'center'} >
+                        <Button
+                            sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
+                            variant="outlined"
+                            size="small"
+                            onClick={() => modelOpens()}>
+                            Add Member
+                        </Button>
+                        {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
+                            List Of People
+                        </Button> */}
+                        <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens}/>
+                    </Box>
+                       } 
                     </>
                 }
 

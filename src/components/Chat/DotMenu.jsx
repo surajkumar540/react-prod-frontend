@@ -5,10 +5,6 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteModal from './DeleteModal';
 import { Typography } from '@mui/material';
-// const options = [
-//   'Delete',
-//   'Add Files'
-// ];
 
 const ITEM_HEIGHT = 48;
 
@@ -16,6 +12,7 @@ export default function DotMenu({handleDelete,handleAddFile,value,pageName='fold
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,8 +53,8 @@ export default function DotMenu({handleDelete,handleAddFile,value,pageName='fold
         }}
       >
         { 
-          pageName==='folder'&&<MenuItem>
-            <Typography onClick={()=>{handleAddFile();handleClose()}}>Add File</Typography>
+          pageName==='folder'&&<MenuItem onClick={()=>{handleAddFile();handleClose()}}>
+            <Typography>Add File</Typography>
           </MenuItem>}
           <MenuItem>
             <DeleteModal handleDelete={handleDelete} value={value} closeParentModal={handleClose} pageName={pageName}/> 
