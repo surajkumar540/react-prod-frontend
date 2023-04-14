@@ -455,10 +455,11 @@ const NewMessageGrid = ({ selectedChannel }) => {
                             */
                     }
 
-                    {currentChats.length > 0 &&
+                    {(currentChats.length > 0&&selectChatV1) &&
                         <>
-                            {currentChats.map((mes, index) => {
-                                if (mes?.sender?._id === MyActiveChat?.users[0]?._id) {
+                            {currentChats?.map((mes, index) => {
+                                // console.log(mes,"senderrr",MyActiveChat,"ye aa gaya",selectChatV1,"chat")
+                                if (mes?.sender?._id === selectChatV1?.users[0]?._id) {
                                     return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
