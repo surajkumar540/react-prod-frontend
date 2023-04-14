@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import { ChatState } from '../../Context/ChatProvider';
 import DeleteModal from '../../components/Chat/DeleteModal';
-import { RemoveMemberInGroup } from '../../api/InternalApi/OurDevApi';
+import { RemoveMemberInGroup,fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
 import { toast } from 'react-toastify';
 
 const style = {
@@ -46,26 +46,44 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { selectChatV1 } = ChatState();
-  const [search, setSearch] = useState("")
+  const { selectChatV1,setChats } = ChatState();
+  const [search, setSearch,setSelectedChatV1] = useState("")
+
+  
+  const fetchChat = async () => {
+    try {
+        const response = await fetchAllChatSingleUserOrGroup();
+     
+            console.log(response,"all fetchhhhhhhh")
+            // setChats(response);
+            // setSelectedChatV1(response)
+            // setLoggedUser(localStorage.getItem("userInfo"));
+    } catch (error) {
+        console.log("Something is wrong");
+    }
+  }
 
   const removeMember=async(chatId,userId)=>{
     try{
       const data={
         "chatId":chatId, 
         "userId":userId 
-   }
+        }
       const response=await RemoveMemberInGroup(data)
+      console.log(response,"delete response")
       if(response)
       {
+        fetchChat()
+        setSelectedChatV1(response)
         toast.success("User removed successfully")
+        // fetchChat()
       }else{
         toast.error("User not removed")
       }
+      handleClose()
     }catch(error)
     {
-      toast.error("Something is wrong")
-      console.log(error)
+      toast.error("Something is wrong in delete")
     }
   }
 

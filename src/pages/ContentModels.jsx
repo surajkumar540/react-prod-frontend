@@ -428,7 +428,7 @@ const ContentModels = ({
         const selectUserIdMem = selectSrcMember._id;
         try {
             const response = await creatSingleMemChatV1({ userId: selectUserIdMem });
-            console.log(response)
+            // console.log(response,)
             if (response) {
                 setSelectedChatV1(response);
                 InanotherPage("1", response);

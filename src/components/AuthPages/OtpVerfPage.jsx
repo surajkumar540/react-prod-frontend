@@ -91,10 +91,7 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
     const signupVerificationOtp = async (getOtp, email, userName = 'jai', password) => {
         const postData = {
             "email": email,
-            "codeEmailVerify": getOtp,
-            "name": userName,
-            "password": password,
-            'serviceType': serviceType
+            "codeEmailVerify": getOtp
         }
         setVerifyBtnDisabled(true);
         try {

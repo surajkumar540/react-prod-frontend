@@ -399,7 +399,6 @@ const LeftSideBar = (props) => {
         try {
             const response = await userGroupFetchChat();
             if (response) {
-                console.log(response)
                 setChats(response);
                 // setLoggedUser(localStorage.getItem("userInfo"));
             }
