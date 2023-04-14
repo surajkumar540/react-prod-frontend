@@ -2,7 +2,7 @@ import { Box, Grid, Typography, TextField, Button } from '@mui/material'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import { userSignIn, resendConfermationEMail } from "../api/CognitoApi/CognitoApi";
+// import { userSignIn, resendConfermationEMail } from "../api/CognitoApi/CognitoApi";
 import { toast } from 'react-toastify';
 
 import OtpVerificationModel from '../components/OtpVerificationModel/OtpVerificationModel';

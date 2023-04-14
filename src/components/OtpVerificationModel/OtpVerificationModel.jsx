@@ -3,7 +3,7 @@ import Papa from "papaparse";
 import React, { useCallback, useState } from 'react'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import { useMutation } from 'react-query';
-import { SignUpOtpVarify, otpWithResetPassword, userSignIn } from "../../api/CognitoApi/CognitoApi";
+// import { SignUpOtpVarify, otpWithResetPassword, userSignIn } from "../../api/CognitoApi/CognitoApi";
 import { toast } from 'react-toastify';
 
 const OtpVerificationModel = ({ handleClose, open, userName, serviceType = "", password = "" }) => {

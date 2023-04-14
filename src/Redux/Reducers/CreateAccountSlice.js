@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Axios } from "axios";
 
 const initialState = {
-    auth: false,
+    email: "",
 }
 
 const CreateAccountSlice = createSlice({
@@ -11,12 +11,13 @@ const CreateAccountSlice = createSlice({
     initialState,
     reducers: {
 
-        updateCreateAccountData: (state, action) => {
+        updateEmail: (state, action) => {
             const getAccountData = action.payload;
-            state.CreateAccountData.auth = getAccountData;
+            console.log(getAccountData,"slice")
+            state.email=getAccountData ;
         },
         deleteAccountData: (state) => {
-            state.CreateAccountData = {}
+            state.email = ""
         }
 
     }
@@ -25,4 +26,4 @@ const CreateAccountSlice = createSlice({
 
 
 export default CreateAccountSlice.reducer;
-export const { updateCreateAccountData, deleteAccountData } = CreateAccountSlice.actions
+export const { updateEmail, deleteAccountData } = CreateAccountSlice.actions

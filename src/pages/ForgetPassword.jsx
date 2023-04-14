@@ -1,7 +1,7 @@
 import { Box, Grid, Typography, TextField, Button } from '@mui/material'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { resetPasswordFun } from "../api/CognitoApi/CognitoApi";
+// import { resetPasswordFun } from "../api/CognitoApi/CognitoApi";
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 

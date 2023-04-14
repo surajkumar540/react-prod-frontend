@@ -8,7 +8,7 @@ const ServiceProvider = ({ children }) => {
     const [contextPassword, setContextPassword] = useState("");
     const [contextName, setContextName] = useState("");
     const [contextOtp, setContextOtp] = useState("");
-
+    console.log(contextEmail)
     return (
         <ServiceContext.Provider value={{ serviceType, setSeviceType, contextEmail, setContextEmail, contextPassword, setContextPassword,contextName,setContextName,contextOtp ,setContextOtp }}>
             {children}

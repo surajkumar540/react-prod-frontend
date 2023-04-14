@@ -306,7 +306,7 @@ const NewPassword = () => {
                                         color: "primary"
                                     }}
                                 />
-                                Change Password 
+                                Change Password
                             </Button>
 
                         </Grid>

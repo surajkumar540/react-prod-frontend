@@ -18,10 +18,11 @@ import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 import DeleteModal from '../components/Chat/DeleteModal';
 import DotMenu from '../components/Chat/DotMenu';
+import Loader from '../components/Tools/Loader';
 
 const AllFiles = () => {
     const navigate = useNavigate();
-
+    const [loading,setLoading]=useState(false);
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
 
@@ -59,25 +60,16 @@ const AllFiles = () => {
         mov:'#006CB7',
         psd:'#297CAF',
     }
-
-
-    const selectRandomColor = () => {
-        return colorsCode[Math.floor(Math.random() * 10)];
-    }
+   
     const style = {
         folderCreateMainBox: {
             minHeight: "500px", backgroundColor: "transparent",
         }
     }
 
-    useEffect(() => {
-        const UserId =localStorage.getItem("userInfo");
-        setUserId(UserId);
-    }, [])
-
     /////// Get files of this user
     const getFilesOfUser = async () => {
-        // const userID = { userId: userId }
+        setLoading(true)
         const response = await axios.get('https://devorganaise.com/api/v2/file/getfiles', {
             headers: {
                 'Content-Type': 'application/json'
@@ -86,23 +78,16 @@ const AllFiles = () => {
         const FilesResponse = response.data;
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
-            // FilesData.forEach((item)=>{
-            //     const ext=item.fileName.split(['.'])[1];
-            //     console.log(ext)
-            // })
             setUserFiles(FilesData)
         } else {
             toast.error(FilesResponse.message);
         }
-
+        setLoading(false)
     }
 
     useEffect(() => {
-        // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-        if (UserId !== "") {
-            getFilesOfUser(UserId);
-        }
-    }, [UserId])
+        getFilesOfUser();
+    }, [])
 
     ///////////// Delete fie code add here
     const { mutateAsync: deleteFileApiCall, isLoading: delFileIsLoading } = useMutation(deleteFileApi)
@@ -145,6 +130,14 @@ const AllFiles = () => {
 
     }, [debouncedSearchTerm, UserId])
 
+    if(loading)
+    {
+        return(
+        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+            <Loader/>
+        </LeftSideBar>
+        )
+    }
 
     return (
         <LeftSideBar data={{ pageName: "data", index: 2 }}>

@@ -2,19 +2,19 @@ import { useState, createContext } from 'react'
 import Typography from '@mui/material/Typography'
 import { Route, Router, Routes, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material';
-import Dashboard from './pages/Dashboard';
-import Data from './pages/Data';/////// Delete this page after creatingful design Page 
-import Folder from './pages/Folder';
-import Message from './pages/Message';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import Setting from './pages/Setting';
-import Login from "./pages/Login"; ////// Delete this page after creating Login system in authservice Page 
-import ForgetPassword from './pages/ForgetPassword';
-import SignUp from './pages/signup';/////Delete this page after creating signup system in authservice Page 
+// import Dashboard from './pages/Dashboard';
+// import Data from './pages/Data';/////// Delete this page after creatingful design Page 
+// import Folder from './pages/Folder';
+// import Message from './pages/Message';
+// import PrivacyPolicy from './pages/PrivacyPolicy';
+// import Setting from './pages/Setting';
+// import Login from "./pages/Login"; ////// Delete this page after creating Login system in authservice Page 
+// import ForgetPassword from './pages/ForgetPassword';
+// import SignUp from './pages/signup';/////Delete this page after creating signup system in authservice Page 
 import { useEffect } from 'react';
 // import { getAwsCredentialsFromCognito } from "./api/CognitoApi/CognitoApi";
 // import { Auth } from "@aws-amplify/auth";
-import configureAmplify from './services/servicesConfig';/////////// Here we are configure the authication of server
+// import configureAmplify from './services/servicesConfig';/////////// Here we are configure the authication of server
 // import AuthService from './pages/AuthService';
 import FileUpload from './pages/FileUpload';
 import FolderData from './pages/FolderData';
@@ -25,18 +25,19 @@ import ContentModels from './pages/ContentModels';
 import AllFiles from './pages/AllFiles';
 import ChatProvider from './Context/ChatProvider';
 import ServiceProvider from './Context/ServiceProvider';
-import LeftSideBar from './components/LeftSideBar/LeftSideBar';
-import { useContext } from 'react';
+// import LeftSideBar from './components/LeftSideBar/LeftSideBar';
+// import { useContext } from 'react';
 import LoginPage from './components/AuthPages/LoginPage';
 import { SignupPage } from './components/AuthPages/SignupPage';
 import GetStart from './components/AuthPages/GetStart';
 import ForgetPage from './components/AuthPages/ForgetPage';
 import OtpVerfPage from './components/AuthPages/OtpVerfPage';
-import NewPassword from './components/AuthPages/NewPassword';
+// import NewPassword from './components/AuthPages/NewPassword';
 import ForgetEmail from './components/AuthPages/ForgetEmail';
 import ProjectName from './pages/ProjectName';
 import FolderFiles from './pages/FolderFiles';
 // import MyAccount from './pages/MyAccount';
+import { userTokenVerify } from './api/InternalApi/OurDevApi';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
@@ -111,28 +112,38 @@ function App() {
     //         });
     // }, [Auth]);
 
-    const checkAuthentication=()=>{
-        const userId=localStorage.getItem("userInfo");
-        const pathname=location.pathname;
-        if(userId)
-        {
-            setIsAuthenticated(true)
-            if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/getstart'||pathname=='/forgetEmail'||pathname=='/forget-password'||pathname=='/')
+    const checkAuthentication = async() => {
+        const userId = localStorage.getItem("userInfo");
+        const pathname = location.pathname;
+        try{
+            const response=await userTokenVerify();
+            if(response.status===true)
             {
-                navigate("/chat")
-            }
-        }else{        
-            setIsAuthenticated(false)
-            if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/forgetEmail'||pathname=='/forget-password')
-            {
-                navigate(pathname)
+                setIsAuthenticated(true)
+                if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/getstart'||pathname=='/forgetEmail'||pathname=='/forget-password'||pathname=='/')
+                {
+                    navigate("/chat")
+                } 
             }else{
-                navigate("/login")
+                setIsAuthenticated(false)
+                if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/forgetEmail' || pathname == '/forget-password') {
+                    navigate(pathname)
+                } else {
+                    navigate("/getStart")
+                }
             }
+        }catch(err)
+        {
+            setIsAuthenticated(false)
+                if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/forgetEmail' || pathname == '/forget-password') {
+                    navigate(pathname)
+                } else {
+                    navigate("/getStart")
+                }
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         checkAuthentication()
     },[isAuthenticated])
 
@@ -147,16 +158,16 @@ function App() {
 
                 {!isAuthenticated
                     ?
-                    
+
                     <ServiceProvider>
 
                         <Routes>
-                            <Route path="/login" element={<LoginPage serviceType="login" setIsAuthenticated={setIsAuthenticated}/>} />
-                            <Route path="/signup" element={<SignupPage serviceType="signup"/>} />
+                            <Route path="/login" element={<LoginPage serviceType="login" setIsAuthenticated={setIsAuthenticated} />} />
+                            <Route path="/signup" element={<SignupPage serviceType="signup" />} />
                             <Route path="/getStart" element={<GetStart serviceType='start' />} />
                             <Route path="/forgetEmail" element={<ForgetEmail serviceType='forgetEmail ' />} />
                             <Route path="/forget-password" element={<ForgetPage serviceType='forgetPassword' />} />
-                            <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf'  setIsAuthenticated={setIsAuthenticated}/>} />
+                            <Route path="/otpVerf" element={<OtpVerfPage serviceType='otpVerf' setIsAuthenticated={setIsAuthenticated} />} />
                             {/* <Route path="/newPassword" element={<NewPassword serviceType='newPassword' />} /> */}
                             {/* <Route path="/companyDetail" element={<CompanyDetails />} /> */}
                         </Routes>
