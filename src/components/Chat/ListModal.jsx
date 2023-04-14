@@ -46,8 +46,8 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { selectChatV1,setChats } = ChatState();
-  const [search, setSearch,setSelectedChatV1] = useState("")
+  const [search, setSearch] = useState("")
+  const { selectChatV1,setChats,setSelectedChatV1 } = ChatState();
 
   
   const fetchChat = async () => {
@@ -73,10 +73,8 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
       console.log(response,"delete response")
       if(response)
       {
-        fetchChat()
         setSelectedChatV1(response)
         toast.success("User removed successfully")
-        // fetchChat()
       }else{
         toast.error("User not removed")
       }
