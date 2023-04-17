@@ -55,17 +55,29 @@ import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogOutModal from '../Chat/LogOutModal';
 import { clearLocalStorage } from '../../utils/validation';
 
-const drawerWidth = '16%';
+const drawerWidth = '200px';
 
 const openedMixin = (theme) => ({
-    width: drawerWidth,
+    // width: drawerWidth,
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration['20000'],
     }),
     overflowX: 'hidden',
-    marginLeft: '5rem',
-    borderLeft: '2px solid  rgba(0, 0, 0, 0.06)'
+    // marginLeft: '5rem',
+    borderLeft: '2px solid  rgba(0, 0, 0, 0.06)',
+    [theme.breakpoints.up('xs')]: {
+        marginLeft: '3rem',
+        display:'none'
+    },
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: '3.8rem',
+        display:'inherit',
+        width:'160px'
+    },
+    [theme.breakpoints.up('md')]: {
+        width: drawerWidth,
+    },
 });
 
 const closedMixin = (theme) => ({
@@ -74,10 +86,18 @@ const closedMixin = (theme) => ({
         duration: theme.transitions.duration.complex,
     }),
     overflowX: 'hidden',
-    marginLeft: '5rem',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
+    // marginLeft: '5rem',
+    width: `calc(${theme.spacing(3.2)} + 1px)`,
+    [theme.breakpoints.up('xs')]: {
         width: `calc(${theme.spacing(3.2)} + 0px)`,
+        display:'none'
+    },
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: '3rem',
+        display:'inherit',
+    },
+    [theme.breakpoints.up('md')]: {
+        marginLeft: '4rem',
     },
 });
 
@@ -112,7 +132,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     ({ theme, open }) => ({
         width: drawerWidth,
         flexShrink: 0,
-        marginLeft: '5rem',
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
         ...(open && {
@@ -132,7 +151,6 @@ const styleCss = {
         boxShadow: "none",
         borderBottom: "1px solid #efefef !important",
         height: "65px",
-
     }
 }
 
@@ -233,12 +251,16 @@ const LeftSideBar = (props) => {
     const { mutateAsync: getComName, isLoading: GetComNameIsLoading } = useMutation(getCompanyName);
 
     const getComFun = async (subUserId = localStorage.getItem("userInfo")) => {
-        const responseGetCom = await getComName(subUserId);
-        if (responseGetCom.status == true) {
-            SetComName(responseGetCom?.data[0]?.companyName)
-            setCompNameContext(responseGetCom?.data[0]?.companyName)
-        } else {
-            toast.error(responseGetCom.message);
+        try{
+            const responseGetCom = await getComName(subUserId);
+            if (responseGetCom.status!==404&&responseGetCom?.status === true) {
+                SetComName(responseGetCom?.data[0]?.companyName)
+                setCompNameContext(responseGetCom?.data[0]?.companyName)
+            }  
+        }catch(error)
+        {
+            toast.info("Company name is required");
+            navegate("/companyDetail")
         }
     }
     useEffect(() => {
@@ -417,21 +439,21 @@ const LeftSideBar = (props) => {
             <Box id="main_container_box" sx={{ display: 'flex' }}>
                 <CssBaseline />
 
-            {
+                {
                 <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box display={'flex'} width={drawerWidth&&drawerWidth} alignItems={'center'}>
             
-
+                    <Box flex={0.2}>
                     <CardMedia
                     className='blog-img'
                     component="img"
                     image={oLogo}
                     alt="Image"
-                    sx={{ height:'40px',width:'40px',flex:'0.2' }}
+                    sx={{ height:'40px',width:'40px' }}
                     onClick={handleDrawerOpen}
-                    
                     />
+                    </Box>
                    
                   <Typography
                     variant="subtitle1"
@@ -519,7 +541,8 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'} position={'fixed'} width={'90px'} display={'flex'} flexDirection={'column'} overflow={'hidden'}>
+                <Box height={'100vh'} position={'fixed'} width={{xs:'60px',xl:'70px'}} display={{xs:'none',sm:'flex'}} flexDirection={'column'} overflow={'hidden'}>
+                    
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
                         <CardMedia
@@ -576,7 +599,6 @@ const LeftSideBar = (props) => {
                     position='relative'
                 >   
                     <Box position={'absolute'} right={'0%'} bottom={'20%'}>
-                        {/* <Typography onClick={handleDrawerClose}>asdf</Typography> */}
                         {
                             open ? <ChevronLeftIcon sx={{ fontSize: "1.5rem", bgcolor: 'whitesmoke', boxShadow: '4px 0px 18px rgba(0, 0, 0, 0.06)', border: '1px solid rgba(0, 0, 0, 0.4)', color: 'gray', borderRadius: "50%"  }} onClick={() => handleDrawerClose()} /> : (
                                 <ChevronRightIcon sx={{ fontSize: "1.5rem", bgcolor: 'whitesmoke', boxShadow: '4px 0px 18px rgba(0, 0, 0, 0.06)', border: '1px solid rgba(0, 0, 0, 0.4)', color: 'gray', borderRadius: "50%" }} onClick={handleDrawerOpen} />
@@ -653,7 +675,7 @@ const LeftSideBar = (props) => {
                             location.pathname.split(['/'])[1] === "chat" && (
                                 <>
                                     <Box id="channel_box">
-                                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Box sx={{ paddingLeft: {sm:'10px',md:"25px"}, paddingRight: {sm:'10px',md:"25px"} }}>
                                             <Button
                                                 id="channel-create-button"
                                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -701,7 +723,7 @@ const LeftSideBar = (props) => {
                                                     chats.length !== 0 && chats.map((d, index) =>
                                                         <ListItem
                                                             key={index}
-                                                            sx={{ paddingTop: "2px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
+                                                            sx={{ paddingTop: "2px", paddingBottom: "0px", paddingLeft: {sm:'25px',md:'40px',xl:"60px"}, cursor: "pointer" }}
                                                             // onClick={() =>
                                                             //     (location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d);setActiveChatId(d._id);setActivePage("groups");)
                                                             // }
@@ -726,7 +748,7 @@ const LeftSideBar = (props) => {
                                                 <ListItem
                                                     sx={{
                                                         paddingTop: "0px", paddingBottom: "0px",
-                                                        paddingLeft: "58px", cursor: "pointer"
+                                                        paddingLeft: {sm:'22px',md:'38px',xl:"58px"}, cursor: "pointer"
                                                     }}
                                                     onClick={() => modelOpens()}
                                                 >
@@ -747,7 +769,7 @@ const LeftSideBar = (props) => {
                                         </Box>
                                     </Box>
                                     <Box id="single_user_box">
-                                        <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                                        <Box sx={{ paddingLeft:{sm:'10px',md:"25px"} , paddingRight:{sm:'10px',md:"25px" } }}>
                                             <Button
                                                 id="single-user-inbox-create-button"
                                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -775,7 +797,7 @@ const LeftSideBar = (props) => {
 
                                                     <ListItem
                                                         key={index}
-                                                        sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px", cursor: "pointer" }}
+                                                        sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: {sm:'25px',md:"40px",xl:'60px'}, cursor: "pointer" }}
                                                         onClick={() => { location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d); setActiveChatId(d?._id); setActivePage("inbox") }
                                                         }
                                                     >
@@ -806,7 +828,7 @@ const LeftSideBar = (props) => {
                                                 <ListItem
                                                     sx={{
                                                         paddingTop: "0px", paddingBottom: "0px",
-                                                        paddingLeft: "58px", cursor: "pointer"
+                                                        paddingLeft: {sm:'22px',md:'38px',xl:"58px"}, cursor: "pointer"
                                                     }}
                                                     onClick={() => singleMessTeamMemberModel()}
                                                 >
@@ -961,7 +983,7 @@ const LeftSideBar = (props) => {
                         }
 
 
-                        <Box id="logout_box" sx={{ position: "absolute", bottom: "10px", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: "20px" }} mt={1}>
+                        <Box id="logout_box" sx={{ position: "absolute", bottom: "10px", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: {sm:'8px',md:"20px"} }} mt={1}>
                             <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
                                 {/* <Button
                                 id="logout-button"

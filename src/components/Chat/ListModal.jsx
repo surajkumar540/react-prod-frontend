@@ -97,7 +97,7 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
         aria-describedby="modal-modal-description"
       >
 
-        <Box sx={{ ...style, width: { xs: '100%', sm: 350, md: 420 } }}>
+        <Box sx={{ ...style, width: { xs: '90%', sm: 350, md: 420 } }}>
 
           <IconButton
             style={{
@@ -114,15 +114,15 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
             <CloseIcon sx={{ p: 0, fontSize: '15px' }} />
           </IconButton>
 
-          <Typography id="modal-modal-title" color={'black'} fontSize={'22px'} mb='.5rem'>
+          <Typography id="modal-modal-title" color={'black'} fontSize={{xs:'19px',sm:'22px'}} mb='.5rem'>
             List of People
           </Typography>
 
           <Box mb={".6rem"} display={'flex'} justifyContent={'space-between'}>
-            <Typography id="modal-modal-title" variant="p" color={'#448DF0'} fontSize={'16px'}>
+            <Typography id="modal-modal-title" variant="p" color={'#448DF0'} fontSize={{xs:'13px',md:'16px'}}>
               # {selectChatV1?.chatName}
             </Typography>
-            <Typography variant="p" color={'#BEBEBE'} fontSize={'14px'}>{selectChatV1 && selectChatV1?.users?.length} people</Typography>
+            <Typography variant="p" color={'#BEBEBE'} fontSize={{xs:'11px',md:'14px'}}>{selectChatV1 && selectChatV1?.users?.length} people</Typography>
           </Box>
 
           <Box my={".6rem"}>
@@ -178,12 +178,12 @@ const User = ({ name, role, online = false, img,id,removeMember,chatId }) => {
         }
 
 
-        <Typography pl='8px' color="black" fontSize={'15px'} textTransform={'capitalize'}>{name}</Typography>
+        <Typography pl='8px' color="black" fontSize={{xs:'12px',md:'15px'}} textTransform={'capitalize'}>{name}</Typography>
       </Box>
 
       <Box >
-      <Box display={'flex'} justifyContent='center' alignItems={'center'} >
-        <Typography pl='8px' color=" #A1A1A1" fontSize={'12px'} textTransform={'capitalize'}>
+      <Box display={'flex'} justifyContent='center' alignItems={'center'}>
+        <Typography pl='8px' color=" #A1A1A1" fontSize={{xs:'10px',md:'12px'}}  textTransform={'capitalize'}>
           {role}
         </Typography>
         <Box>
