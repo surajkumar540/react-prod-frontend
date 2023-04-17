@@ -124,35 +124,35 @@ const ForgetPage = () => {
 
     return (
         <Box container  >
-            <Grid container padding={7}>
-                <Grid item xs={12} sm={12} md={6}  >
-                    <Box container display='flex' flexDirection='column'>
-                        <Box paddingLeft={4}>
+            <Grid container padding={{ xs: 1, sm: 5 }}>
+                {/* grid1 */}
+                <Grid item xs={12} >
+                    <Box container display={{ xs: 'start', sm: 'flex' }} >
+                        <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 2, md:6 }}>
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
-                        </Box>
-                        <Box paddingLeft={4}>
-                            <img src={forgetPassPageBGImg} style={{ width: "70%" }}
-
-                                alt="forget-password-page-background-image" />
-                        </Box>
-
+                        </Grid>
+                        <Grid item xs={12} sm={9} md={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}>
+                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 2, sm: 0 }}>
+                                Forget Account
+                            </Typography>
+                        </Grid>
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} display='flex' justifyContent='center'  >
-                    <Box >
+                {/* grid2 */}
+                <Grid item xs={12} sm={12} md={12} display={'flex'} justifyContent={'center'} >
+                    <Grid container xs={12} display='flex' >
 
-                        <Box display='flex' justifyContent='center'>
+                        <Grid item xs={12} sm={6} paddingBottom={2}  >
+                            <Box paddingLeft={4} display='flex' justifyContent='center'>
+                                <img src={forgetPassPageBGImg} style={{ width: "60%" }} alt="forget-page-background-image" />
+                            </Box>
+                        </Grid>
 
-                            <Grid container xs={8} >
-
-                                <Typography marginBottom={4} variant="h4" fontWeight='600' color="#333333">
-
-                                    Forget Password
-                                </Typography>
-
+                        <Grid item xs={12} sm={6} display='flex' justifyContent='center' >
+                            <Grid item xs={11} sm={10} md={9} >
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                     <TextField
                                         id="login-signup-forgetPassword-email"
@@ -162,7 +162,7 @@ const ForgetPage = () => {
                                         sx={cssStyle.btn_textfield}
                                         value={emailAddress ? emailAddress : ""}
                                         onChange={(e) => setEmailAddress(e?.target?.value)}
-                                        disabled
+                                        // disabled
                                     />
                                 </Grid>
 
@@ -170,12 +170,11 @@ const ForgetPage = () => {
                                     <TextField
                                         id="login-signup-forgetPassword-otp"
                                         label="Otp"
-                                        type={'text'}
+                                        type={'number'}
                                         variant='outlined'
                                         sx={cssStyle.btn_textfield}
                                         value={otp ? otp : ""}
                                         onChange={(e) => setOtp(e?.target?.value)}
-
                                     />
 
                                 </Grid>
@@ -279,9 +278,8 @@ const ForgetPage = () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-
-                        </Box>
-                    </Box>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </Box>

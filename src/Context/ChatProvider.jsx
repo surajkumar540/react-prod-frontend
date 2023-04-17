@@ -12,9 +12,6 @@ const ChatProvider = ({ children }) => {
     const [serviceType, setSeviceType] = useState();
     const [compNameContext,setCompNameContext]=useState("")
 
-    useEffect(()=>{
-        console.log(selectChatV1,"hop gayayaay")
-    },[selectChatV1])
 
     useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");

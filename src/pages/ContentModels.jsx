@@ -679,9 +679,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Add New Teammate</Typography>
+                            <Typography variant="h6" fontSize={{xs:'19px',sm:'22px'}} fontWeight={"600"} color="#333333" mb={1}>Add New Teammate</Typography>
                             <Box >
-                                <Typography variant="subtitle2" >
+                                <Typography variant="subtitle2" fontSize={{xs:'12px',sm:'15px'}}>
                                     Start a chat conversation with adding teammates via email
                                     Chat directly with them for fast solutions.
                                 </Typography>
@@ -719,7 +719,7 @@ const ContentModels = ({
                                     )}
                                 />
                             </Box>
-                            <Box container sx={{ width: "100%" }} mt={1}>
+                            <Box container sx={{ width: "100%" }} mt={2}>
                                 <TextareaAutosize
                                     minRows={4}
                                     maxRows={4}
@@ -997,9 +997,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Start Conversation </Typography>
+                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1} fontSize={{xs:'19px',sm:'22px'}}>Start Conversation </Typography>
                             <Box >
-                                <Typography variant="subtitle2" >
+                                <Typography variant="subtitle2"  fontSize={{xs:'12px',sm:'15px'}}>
                                     Start a chat conversation with your member just search thee member via email or name.
                                     Chat directly with them for fast solutions.
                                 </Typography>
@@ -1102,9 +1102,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-create-group-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1}>Create Group</Typography>
+                            <Typography variant="h6"  fontSize={{xs:'19px',sm:'22px'}} fontWeight={"600"} color="#333333" mb={1}>Create Group</Typography>
                             <Box >
-                                <Typography variant="subtitle2" >
+                                <Typography variant="subtitle2" fontSize={{xs:'12px',sm:'15px'}}>
                                     Start a chat conversation with creating Group and add
                                     your teammates.
                                 </Typography>
@@ -1158,7 +1158,7 @@ const ContentModels = ({
                             <Button
                                 variant="outlined"
                                 size='small'
-                                sx={{ padding: "5px 30px" }}
+                                sx={{ padding: {xs:'3px 20px',md:"5px 30px"},fontSize:{xs:'10px',sm:'12px'} }}
                                 onClick={() => handleClose()}
                             >
                                 Discard
@@ -1166,7 +1166,7 @@ const ContentModels = ({
                             <Button
                                 variant="contained"
                                 size='small'
-                                sx={{ padding: "5px 30px" }}
+                                sx={{ padding: {xs:'3px 20px',md:"5px 30px"},fontSize:{xs:'10px',sm:'12px'} }}
                                 onClick={() => {createGroupFun();}}
                             >
                                 Create Group
