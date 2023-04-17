@@ -22,11 +22,8 @@ import io from "socket.io-client";
 
 import ListModal from '../Chat/ListModal';
 
-const ENDPOINT = "https://devorganaise.com"
-//"https://devorganaise.com";
-//"https://devorganaise.com/api"
-//"http://13.57.89.208:8000"
-//"http://localhost:8000"
+const ENDPOINT = process.env.REACT_APP_ENDPOINT
+
 
 var socket, selectedChatCompare;
 
@@ -242,7 +239,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
             setNewMessage("");
             const response = await sendingMessageV1(sendingMessData);
             setCurrentChats([...currentChats, response])
-
             //setMessages([...messages, response]);
             //fetchAllMessV1(selectChatV1._id);
             socket.emit("new message", response);
@@ -257,7 +253,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
             if (!selectedChatCompare || selectedChatCompare._id !== newMessageRecived.chat._id) {
                 //give notification
             } else {
-                console.log("send message and recove message test", [...currentChats, newMessageRecived]);
                 setCurrentChats([...currentChats, newMessageRecived]);
                 //setMessages([...messages, newMessageRecived]);
             }

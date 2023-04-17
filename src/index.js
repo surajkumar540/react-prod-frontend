@@ -24,10 +24,10 @@ const queryClient = new QueryClient({
 
 
 // if (process.env.NODE_ENV === 'development') {
-axios.defaults.baseURL = "https://devorganaise.com/api/";
-//"http://localhost:3010/api"
+axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
+//"https://devorganaise.com/api/"
 // } else if (process.env.NODE_ENV === 'production') {
-//   axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
+//   axios.defaults.baseURL = 
 // }
 
 ///// add  intercepter 
