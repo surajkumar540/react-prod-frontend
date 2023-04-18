@@ -59,11 +59,11 @@ const LoginPage = ({ setIsAuthenticated }) => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [btnDisabed, setBtnDisabled] = useState(false);
-  const emailRedux=useSelector((state)=>state.CreateAccountUserData.email)
+  const emailRedux = useSelector((state) => state.CreateAccountUserData.email)
   const navigate = useNavigate();
 
   // console.log(ServiceState);
-  const { contextEmail,serviceType, setSeviceType, setContextEmail, setContextPassword } = ServiceState();
+  const { contextEmail, serviceType, setSeviceType, setContextEmail, setContextPassword } = ServiceState();
   // console.log(setSeviceType,setContextEmail, setContextPassword);
 
   ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
@@ -75,7 +75,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
     setBtnDisabled(true);
 
     const response = await loginApiCall({ email, password });
-    if ((response.status === true||response.status===true)&&response.statusCode!==400) {
+    if ((response.status === true || response.status === true) && response.statusCode !== 400) {
       toast.success("Login successfully");
       // userLoginV1(email, password);
       setTimeout(() => {
@@ -87,29 +87,28 @@ const LoginPage = ({ setIsAuthenticated }) => {
         navigate("/chat")
       }, [1500])
     } else {
-        if(response?.response==="Incorrect username or password.")
-        {
-          toast.info(response?.response)
-          // navigate("/signup")
-          setBtnDisabled(false)
-          return;
+      if (response?.response === "Incorrect username or password.") {
+        toast.info(response?.response)
+        // navigate("/signup")
+        setBtnDisabled(false)
+        return;
+      }
+      ////////user account created but user account not activated//////
+      if (response?.response === "User is not confirmed.") {
+        const mailApiRes = await resendVerificationMail({ email });
+        if (mailApiRes.statusCode == 200) {
+          toast.info("Please check your mail inbox.");
+          setBtnDisabled(false);
+
+          setSeviceType('loginVerification')
+          setContextEmail(emailAddress);
+          setContextPassword(password)
+          navigate("/otpVerf")
+
+        } else {
+          toast.error("Resend not working");
+          setBtnDisabled(false);
         }
-        ////////user account created but user account not activated//////
-        if (response?.response === "User is not confirmed.") {
-          const mailApiRes = await resendVerificationMail({ email });
-          if (mailApiRes.statusCode == 200) {
-            toast.info("Please check your mail inbox.");
-            setBtnDisabled(false);
-
-            setSeviceType('loginVerification')
-            setContextEmail(emailAddress);
-            setContextPassword(password)
-            navigate("/otpVerf")
-
-          } else {
-            toast.error("Resend not working");
-            setBtnDisabled(false);
-          }
       }
       else {
         setBtnDisabled(false)
@@ -144,7 +143,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
     setShowPassword(!showPassword);
   };
 
-  
+
 
   useEffect(() => {
     // setFullName("");
@@ -152,135 +151,137 @@ const LoginPage = ({ setIsAuthenticated }) => {
     setPassword("");
   }, [serviceType])
 
-  useEffect(()=>{
-    if(emailRedux!=="")
-    {
+  useEffect(() => {
+    if (emailRedux !== "") {
       setEmailAddress(emailRedux)
     }
-  },[emailRedux])
+  }, [emailRedux])
 
 
   return (
     <Box container  >
-      <Grid container padding={7}>
-        <Grid item xs={12} sm={12} md={6}  >
-          <Box container display='flex' flexDirection='column'>
-            <Box paddingLeft={4}>
+      <Grid container padding={{ xs: 2, sm: 5 }}>
+       {/* grid1 */}
+        <Grid item xs={12} >
+          <Box container display={{ xs: 'start', sm: 'flex' }} >
+            <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 12 }}>
               <img
                 src={organaiseLogo}
                 style={{ width: "150px" }}
                 alt="organaise-logo-login-page" />
-            </Box>
-            <Box paddingLeft={4}>
-              <img src={loginPageBackgroundImg} style={{ width: "65%" }} alt="login-page-background-image" />
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6}   >
-          <Box display='flex' justifyContent='center' >
-            <Grid container xs={8}  >
-              <Grid item xs={12}  >
-                <Box paddingBottom={2}>
-                  <Typography variant="h4" fontWeight='600' color="#333333">
-                    Login Account
-                  </Typography>
-                </Box>
-
-              </Grid>
-
-
-              <Grid item xs={12} >
-                <Box marginY={2} >
-                  <TextField
-                    id="login-signup-forgetPassword-email"
-                    label="Email"
-                    variant='outlined'
-                    type="email"
-                    sx={cssStyle.btn_textfield}
-                    value={emailAddress ? emailAddress : ""}
-                    onChange={(e) => setEmailAddress(e?.target?.value)}
-                  />
-                </Box>
-
-                <Box>
-                  <TextField
-                    id="login-signup-forgetPassword-password"
-                    label="Password"
-                    type={showPassword ? 'text' : 'password'}
-                    variant='outlined'
-                    sx={cssStyle.btn_textfield}
-                    value={password ? password : ""}
-                    onChange={(e) => setPassword(e?.target?.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end"
-                          sx={{
-                            display: password !== "" ? "contents" : "none"
-                          }}
-                        >
-                          {password.length > 2
-                            ?
-                            <IconButton onClick={handleTogglePassword}>
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                            : null
-                          }
-                        </InputAdornment>
-                      ),
-                    }}
-
-                  />
-                </Box>
-
-                <Typography variant="subtitle2" align='right' >
-                  <Link to="/forgetEmail" style={{ textDecoration: "none", color: "red" }}>
-                    Forget Password?
-                  </Link>
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    ...cssStyle.btn_textfield,
-                    height: "50px", position: "relative",
-                    backgroundColor: "primary",
-                    '&:hover': {
-                      backgroundColor: '#1c529b' // background color on hover
-                    }
-                  }}
-                  disabled={btnDisabed}
-                  onClick={() => buttonAction()}
-
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      right: '3%',
-                      marginTop: -12,
-                      marginLeft: -12,
-                      color: "primary"
-                    }}
-                  />
-                  Login
-
-                </Button>
-
-              </Grid>
-
-
-              <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                <Typography variant="subtitle2" align='center'>
-                  I don't have account so <Link to="/signup">
-                    Click Here
-                  </Link>
-                </Typography>
-              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}  >
+              <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+                Login Account
+              </Typography>
             </Grid>
           </Box>
+        </Grid>
+
+        {/* grid2 */}
+        <Grid item xs={12} sm={12} md={12} display={'flex'} justifyContent={'center'} >
+          <Grid container xs={12} display='flex' >
+
+            <Grid item xs={12} sm={6} paddingBottom={2} >
+              <Box paddingLeft={4} display='flex' justifyContent='center'>
+                <img src={loginPageBackgroundImg} style={{ width: "65%" }} alt="login-page-background-image" />
+              </Box>
+            </Grid>
+
+              <Grid item xs={12} sm={6} display='flex' justifyContent='center'  >
+                <Grid item xs={11} sm={10} md={9} >
+                  <Box marginY={2} >
+                    <TextField
+                      id="login-signup-forgetPassword-email"
+                      label="Email"
+                      variant='outlined'
+                      type="email"
+                      sx={cssStyle.btn_textfield}
+                      value={emailAddress ? emailAddress : ""}
+                      onChange={(e) => setEmailAddress(e?.target?.value)}
+                    />
+                  </Box>
+
+                  <Box>
+                    <TextField
+                      id="login-signup-forgetPassword-password"
+                      label="Password"
+                      type={showPassword ? 'text' : 'password'}
+                      variant='outlined'
+                      sx={cssStyle.btn_textfield}
+                      value={password ? password : ""}
+                      onChange={(e) => setPassword(e?.target?.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end"
+                            sx={{
+                              display: password !== "" ? "contents" : "none"
+                            }}
+                          >
+                            {password.length > 2
+                              ?
+                              <IconButton onClick={handleTogglePassword}>
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                              : null
+                            }
+                          </InputAdornment>
+                        ),
+                      }}
+
+                    />
+                  </Box>
+
+                  <Typography variant="subtitle2" align='right' >
+                    <Link to="/forgetEmail" style={{ textDecoration: "none", color: "red" }}>
+                      Forget Password?
+                    </Link>
+                  </Typography>
+
+
+                  <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        ...cssStyle.btn_textfield,
+                        height: "50px", position: "relative",
+                        backgroundColor: "primary",
+                        '&:hover': {
+                          backgroundColor: '#1c529b' // background color on hover
+                        }
+                      }}
+                      disabled={btnDisabed}
+                      onClick={() => buttonAction()}
+
+                    >
+                      <CircularProgress
+                        size={24}
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          right: '3%',
+                          marginTop: -12,
+                          marginLeft: -12,
+                          color: "primary"
+                        }}
+                      />
+                      Login
+
+                    </Button>
+
+                  </Grid>
+
+
+                  <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                    <Typography variant="subtitle2" align='center'>
+                      I don't have account so <Link to="/signup">
+                        Click Here
+                      </Link>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

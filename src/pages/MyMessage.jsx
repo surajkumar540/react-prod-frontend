@@ -50,15 +50,17 @@ const MyMessage = () => {
                     <Box sx={styleCss.fileUploadMainBox}>
                         <Grid container>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <img src={createChannelPng} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="file-upload-image" />
+                                <img src={createChannelPng} style={{ width: '350px', userSelect: "none", pointerEvents: "none" }} alt="file-upload-image" />
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography variant="subtitle1" fontWeight={"500"} >No channel added yet or select your favorite channel.</Typography>
+                                <Grid xs={8} lg={12} textAlign={'center'}>
+                                <Typography  variant="subtitle1" fontWeight={"700"} >No channel added yet or select your favorite channel.</Typography>
+                                </Grid>
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography sx={{ width: { sm: "75%", md: "45%" } }}
+                                <Typography sx={{ width: { xs: "80%",sm:'75%', md: "45%" },fontSize:{xs:'12px'} }}
                                     color="#808191" variant="body2"
-                                    textAlign={'center'} textTransform={'capitalize'}>
+                                    textAlign={'center'} >
                                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                                 </Typography>
                             </Grid>
@@ -66,7 +68,7 @@ const MyMessage = () => {
                                 <Button
                                     variant="contained"
                                     size='small'
-                                    sx={{ padding: "5px 25px" }}
+                                    sx={{ padding: "5px 25px",width:{xs:'80%',sm:"200px"} }}
                                     onClick={() => modelOpens()}
                                 >
                                     Create Channel

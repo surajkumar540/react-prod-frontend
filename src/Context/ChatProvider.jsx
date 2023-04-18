@@ -12,7 +12,6 @@ const ChatProvider = ({ children }) => {
     const [serviceType, setSeviceType] = useState();
     const [compNameContext,setCompNameContext]=useState("")
 
-    
 
     useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");
