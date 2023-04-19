@@ -574,6 +574,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     setActiveModel={setActiveModel}
                     setNewModelOpen={setNewModelOpen}
                     ActiveChannel={ActiveChannel}
+                    socket={socket}
                 />
             }
 

@@ -37,7 +37,9 @@ const ContentModels = ({
     setNewModelOpen,
     getFoldersData,
     folderSelect,
-    ActiveChannel, InanotherPage
+    ActiveChannel,
+    InanotherPage,
+    socket
 }) => {
     const navigate = useNavigate();
     const [fullWidth, setFullWidth] = React.useState(true);
@@ -379,12 +381,23 @@ const ContentModels = ({
         const response = await AddMemberInGroup(data);
         if (response) {
             setSelectedChatV1(response)
+            //// Here we are call the socket function 
+            socket.emit("add-member-in-group",{AddMemberUserId:selectSrcMember._id});
             toast.success("Member added successfully");
         } else {
             toast.error("Something is wrong.Member not add in channel");
         }
-        handleClose()
+
+       
     }
+
+    /////////// useEffect run when add member in group socket call
+    useEffect(() => {
+        socket.on("add-member-in-group-event", (data) => {
+            console.log("add-member-in-group-event", data)
+            handleClose()
+        })
+    })
 
     // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
     //     try {
