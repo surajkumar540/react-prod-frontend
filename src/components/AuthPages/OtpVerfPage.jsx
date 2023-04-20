@@ -156,11 +156,11 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
                                 alt="organaise-logo-login-page" />
                         </Grid>
                         <Grid item xs={12} sm={12} display='flex' flexDirection='column' justifyContent={{ xs: 'center', sm: 'center' }} paddingLeft={{ xs: '0%', sm: '3%' }}  >
-                            <Typography variant="h4" textAlign={{ xs: 'center', md: 'center' }} fontSize={{ xs: '26px', sm: '28px', md: '40px' }} fontWeight='200' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+                            <Typography variant="h4" textAlign={{ xs: 'center', md: 'center' }} fontSize={{ xs: '26px', sm: '28px', md: '40px' }} fontWeight='200' color="#333333"  marginY={{ xs: 3, sm: 0 }}>
                                 OTP Verification
                             </Typography>
                             <Typography fontSize={{ xs: '14px', sm: '15px', md: '16px' }} textAlign={{ xs: 'center', md: 'center' }} paddingY={{ xs: 1, sm: 0 }}>
-                                We’ve sent a code to
+                                We’ve sent a code to {contextEmail}
                             </Typography>
                         </Grid>
                     </Box>

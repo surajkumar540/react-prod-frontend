@@ -136,7 +136,7 @@ const ForgetPage = () => {
                                 alt="organaise-logo-login-page" />
                         </Grid>
                         <Grid item xs={12} sm={9} md={8} display='flex' justifyContent={{ xs: 'center', md: 'start' }}>
-                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 2, sm: 0 }}>
+                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333"  marginY={{ xs: 3, sm: 0 }}>
                                 Forget Account
                             </Typography>
                         </Grid>
