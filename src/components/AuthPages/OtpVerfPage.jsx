@@ -95,9 +95,9 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
         }
         setVerifyBtnDisabled(true);
         try {
-             const otpResponse = await SignUpOtpVerification({ ...postData });
+            const otpResponse = await SignUpOtpVerification({ ...postData });
 
-            if (otpResponse.status == true&&otpResponse.status!=='false') {
+            if (otpResponse.status == true && otpResponse.status !== 'false') {
                 console.log("enter in response area")
                 const response = await loginApiCall({ email, password });
 
@@ -105,15 +105,15 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
 
                     toast.success("OTP verified successfully.Please wait we are setup your account.");
                     // setTimeout(async () => {
-                        localStorage.clear();
-                        const AgainLoginresponse = await loginApiCall({ email, password });
-                        if (AgainLoginresponse.status == true) {
-                            localStorage.setItem("token", AgainLoginresponse?.token)
-                            localStorage.setItem("userInfo", AgainLoginresponse?._id)
-                            setVerifyBtnDisabled(false)
-                            setIsAuthenticated(true)
-                            navigate("/companyDetail")
-                        }
+                    localStorage.clear();
+                    const AgainLoginresponse = await loginApiCall({ email, password });
+                    if (AgainLoginresponse.status == true) {
+                        localStorage.setItem("token", AgainLoginresponse?.token)
+                        localStorage.setItem("userInfo", AgainLoginresponse?._id)
+                        setVerifyBtnDisabled(false)
+                        setIsAuthenticated(true)
+                        navigate("/companyDetail")
+                    }
                     // }, [1000])
                 }
             } else {
@@ -144,94 +144,103 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
 
 
     return (
-        <Box container display='flex' aligItems='center' height='100vh' >
-            <Grid container padding={7} >
-                <Grid item xs={12} sm={12} md={6} height='100%'>
-                    <Box container display='flex' flexDirection='column' height='80%'>
-                        <Box paddingLeft={4}>
+        <Box container  >
+            <Grid container padding={{ xs: 1, sm: 5 }}>
+                {/* grid1 */}
+                <Grid item xs={12} sm={6} >
+                    <Box container display={{ xs: 'flex', sm: 'center' }} flexDirection='column'>
+                        <Grid item xs={12} sm={12} paddingLeft={{ xs: 2, sm: 12 }}  >
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
-                        </Box>
-                        <Box paddingLeft={4}>
-                            <img src={otpVerificationBgImg} style={{ width: "100%" }} alt="login-page-background-image" />
-                        </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={12} display='flex' flexDirection='column' justifyContent={{ xs: 'center', sm: 'center' }} paddingLeft={{ xs: '0%', sm: '3%' }}  >
+                            <Typography variant="h4" textAlign={{ xs: 'center', md: 'center' }} fontSize={{ xs: '26px', sm: '28px', md: '40px' }} fontWeight='200' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+                                OTP Verification
+                            </Typography>
+                            <Typography fontSize={{ xs: '14px', sm: '15px', md: '16px' }} textAlign={{ xs: 'center', md: 'center' }} paddingY={{ xs: 1, sm: 0 }}>
+                                We’ve sent a code to
+                            </Typography>
+                        </Grid>
                     </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} display={'flex'} justifyContent={'center'}    >
-                    <Box width='70%' height='80%'  >
-                        <Grid item xs={12}  >
-                            <Typography variant="h4" textAlign='center' fontWeight='600' color="#333333">
-                                OTP Verification
-                            </Typography>
-                            <Typography variant="subtitle1" fontWeight='600' textAlign='center' color="#333333">
-                                We’ve sent a code to {contextEmail}
-                            </Typography>
+                {/* Grid2 */}
+                <Grid item xs={12} sm={12} md={12} display={'flex'} justifyContent={'center'}  >
+                    <Grid container xs={12} display='flex' justifyContent='center'>
+                        <Grid item xs={12} sm={6} paddingBottom={2} >
+                            <Box paddingLeft={4} display='flex' justifyContent='center' >
+
+                                <img src={otpVerificationBgImg} style={{ width: "65%" }} alt="login-page-background-image" />
+                            </Box>
                         </Grid>
 
-                        <Grid item xs={12}>
-                            <Grid item xs={12} sx={cssStyle.grid_textBox_button} display='flex' justifyContent='center' paddingY={1}>
-                                <OtpField
-                                    value={OtpValue}
-                                    onChange={setOtpValue}
-                                    numInputs={6}
-                                    onChangeRegex={/^([0-9]{0,})$/}
-                                    autoFocus
-                                    // separator={<span>-</span>}
-                                    isTypeNumber
-                                    inputProps={{
-                                        className: `otp-field__input`,
-                                        disabled: false,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={3} display='flex' justifyContent='center' alignItems='center'>
-                                <Typography variant="subtitle1" align='center' fontWeight='400' color="#333333">
-                                    Didn’t receive OTP?
-                                    {
-                                        console.log(contextEmail, 'otpMail')
-                                    }
-                                </Typography>
-                                <Button 
-                                // onClick={() => resendOtpInMail(contextEmail)}
-                                 style={{ fontWeight: 700, color: "#1c529b" }}>
-                                    Resend
-                                </Button>
-                            </Grid>
-                            <Grid item xs={12} >
-                                <Button variant="contained"
-                                    sx={{
-                                        ...cssStyle.btn_textfield,
-                                        height: "50px", position: "relative",
-                                        backgroundColor: "primary",
-                                        '&:hover': {
-                                            backgroundColor: '#1c529b' // background color on hover
+
+                        <Grid item xs={11} sm={6} display='flex' justifyContent='center' >
+                            <Grid item xs={12} sm={12} md={10}>
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} display='flex' justifyContent='center' paddingTop={4} >
+                                    <OtpField
+                                        value={OtpValue}
+                                        onChange={setOtpValue}
+                                        numInputs={6}
+                                        onChangeRegex={/^([0-9]{0,})$/}
+                                        autoFocus
+                                        // separator={<span>-</span>}
+                                        isTypeNumber
+                                        inputProps={{
+                                            className: `otp-field__input`,
+                                            disabled: false,
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={2} display='flex' justifyContent='center' alignItems='center'>
+                                    <Typography variant="subtitle1" align='center' fontWeight='400' color="#333333">
+                                        Didn’t receive OTP?
+                                        {
+                                            console.log(contextEmail, 'otpMail')
                                         }
-                                    }}
-                                    disabled={verifyBtnDisable}
-                                    onClick={() => otpVerifyBtn(serviceType)}
-                                >
+                                    </Typography>
+                                    <Button
+                                        // onClick={() => resendOtpInMail(contextEmail)}
+                                        style={{ fontWeight: 700, color: "#1c529b" }}>
+                                        Resend
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} >
+                                    <Button variant="contained"
+                                        sx={{
+                                            ...cssStyle.btn_textfield,
+                                            height: "50px", position: "relative",
+                                            backgroundColor: "primary",
+                                            '&:hover': {
+                                                backgroundColor: '#1c529b' // background color on hover
+                                            }
+                                        }}
+                                        disabled={verifyBtnDisable}
+                                        onClick={() => otpVerifyBtn(serviceType)}
+                                    >
 
-                                    {verifyBtnDisable && (
-                                        <CircularProgress
-                                            size={24}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '50%',
-                                                right: '3%',
-                                                marginTop: -12,
-                                                marginLeft: -12,
-                                                color: "#1c529b"
-                                            }}
-                                        />
-                                    )}
-                                    Verify OTP
-                                </Button>
+                                        {verifyBtnDisable && (
+                                            <CircularProgress
+                                                size={24}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    right: '3%',
+                                                    marginTop: -12,
+                                                    marginLeft: -12,
+                                                    color: "#1c529b"
+                                                }}
+                                            />
+                                        )}
+                                        Verify OTP
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Box>
+                    </Grid>
                 </Grid>
             </Grid>
         </Box>

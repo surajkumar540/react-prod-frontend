@@ -36,8 +36,9 @@ import OtpVerfPage from './components/AuthPages/OtpVerfPage';
 import ForgetEmail from './components/AuthPages/ForgetEmail';
 import ProjectName from './pages/ProjectName';
 import FolderFiles from './pages/FolderFiles';
-// import MyAccount from './pages/MyAccount';
+import MyAccount from './pages/MyAccount';
 import { userTokenVerify } from './api/InternalApi/OurDevApi';
+import OtpVerfPagecopy from './components/AuthPages/OtpVerfPagecopy';
 
 export const LeftSideBarContext = createContext(null);
 function App() {
@@ -120,7 +121,7 @@ function App() {
             if(response.status===true)
             {
                 setIsAuthenticated(true)
-                if(pathname=='/login'||pathname=='/signup'||pathname=='/getStart'||pathname=='/getstart'||pathname=='/forgetEmail'||pathname=='/forget-password'||pathname=='/')
+                if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/getstart' || pathname == '/forgetEmail' || pathname == '/forget-password' || pathname == '/' )
                 {
                     navigate("/chat")
                 } 
@@ -130,6 +131,7 @@ function App() {
                     navigate(pathname)
                 } else {
                     navigate("/getStart")
+
                 }
             }
         }catch(err)
@@ -139,6 +141,7 @@ function App() {
                     navigate(pathname)
                 } else {
                     navigate("/getStart")
+
                 }
         }
     }
@@ -153,6 +156,8 @@ function App() {
                 <Route path="/model" element={<ContentModels />} />
                 <Route path="/invite" element={<InviteTeam />} />
                 <Route path="/projectName" element={<ProjectName />} />
+                {/* <Route path="/otpVerfPagecopy" element={<OtpVerfPagecopy />} /> */}
+
             </Routes>
             <ThemeProvider theme={theme}>
 
@@ -183,7 +188,7 @@ function App() {
                             <Route path="/files/folder/:fid" element={<FolderFiles userId={userId} />} />
                             <Route path="/chat" element={<MyMessage userId={userId} />} />
                             <Route path="*" element={<>404 page</>} />
-                            {/* <Route path="/account" element={<MyAccount />} /> */}
+                            <Route path="/account" element={<MyAccount closeSideList={true}/>} />
                             {/* <Route path="/" element={<MyMessage userId={userId} />} /> */}
                             {/* <Route path="/" element={<Dashboard />} /> */}
                             {/* <Route path="/data" element={<Data userId={userId} />} /> */}

@@ -13,3 +13,9 @@ export const clearLocalStorage=()=>{
     localStorage.removeItem("userInfo")
     localStorage.removeItem("token")
 }
+
+export const getTime=(utcTime)=>{
+    var localDate = new Date(utcTime);
+    const time=localDate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return time;
+}

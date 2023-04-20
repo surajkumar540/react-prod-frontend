@@ -71,10 +71,9 @@ const ForgetEmail = () => {
     const { mutateAsync: ForgetEmailApi, isLoading: ForgetEmailOtpIsLoading } = useMutation(ForgetEmailOtp);
 
     const forgetOtpInMail = async (email) => {
-        try{
-            const checkResponse=await checkUserApi({email:emailAddress})
-            if(checkResponse.status)
-            {
+        try {
+            const checkResponse = await checkUserApi({ email: emailAddress })
+            if (checkResponse.status) {
                 const response = await ForgetEmailApi({ email });
                 if (response.statusCode == 200) {
                     toast.info("Otp send in your mail please check your mail inbox.");
@@ -84,16 +83,15 @@ const ForgetEmail = () => {
                 } else {
                     toast.error(response?.error?.message || "Something wrong in forget email");
                 }
-            }else{
+            } else {
                 toast.error("User not exist");
                 return;
             }
-        }catch(error)
-        {
+        } catch (error) {
 
         }
 
-        
+
     }
 
 
@@ -111,36 +109,41 @@ const ForgetEmail = () => {
 
     return (
         <Box container  >
-            <Grid container padding={7}>
-                <Grid item xs={12} sm={12} md={6}  >
-                    <Box container display='flex' flexDirection='column'>
-                        <Box paddingLeft={4}>
+            <Grid container padding={{ xs: 1, sm: 5 }}>
+                {/* grid1 */}
+                <Grid item xs={12} >
+                    <Box container display={{ xs: 'start', sm: 'flex' }} >
+                        <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 12 }}>
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
-                        </Box>
-                        <Box paddingLeft={4}>
-                            <img src={forgetPassPageBGImg} style={{ width: "70%" }}
-
-                                alt="forget-password-page-background-image" />
-                        </Box>
-
+                        </Grid>
+                        <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}  >
+                            <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+                                Forget Password
+                            </Typography>
+                        </Grid>
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} display='flex' justifyContent='center'  >
-                    <Box >
 
-                        <Box display='flex' justifyContent='center'>
+                {/* Grid2 */}
+                <Grid item xs={12} sm={12} md={12} display='flex' justifyContent='center'  >
+                    <Grid container xs={12} display='flex' >
 
-                            <Grid container xs={8} >
+                        <Grid item xs={12} sm={6} paddingBottom={2} >
 
-                                <Typography marginBottom={4} variant="h4" fontWeight='600' color="#333333">
+                            <Box paddingLeft={4} display='flex' justifyContent='center'>
+                                <img src={forgetPassPageBGImg} style={{ width: "57%" }}
 
-                                    Forget Password
-                                </Typography>
+                                    alt="forget-password-page-background-image" />
+                            </Box>
+                        </Grid>
 
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+
+                        <Grid item xs={12} sm={6} sx={cssStyle.grid_textBox_button} display='flex' justifyContent='center' >
+                            <Grid item xs={11} sm={10} md={9} >
+                                <Box marginY={2} >
                                     <TextField
                                         id="login-signup-forgetPassword-email"
                                         label="Email"
@@ -150,10 +153,10 @@ const ForgetEmail = () => {
                                         value={emailAddress ? emailAddress : ""}
                                         onChange={(e) => setEmailAddress(e?.target?.value)}
                                     />
-                                </Grid>
+                                </Box>
 
 
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} >
                                     <Button
                                         variant="contained"
                                         sx={{
@@ -164,7 +167,7 @@ const ForgetEmail = () => {
                                                 backgroundColor: '#1c529b' // background color on hover
                                             }
                                         }}
-                                        disabled={ForgetEmailOtpIsLoading||checkUserIsLoading}
+                                        disabled={ForgetEmailOtpIsLoading || checkUserIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >
@@ -185,16 +188,16 @@ const ForgetEmail = () => {
                                         Send OTP
 
                                     </Button>
-                                    <Typography marginTop={3} variant="subtitle2" align='center'>
+                                    <Typography marginTop={2} variant="subtitle2" align='center'>
                                         I want to login so &nbsp;<Link to="/login">
                                             Click Here
                                         </Link>
                                     </Typography>
                                 </Grid>
-                            </Grid>
 
-                        </Box>
-                    </Box>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </Box>
