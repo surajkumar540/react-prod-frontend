@@ -20,14 +20,15 @@ import Loader from '../components/Tools/Loader';
 
 const FolderData = () => {
     const navigate=useNavigate()
-    const [loading,setLoading]=useState(true)
+    const [loading,setLoading]=useState(true);
+    const [showSearchSmall,setShowSearchSmall]=useState(false)
     const colorsCode={
         a:'#ff7f47aa',
         b:'#fcaf45aa',
         c:'#808080aa',
         d:'#ff5e6caa',
         e:'#0171ceaa',
-        f:'#478559aa',
+        f:'#25D366aa',
         g:'#ff8928aa',
         h:'#405de6aa',
         i:'#78c802aa',
@@ -138,8 +139,6 @@ const FolderData = () => {
         setLoading(false)
     }
 
-   
-    console.log(loading)
 
     ///////// Search Folder code  Here
     const [srcFolderText, SetSrcFolderText] = useState("");
@@ -182,7 +181,7 @@ const FolderData = () => {
     return (
         <>
             <LeftSideBar data={{ pageName: "data", index: 2 }}>
-                <Box px={"20px"} sx={style.folderCreateMainBox}>
+                <Box px={{xs:'5px',sm:"20px"}} sx={style.folderCreateMainBox}>
                     {folderDataStore.length === 0 &&
                         <Grid container>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
@@ -209,17 +208,19 @@ const FolderData = () => {
 
                         </Grid>
                     }
-                    {folderDataStore.length !== 0 &&
+                    {folderDataStore?.length !== 0 &&
                         <Grid container px={1} >
                             <Grid container item mt={2} xs={12} >
                                 <Box container width={"100%"} display={'flex'} justifyContent="space-between">
                                     <Typography variant="h6" >Folders</Typography>
                                     <Box >
                                         <TextField
+                                         onClick={()=>setShowSearchSmall(true)}
                                             id="search_folder"
                                             placeholder='Search folder'
                                             size='small'
                                             sx={{
+                                                width:{xs:showSearchSmall?"150px":'50px',sm:'140px',md:'180px',xl:'220px'},
                                                 marginRight: "10px", "& input": {
                                                     paddingTop: "7px",
                                                     paddingBottom: "7px", fontSize: "14px",
@@ -239,7 +240,7 @@ const FolderData = () => {
                                         <Button
                                             variant="contained"
                                             size='small'
-                                            sx={{ padding: "5px 20px" }}
+                                            sx={{ padding:{xs: "4px 15px",md:"5px 20px"},textTransform:'capitalize' }}
                                             onClick={() => modelOpens("CreateFolder")}
                                         >
                                             Create Folder
@@ -248,14 +249,14 @@ const FolderData = () => {
 
                                 </Box>
                             </Grid>
-                            <Grid container item mt={3} xs={12} display={'flex'} >
-                                {folderDataStore.map((d, index) =>
+                            <Grid container item mt={3} xs={12} display={'flex'} flexWrap={'wrap'}>
+                                {folderDataStore?.map((d, index) =>
                                     <Box
-                                        marginRight={"25px"}
+                                    marginX={{xs:"5px",sm:"3px",md:"25px"}}
                                         my={"10px"}
                                         sx={{
-                                            width: "170px",
-                                            height: "170px",
+                                            width: {xs:"100px",sm:'155px',md:"170px"},
+                                            height: {xs:"150px",sm:'170px',md:"180px"},
                                             padding: "5px 5px",
                                             boxSizing: "border-box",
                                             border: "0.5px solid #CBCBCB", borderRadius: "8px"
@@ -295,9 +296,8 @@ const FolderData = () => {
                                         <Box container display={'flex'} justifyContent="center"> 
                                             <FolderIcon
                                                 sx={{
-                                                    fontSize: '80px',
+                                                    fontSize:{xs:'55px',sm:'80px'},
                                                     color: colorsCode[d.folderName.slice(0,1).toLowerCase()]||"red"
-                                                    //selectRandomColor()
                                                     ,
                                                     cursor: "pointer"
                                                 }}
@@ -305,10 +305,10 @@ const FolderData = () => {
                                                 />
                                         </Box>
                                         <Box container>
-                                            <Typography align='center' variant="subtitle2" color={"#121212"}>{d.folderName}</Typography>
+                                            <Typography align='center' variant="subtitle2" color={"#121212"} fontSize={{xs:"0.79rem",sm:"0.875rem"}}>{d.folderName}</Typography>
                                         </Box>
                                         <Box container>
-                                            <Typography align='center' variant="subtitle2" fontSize={"13px"} color={"#CDCDCD"}>{folderSize(d.filesList)}</Typography>
+                                            <Typography align='center' variant="subtitle2" fontSize={{xs:"10px",sm:"13px"}} color={"#CDCDCD"}>{folderSize(d.filesList)}</Typography>
                                         </Box>
                                     </Box>
                                 )}

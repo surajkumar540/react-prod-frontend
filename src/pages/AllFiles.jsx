@@ -25,9 +25,9 @@ const AllFiles = () => {
     const [loading,setLoading]=useState(false);
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
+    const [showSearchSmall,setShowSearchSmall]=useState(false)
 
-    // const colorsCode = ["#FBCFFF", "#FFCFCF", "#CFFFDD", "#CFEEFF", "#FFE9CF", "#CFE8FF", "#FFF2CF", "#FFCEE0", "#FFD5CF", "#DECFFF"]
-    const colorsCode={
+   const colorsCode={
         doc:'#2892e7d6',
         docx:'#2892e7d6',
         png:'#7CB2D2aa',
@@ -175,15 +175,19 @@ const AllFiles = () => {
                                 <Typography variant="h6" >All Files</Typography>
                                 <Box >
                                     <TextField
+                                        onClick={()=>setShowSearchSmall(true)}
                                         id="search_folder"
                                         placeholder='Search file'
                                         size='small'
                                         sx={{
-                                            marginRight: "10px", "& input": {
+                                            width:{xs:showSearchSmall?"150px":'50px',sm:'140px',md:'180px',xl:'220px'},
+                                            marginRight: "10px", 
+                                            "& input": {
                                                 paddingTop: "7px",
                                                 paddingBottom: "7px", fontSize: "14px"
                                             },
-                                            paddingLeft: "4px", "& fieldset": { borderRadius: "8px" }
+                                            paddingLeft: "4px", 
+                                            "& fieldset": { borderRadius: "8px" }
                                         }}
                                         value={srcFileText}
                                         onChange={(e) => SetSrcFileText(e.target.value)}
@@ -198,20 +202,20 @@ const AllFiles = () => {
                                     <Button
                                         variant="contained"
                                         size='small'
-                                        sx={{ padding: "5px 20px" }}
+                                        sx={{ padding:{xs: "4px 15px",sm:"5px 20px"},textTransform:'capitalize' }}
                                         onClick={() => navigate("/files/upload")}
                                     >
-                                        Add File
+                                        Add Files
                                     </Button>
                                 </Box>
 
                             </Box>
                         </Grid>
-                        <Grid container item mt={3} xs={12} display={'flex'} >
+                        <Grid container item mt={3} xs={12} display={'flex'} flexWrap={'wrap'} >
                             {userFiles.length !== 0 && userFiles.map((d) =>
-                                <Box marginRight={"25px"} my={"10px"} sx={{
-                                    width: "170px",
-                                    height: "170px",
+                                <Box marginX={{xs:"10px",sm:"3px",md:"25px"}} my={"10px"} sx={{
+                                    width: {xs:"130px",sm:'155px',md:"170px"},
+                                    height: {xs:"150px",sm:'170px',md:"180px"},
                                     padding: "5px 5px",
                                     boxSizing: "border-box",
                                     border: "0.5px solid #CBCBCB", borderRadius: "8px"
@@ -225,7 +229,7 @@ const AllFiles = () => {
                                         <FileIcon ext={d.fileName.split(['.'])[1]}/>
                                     </Box>
                                     <Box container>
-                                        <Typography align='center' variant="subtitle2" color={"#121212"}>
+                                        <Typography align='center' variant="subtitle2" color={"#121212"} fontSize={{xs:"0.79rem",sm:"0.875rem"}}>
                                             {d.fileName.split(".")[0].length > 15 ? d.fileName.split(".")[0].substring(0, 14) : d.fileName.split(".")[0]}
                                         </Typography>
                                     </Box>

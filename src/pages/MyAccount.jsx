@@ -8,7 +8,7 @@ import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import ListIcon from '@mui/icons-material/List';
 
-const MyAccount = () => {
+const MyAccount = ({closeSideList}) => {
     //Index prop defiend by according to this array
     //['dashboard', 'message', 'folder', 'data', 'privacy-policy', 'settings'];
     const currencies = [
@@ -51,7 +51,7 @@ const MyAccount = () => {
 
     return (
         <>
-            <LeftSideBar data={{ pageName: "Privacy Policy", index: 4 }}>
+            <LeftSideBar data={{ pageName: "Privacy Policy", index: 4 }} closeSideList={closeSideList}>
                 
                 <Box sx={{ flexGrow: 1 }} px={'2rem'}>
                     

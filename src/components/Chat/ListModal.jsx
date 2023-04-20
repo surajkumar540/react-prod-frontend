@@ -16,8 +16,8 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  // border: '2px solid #000',
+  boxShadow: 12,
   padding: '2rem',
   borderRadius: "6px"
 };
@@ -49,15 +49,11 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
   const [search, setSearch] = useState("")
   const { selectChatV1,setChats,setSelectedChatV1 } = ChatState();
 
-  
   const fetchChat = async () => {
     try {
         const response = await fetchAllChatSingleUserOrGroup();
-     
-            console.log(response,"all fetchhhhhhhh")
-            // setChats(response);
-            // setSelectedChatV1(response)
-            // setLoggedUser(localStorage.getItem("userInfo"));
+        setChats(response)
+        console.log(response,"hooooo gyaayauya")
     } catch (error) {
         console.log("Something is wrong");
     }
@@ -70,11 +66,11 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
         "userId":userId 
         }
       const response=await RemoveMemberInGroup(data)
-      console.log(response,"delete response")
       if(response)
       {
         setSelectedChatV1(response)
         toast.success("User removed successfully")
+        fetchChat()
       }else{
         toast.error("User not removed")
       }
@@ -151,7 +147,7 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
 
           {
             selectChatV1?.users?.map((item, index) => {
-              return <User key={index} name={item.name} role="front end developer" online={true} img={item.pic} id={item._id} removeMember={removeMember} chatId={selectChatV1._id}/>
+              return <User key={index} name={item.name} role="front end developer" online={true} img={item.pic} id={item._id} removeMember={removeMember} chatId={selectChatV1._id} adminId={selectChatV1?.groupAdmin?._id}/>
             })
           }
 
@@ -166,7 +162,7 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
 
 
 
-const User = ({ name, role, online = false, img,id,removeMember,chatId }) => {
+const User = ({ name, role, online = false, img,id,removeMember,chatId,adminId }) => {
   return (
     <Box display={'flex'} justifyContent={'space-between'} mt='1rem'>
 
@@ -186,11 +182,11 @@ const User = ({ name, role, online = false, img,id,removeMember,chatId }) => {
         <Typography pl='8px' color=" #A1A1A1" fontSize={{xs:'10px',md:'12px'}}  textTransform={'capitalize'}>
           {role}
         </Typography>
-        <Box>
+        {(localStorage.getItem("userInfo")===adminId)&&<Box>
             <IconButton>
               <DeleteModal type='list' handleDelete={()=>{removeMember(chatId,id)}}/>
             </IconButton>
-        </Box>
+        </Box>}
       </Box>
       
 

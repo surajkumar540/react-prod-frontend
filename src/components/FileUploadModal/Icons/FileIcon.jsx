@@ -51,29 +51,29 @@ const FileIcon = ({ext}) => {
     }
     if(ext=='png'||ext=='jpg'||ext=='jpeg')
     {
-        return <PhotoLibraryOutlinedIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+        return <PhotoLibraryOutlinedIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     }
     if(ext=='pdf')
     {
-        return <PictureAsPdfIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+        return <PictureAsPdfIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     }
     if(ext=='txt')
     {
-        return <ArticleOutlinedIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+        return <ArticleOutlinedIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     }
     if(ext=='mp3')
     {
-        return <AudioFileIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+        return <AudioFileIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     }
     if(ext=='htm'||ext=='html')
     {
-        return <CodeIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+        return <CodeIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     }
 
 
     return (
     <>
-      <InsertDriveFileOutlinedIcon sx={{fontSize: '80px', color:colorsCode[ext]||"#2892e7d6"}} />
+      <InsertDriveFileOutlinedIcon sx={{fontSize: {xs:'55px',sm:'80px'}, color:colorsCode[ext]||"#2892e7d6"}} />
     </>
   )
 }

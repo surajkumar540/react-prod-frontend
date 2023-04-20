@@ -1,11 +1,9 @@
-import React, { useState  ,  useEffect } from 'react'
+import React, { useState } from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import NewMessageGrid from '../components/NewMessageGrid/NewMessageGrid'
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import createChannelPng from "../assets/BackgroundImages/create-channel-homepage.png";
 import ContentModels from './ContentModels';
-import io from "socket.io-client";
-const ENDPOINT = process.env.REACT_APP_ENDPOINT
 
 const MyMessage = () => {
     
@@ -19,28 +17,6 @@ const MyMessage = () => {
         }
     }
 
-    var socket, selectedChatCompare;
-    
-    ////// socket connection state
-    const [socketConnected, setSocketConnected] = useState(false);
-    
-    ///////// UseEffect for socket io
-    useEffect(() => {
-        //////// Here we are check the login user status
-        socket = io(`${ENDPOINT}`, {
-            debug: true
-        });
-        socket.on("connect_error", (err) => {
-            console.error("Connection error:", err);
-        });
-
-        socket.on("connect_timeout", (timeout) => {
-            console.error("Connection timeout:", timeout);
-        });
-        //socket.emit("setup", user);
-        //socket.on("connected", () => setSocketConnected(true));
-        
-    }, []);
 
 
     //////  when click on the add channel button

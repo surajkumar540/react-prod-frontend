@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Avatar, Stack, Button, TextField } from '@mui/material'
+import { Box, Grid, Typography, Avatar, Stack, Button, TextField, AvatarGroup } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
@@ -15,15 +15,18 @@ import ContentModels from '../../pages/ContentModels';
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
 import { useMutation } from 'react-query';
-import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message }
-    from '../../api/InternalApi/OurDevApi';
+import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message } 
+from '../../api/InternalApi/OurDevApi';
 import { getSender } from '../../utils/chatLogic';
+import { getTime } from '../../utils/validation';
 import io from "socket.io-client";
 
 import ListModal from '../Chat/ListModal';
 
-const ENDPOINT = process.env.REACT_APP_ENDPOINT
-
+const ENDPOINT = "https://devorganaise.com";
+//"https://devorganaise.com/api"
+//"http://13.57.89.208:8000"
+//"http://localhost:8000"
 
 var socket, selectedChatCompare;
 
@@ -120,7 +123,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
         firstBoxMessage: { height: "80vh", backgroundColor: "#ffffff", marginTop: "0px" },
         groupNameBox: {
             position: "sticky", top: "65px", width: "100%", height: "50px", zIndex: "100",
-            background: " #FFFFFF", boxSizing: "border-box",
+            background: " #FFFFFF", boxSizing: "border-box", 
             borderBottom: "1px solid #F1F1F1"
         },
         avatarCss: { width: "25px", height: "25px" },
@@ -128,11 +131,11 @@ const NewMessageGrid = ({ selectedChannel }) => {
         timeRecMess: { fontSize: "10px", lineHeight: "25px", paddingLeft: "5px" },
         recRealMess: {
             paddingRight: "30px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "12px", lineHeight: "15px", color: "#323232", background: " #F8F8F8", borderRadius: "0px 10px 10px 10px"
+            fontSize: "14px", lineHeight: "15px",  color: "black", background: "#F2F2F2", borderRadius: "0px 10px 10px 10px",fontWeight:'400'
         },
         sendRealMess: {
             paddingRight: "10px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "12px", lineHeight: "15px", background: " #ECF4FF", color: "#323232", borderRadius: "10px 0px 10px 10px",
+            fontSize: "14px", lineHeight: "15px",background: "#448DF0", color: "white", borderRadius: "10px 0px 10px 10px",fontWeight:"400"
         },
         sendMessInput: {
             "& input": {
@@ -239,6 +242,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
             setNewMessage("");
             const response = await sendingMessageV1(sendingMessData);
             setCurrentChats([...currentChats, response])
+
             //setMessages([...messages, response]);
             //fetchAllMessV1(selectChatV1._id);
             socket.emit("new message", response);
@@ -253,8 +257,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
             if (!selectedChatCompare || selectedChatCompare._id !== newMessageRecived.chat._id) {
                 //give notification
             } else {
+                console.log("send message and recove message test", [...currentChats, newMessageRecived]);
                 setCurrentChats([...currentChats, newMessageRecived]);
                 //setMessages([...messages, newMessageRecived]);
+
             }
         })
     })
@@ -283,6 +289,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
     const fetchAllMessV1 = async (chatId) => {
         try {
             const response = await fetchingAllMess({ chatId });
+            // console.log(response,"ye response id hai")
+            // var utcDate = response[4].createdAt;  // ISO-8601 formatted date returned from server
+            // var localDate = new Date(utcDate);
+            // console.log(localDate.toLocaleTimeString())
             setCurrentChats(response)
             socket.emit("join chat", chatId)
         } catch (error) {
@@ -307,6 +317,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
             fetchAllMessV1(selectChatV1._id)
             selectedChatCompare = selectChatV1;
         }
+        console.log(selectChatV1)
     }, [selectChatV1._id])
 
     /////// sccrollbard automatic movein bottom place
@@ -325,7 +336,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
     return (
         <>
-            <Box container py="13px" px={"25px"} boxSizing={"border-box"} sx={cssStyle.groupNameBox} display="flex" justifyContent={"space-between"}>
+            <Box container py="13px" px={"25px"} boxSizing={"border-box"} sx={cssStyle.groupNameBox} display="flex" justifyContent={"space-between"} >
                 {
                     //Object.keys(ActiveChannel).length > 3 &&
                     //Object.keys(MyActiveChat).lenght > 0 &&
@@ -339,28 +350,38 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                 }
                             </Typography>
                             <Stack ml={1} direction="row" spacing={-.25}>
-                                <Avatar sx={cssStyle.avatarCss} alt="Remy Sharp" src="https://mui.com/static/images/avatar/1.jpg" />
-                                <Avatar sx={cssStyle.avatarCss} alt="Travis Howard" src="https://mui.com/static/images/avatar/2.jpg" />
-                                <Avatar sx={cssStyle.avatarCss} alt="Cindy Baker" src="https://mui.com/static/images/avatar/3.jpg" />
+                                <AvatarGroup max={3} 
+                                sx={{
+                                        '& .MuiAvatar-root': { width: 24, height: 24, fontSize: 15 },
+                                    }}
+                                >
+                                    {
+                                        selectChatV1?.isGroupChat===true?
+                                        selectChatV1?.users?.map((item)=>{
+                                            return <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
+                                        }):<Avatar alt="Remy Sharp" src="">{selectChatV1?.users[1].name[0].toUpperCase()}</Avatar>
+                                    }
+                                
+                                </AvatarGroup>
                             </Stack>
                         </Box>
 
 
-                        {
-                            (selectChatV1?.isGroupChat === 'true' || selectChatV1?.isGroupChat === true) && <Box display={'flex'} alignItems={'center'} >
-                                <Button
-                                    sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
-                                    variant="outlined"
-                                    size="small"
-                                    onClick={() => modelOpens()}>
-                                    Add Member
-                                </Button>
-                                {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
+                       {
+                        (selectChatV1?.isGroupChat==='true'||selectChatV1?.isGroupChat===true)&&<Box display={'flex'} alignItems={'center'} >
+                        <Button
+                            sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
+                            variant="outlined"
+                            size="small"
+                            onClick={() => modelOpens()}>
+                            Add Member
+                        </Button>
+                        {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
                             List Of People
                         </Button> */}
-                                <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens} />
-                            </Box>
-                        }
+                        <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens}/>
+                    </Box>
+                       } 
                     </>
                 }
 
@@ -450,17 +471,15 @@ const NewMessageGrid = ({ selectedChannel }) => {
                             */
                     }
 
-                    {(currentChats.length > 0 && selectChatV1) &&
+                    {(currentChats.length > 0&&selectChatV1) &&
                         <>
                             {currentChats?.map((mes, index) => {
-
-                                if (mes?.sender?._id === selectChatV1?.users[0]?._id && selectChatV1.isGroupChat !== true) {
-
-                                  return <Grid
+                                if (mes?.sender?._id === selectChatV1?.users[0]?._id&&selectChatV1.isGroupChat!==true) {
+                                    return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
                                             marginTop: "0px", width: "100%", marginLeft: "0px",
-                                            boxSizing: "borderBox",
+                                            boxSizing: "borderBox"
                                         }}
                                         container
                                         spacing={5}
@@ -485,7 +504,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                                             <Typography variant="subtitle2" fontWeight={"700"} textTransform={'capitalize'}>
                                                                 {mes.sender.name}
                                                             </Typography>
-                                                            <Typography variant="body2" sx={cssStyle.timeRecMess} >10:30 AM</Typography>
+                                                            <Typography variant="body2" sx={cssStyle.timeRecMess} >{getTime(mes?.createdAt)}</Typography>
                                                         </Grid>
                                                         <Grid container item boxSizing={"border-box"} mr="16px" >
                                                             <Typography variant="body2" sx={cssStyle.recRealMess} >
@@ -522,7 +541,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                                             <Typography variant="subtitle2" fontWeight={"700"} textTransform={'capitalize'}>
                                                                 {mes.sender.name}
                                                             </Typography>
-                                                            <Typography variant="body2" sx={cssStyle.timeRecMess} >10:30 AM</Typography>
+                                                            <Typography variant="body2" sx={cssStyle.timeRecMess}>{getTime(mes?.createdAt)}</Typography>
                                                         </Grid>
                                                         <Grid container item boxSizing={"border-box"} mr="16px" display={"flex"} justifyContent="end">
                                                             <Typography variant="body2" sx={{ ...cssStyle.sendRealMess, width: "auto", textAlign: "right" }} >
@@ -539,7 +558,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                         </>}
 
                 </Box>
-                <Box position={'absolute'} sx={{ width: "100%", bottom: "0px", backgroundColor: "#ffffff" }} py={"10px"} container px={"25px"}>
+                <Box position={'absolute'} sx={{ width: "100%", bottom: "3%", backgroundColor: "#ffffff" }} py={"10px"} container px={"25px"}>
                     {isTyping ? <Box sx={{ fontSize: "15px", marginLeft: "10px" }}>Typing...</Box> : <Box></Box>}
                     <Box container
                         sx={{
@@ -574,7 +593,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     setActiveModel={setActiveModel}
                     setNewModelOpen={setNewModelOpen}
                     ActiveChannel={ActiveChannel}
-                    socket={socket}
                 />
             }
 

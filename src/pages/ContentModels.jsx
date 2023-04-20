@@ -37,14 +37,30 @@ const ContentModels = ({
     setNewModelOpen,
     getFoldersData,
     folderSelect,
-    ActiveChannel,
-    InanotherPage,
-    socket
+    ActiveChannel, InanotherPage
 }) => {
     const navigate = useNavigate();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('xs');
+    const [allUsersList,setAllUsersList]=useState({})
 
+    useEffect(()=>{
+        const list=selectChatV1?.users;
+        const userIdArr=list?.map((item)=>{
+            return item?._id
+        })
+        if(userIdArr)
+        {
+
+            const idKeyObj={}
+            for(let val of userIdArr)
+            {
+                idKeyObj[val]=true
+            }
+            
+            setAllUsersList(idKeyObj)
+        }
+    },[])
     ////// use conetext use here
     const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
 
@@ -377,27 +393,15 @@ const ContentModels = ({
             "chatId":selectChatV1._id, 
             "userId":selectSrcMember._id
        }
-       console.log(data)
         const response = await AddMemberInGroup(data);
         if (response) {
             setSelectedChatV1(response)
-            //// Here we are call the socket function 
-            socket.emit("add-member-in-group",{AddMemberUserId:selectSrcMember._id});
             toast.success("Member added successfully");
         } else {
             toast.error("Something is wrong.Member not add in channel");
         }
-
-       
+        handleClose()
     }
-
-    /////////// useEffect run when add member in group socket call
-    useEffect(() => {
-        socket.on("add-member-in-group-event", (data) => {
-            console.log("add-member-in-group-event", data)
-            handleClose()
-        })
-    })
 
     // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
     //     try {
@@ -425,11 +429,22 @@ const ContentModels = ({
     const [debouncedSearchMember] = useDebounce(srcMemberText, 500);
     const [listNewMembers, setNewMembersList] = useState([]);
     const [selectSrcMember, setSelectSrcMem] = useState(null);
+    
     const searchMemberv1 = async (srcItem) => {
         try {
             const response = await MemberSearchV1({ search: srcItem });
+            
+            const filterUsers=response.filter((item)=>{
+                if(allUsersList[item._id])
+                {
+                    return false
+                }else{
+                    return true
+                }
+            })
+
             if (response.length > 0) {
-                setNewMembersList(response);
+                setNewMembersList(filterUsers);
             }
         } catch (error) {
             console.log(error.response);
