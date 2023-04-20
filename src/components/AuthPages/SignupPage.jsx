@@ -74,6 +74,7 @@ export const SignupPage = () => {
     const { contextEmail, setSeviceType, setContextEmail, setContextPassword, setContextName } = ServiceState();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [btnDisabed, setBtnDisabled] = useState(false);
 
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
@@ -148,15 +149,15 @@ export const SignupPage = () => {
         <Box container   >
             <Grid container padding={{ xs: 1, sm: 5 }}>
                 <Grid item xs={12} >
-                    <Box container display={{xs:'start',sm:'flex'}} >
+                    <Box container display={{ xs: 'start', sm: 'flex' }} >
                         <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 12 }}>
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Grid>
-                        <Grid item xs={12} sm={9} md={8} display='flex' paddingBottom={2} justifyContent={{xs:'center',sm:'start'}}  >
-                            <Typography variant="h4" fontSize={{xs:'26px',sm:'33px', md:'40px'}} fontWeight='600' color="#333333" marginY={{xs:2,sm:0}}>
+                        <Grid item xs={12} sm={9} md={8} display='flex' paddingBottom={2} justifyContent={{ xs: 'center', sm: 'start' }}  >
+                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 3, sm: 0 }}>
                                 Create Account
                             </Typography>
                         </Grid>
@@ -297,22 +298,24 @@ export const SignupPage = () => {
                                             }
                                         }}
                                         // disabled={btnDisabed || isLoadingSignUpFun}
-                                        disabled={userPostApiIsLoading}
+                                        disabled={ btnDisabed ||userPostApiIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >
-
-                                        <CircularProgress
-                                            size={24}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '50%',
-                                                right: '3%',
-                                                marginTop: -12,
-                                                marginLeft: -12,
-                                                color: "primary"
-                                            }}
-                                        />
+                                        {
+                                            btnDisabed &&
+                                            <CircularProgress
+                                                size={24}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    right: '3%',
+                                                    marginTop: -12,
+                                                    marginLeft: -12,
+                                                    color: "primary"
+                                                }}
+                                            />
+                                        }
                                         Create Account
                                     </Button>
 
@@ -334,15 +337,15 @@ export const SignupPage = () => {
                                     <Typography as='li' color='red'>At least 1 letter (a,b,c...)</Typography>
                                     <Typography as='li' color='red'>At least 1 number (1,2,3...) </Typography>
                                     <Typography as='li' color='red'>Both uppercase & lowercase characters
-</Typography>
+                                    </Typography>
                                 </Grid>
 
-                             
+
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-                
+
             </Grid>
         </Box >
     )

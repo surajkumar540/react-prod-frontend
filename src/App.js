@@ -127,6 +127,8 @@ function App() {
                 } 
             }else{
                 setIsAuthenticated(false)
+                localStorage.removeItem("token");
+                localStorage.removeItem("userinfo");
                 if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/forgetEmail' || pathname == '/forget-password') {
                     navigate(pathname)
                 } else {
@@ -136,7 +138,10 @@ function App() {
             }
         }catch(err)
         {
+
             setIsAuthenticated(false)
+            localStorage.removeItem("token");
+             localStorage.removeItem("userInfo");
                 if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/forgetEmail' || pathname == '/forget-password') {
                     navigate(pathname)
                 } else {

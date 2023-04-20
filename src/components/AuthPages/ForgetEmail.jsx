@@ -120,7 +120,7 @@ const ForgetEmail = () => {
                                 alt="organaise-logo-login-page" />
                         </Grid>
                         <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}  >
-                            <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+                            <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 3, sm: 0 }}>
                                 Forget Password
                             </Typography>
                         </Grid>

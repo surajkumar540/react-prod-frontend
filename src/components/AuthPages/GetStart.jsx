@@ -114,7 +114,7 @@ const GetStart = ({ serviceType }) => {
                                 alt="organaise-logo-login-page" />
                         </Grid>
                         {/*  */}
-                        <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}  >
+                        <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }} paddingTop={{xs:3,sm:'0'}} >
                             <Typography variant="h4" fontWeight='600' color="#333333">
                                 Get Started
                             </Typography>
@@ -195,7 +195,7 @@ const GetStart = ({ serviceType }) => {
 
                         <Grid item xs={12} sm={6} display='flex' justifyContent='center'>
                             <Grid item xs={11} sm={12} md={9} >
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={2}>
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={4} >
                                     <TextField
                                         id="login-signup-forgetPassword-email"
                                         label="Email"

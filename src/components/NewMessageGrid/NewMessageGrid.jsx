@@ -317,7 +317,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
             fetchAllMessV1(selectChatV1._id)
             selectedChatCompare = selectChatV1;
         }
-        console.log(selectChatV1)
     }, [selectChatV1._id])
 
     /////// sccrollbard automatic movein bottom place
