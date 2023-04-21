@@ -123,7 +123,8 @@ const ForgetPage = () => {
     }
 
     return (
-        <Box container  >
+
+    <Box container  >
             <Grid container padding={{ xs: 1, sm: 5 }}>
                 {/* grid1 */}
                 <Grid item xs={12} >
@@ -134,8 +135,8 @@ const ForgetPage = () => {
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Grid>
-                        <Grid item xs={12} sm={9} md={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}>
-                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 2, sm: 0 }}>
+                        <Grid item xs={12} sm={9} md={8} display='flex' justifyContent={{ xs: 'center', md: 'start' }}>
+                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333"  marginY={{ xs: 3, sm: 0 }}>
                                 Forget Account
                             </Typography>
                         </Grid>
@@ -147,7 +148,7 @@ const ForgetPage = () => {
 
                         <Grid item xs={12} sm={6} paddingBottom={2}  >
                             <Box paddingLeft={4} display='flex' justifyContent='center'>
-                                <img src={forgetPassPageBGImg} style={{ width: "60%" }} alt="forget-page-background-image" />
+                                <img src={forgetPassPageBGImg} style={{ width: "57%" }} alt="forget-page-background-image" />
                             </Box>
                         </Grid>
 
@@ -206,8 +207,8 @@ const ForgetPage = () => {
                                             ),
                                         }}
                                     />
-
                                 </Grid>
+
 
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                     <TextField

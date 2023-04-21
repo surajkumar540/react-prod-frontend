@@ -74,6 +74,7 @@ export const SignupPage = () => {
     const { contextEmail, setSeviceType, setContextEmail, setContextPassword, setContextName } = ServiceState();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [btnDisabed, setBtnDisabled] = useState(false);
 
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
@@ -86,8 +87,8 @@ export const SignupPage = () => {
         const userDataObj = {
             "email": emailAddress,
             "password": password,
-            "family_name": firstName,
-            "given_name": lastName
+            "given_name": firstName,
+            "family_name": lastName,
         }
 
 
@@ -148,32 +149,33 @@ export const SignupPage = () => {
         <Box container   >
             <Grid container padding={{ xs: 1, sm: 5 }}>
                 <Grid item xs={12} >
-                    <Box container display={{xs:'start',sm:'flex'}} >
-                        <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 2, md: 6 }}>
+                    <Box container display={{ xs: 'start', sm: 'flex' }} >
+                        <Grid item xs={6} sm={10} paddingLeft={{ xs: 2, sm: 12 }}>
                             <img
                                 src={organaiseLogo}
                                 style={{ width: "150px" }}
                                 alt="organaise-logo-login-page" />
                         </Grid>
-                        <Grid item xs={12} sm={9} md={8} display='flex' justifyContent={{xs:'center',sm:'start'}}  >
-                            <Typography variant="h4" fontSize={{xs:'26px',sm:'33px', md:'40px'}} fontWeight='600' color="#333333" marginY={{xs:2,sm:0}}>
+                        <Grid item xs={12} sm={9} md={8} display='flex' paddingBottom={2} justifyContent={{ xs: 'center', sm: 'start' }}  >
+                            <Typography variant="h4" fontSize={{ xs: '26px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 3, sm: 0 }}>
                                 Create Account
                             </Typography>
                         </Grid>
                     </Box>
                 </Grid>
 
+
                 <Grid item xs={12} sm={12} md={12} display={'flex'} justifyContent={'center'} >
-                    <Grid container xs={12} display='flex' >
+                    <Grid container xs={12} display='flex'>
                         {/* <Box display='flex' gap={2} > */}
                         <Grid item xs={12} sm={6} paddingBottom={2}  >
                             <Box paddingLeft={4} display='flex' justifyContent='center'>
-                                <img src={signupPageBgImg} style={{ width: "70%" }} alt="signUp-page-background-image" />
+                                <img src={signupPageBgImg} style={{ width: "57%" }} alt="signUp-page-background-image" />
                             </Box>
                         </Grid>
 
                         <Grid item xs={12} sm={6} display='flex' justifyContent='center' >
-                            <Grid item xs={11} sm={10} md={9} >
+                            <Grid item xs={11} sm={10} md={9} display='flex' flexDirection='column' gap={0.4}  >
                                 <Box display='flex' gap={1}>
 
                                     <TextField
@@ -283,25 +285,7 @@ export const SignupPage = () => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-
-                                    <Typography variant="subtitle2" align='center'>
-                                        You have already Account so <Link to="/login">
-                                            Click Here
-                                        </Link>
-                                    </Typography>
-
-                                </Grid>
-
-                                <Grid item xs={12} gap={2} paddingBottom={1}>
-                                    <Typography fontWeight='bold' paddingBottom={1} >Password must have</Typography>
-                                    <Typography as='li' color='red'>At least 8 characters </Typography>
-                                    <Typography as='li' color='red'>At least 1 lestter (a,b,c...)</Typography>
-                                    <Typography as='li' color='red'>At least 1 number (1,2,3...)</Typography>
-                                    <Typography as='li' color='red'>Both uppercase & lowercase characters</Typography>
-                                </Grid>
-
-                                <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingTop={2}>
                                     <Button
                                         variant="contained"
                                         sx={{
@@ -314,31 +298,54 @@ export const SignupPage = () => {
                                             }
                                         }}
                                         // disabled={btnDisabed || isLoadingSignUpFun}
-                                        disabled={userPostApiIsLoading}
+                                        disabled={ btnDisabed ||userPostApiIsLoading}
                                         onClick={() => buttonAction()}
 
                                     >
-
-                                        <CircularProgress
-                                            size={24}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '50%',
-                                                right: '3%',
-                                                marginTop: -12,
-                                                marginLeft: -12,
-                                                color: "primary"
-                                            }}
-                                        />
+                                        {
+                                            btnDisabed &&
+                                            <CircularProgress
+                                                size={24}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    right: '3%',
+                                                    marginTop: -12,
+                                                    marginLeft: -12,
+                                                    color: "primary"
+                                                }}
+                                            />
+                                        }
                                         Create Account
                                     </Button>
 
                                 </Grid>
+
+                                <Grid item xs={12} sx={cssStyle.grid_textBox_button} paddingY={1}>
+
+                                    <Typography variant="subtitle2" align='center'>
+                                        You have already Account so <Link to="/login">
+                                            Click Here
+                                        </Link>
+                                    </Typography>
+
+                                </Grid>
+
+                                <Grid item xs={12} gap={2} paddingBottom={1}>
+                                    <Typography fontWeight='bold' paddingBottom={1} >Password must have</Typography>
+                                    <Typography as='li' color='red'>At least 8 characters</Typography>
+                                    <Typography as='li' color='red'>At least 1 letter (a,b,c...)</Typography>
+                                    <Typography as='li' color='red'>At least 1 number (1,2,3...) </Typography>
+                                    <Typography as='li' color='red'>Both uppercase & lowercase characters
+                                    </Typography>
+                                </Grid>
+
+
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-                
+
             </Grid>
         </Box >
     )

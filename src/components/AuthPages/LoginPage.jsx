@@ -160,7 +160,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
 
   return (
     <Box container  >
-      <Grid container padding={{ xs: 2, sm: 5 }}>
+      <Grid container padding={{ xs: 1, sm: 5 }}>
        {/* grid1 */}
         <Grid item xs={12} >
           <Box container display={{ xs: 'start', sm: 'flex' }} >
@@ -171,7 +171,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
                 alt="organaise-logo-login-page" />
             </Grid>
             <Grid item xs={12} sm={8} display='flex' justifyContent={{ xs: 'center', sm: 'start' }}  >
-              <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333" marginY={{ xs: 1, sm: 0 }}>
+              <Typography variant="h4" fontSize={{ xs: '30px', sm: '33px', md: '40px' }} fontWeight='600' color="#333333"  marginY={{ xs: 3, sm: 0 }}>
                 Login Account
               </Typography>
             </Grid>
@@ -184,7 +184,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
 
             <Grid item xs={12} sm={6} paddingBottom={2} >
               <Box paddingLeft={4} display='flex' justifyContent='center'>
-                <img src={loginPageBackgroundImg} style={{ width: "65%" }} alt="login-page-background-image" />
+                <img src={loginPageBackgroundImg} style={{ width: "57%" }} alt="login-page-background-image" />
               </Box>
             </Grid>
 
@@ -232,7 +232,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
                     />
                   </Box>
 
-                  <Typography variant="subtitle2" align='right' >
+                  <Typography variant="subtitle2" align='right' paddingY={1.5} >
                     <Link to="/forgetEmail" style={{ textDecoration: "none", color: "red" }}>
                       Forget Password?
                     </Link>
@@ -254,7 +254,9 @@ const LoginPage = ({ setIsAuthenticated }) => {
                       onClick={() => buttonAction()}
 
                     >
-                      <CircularProgress
+                      {
+                      btnDisabed &&
+                        <CircularProgress
                         size={24}
                         style={{
                           position: 'absolute',
@@ -264,7 +266,8 @@ const LoginPage = ({ setIsAuthenticated }) => {
                           marginLeft: -12,
                           color: "primary"
                         }}
-                      />
+                        />
+                      }
                       Login
 
                     </Button>

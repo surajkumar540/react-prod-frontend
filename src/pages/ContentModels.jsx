@@ -27,6 +27,7 @@ import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess, Add
 import { useMutation } from 'react-query';
 import { ChatState } from '../Context/ChatProvider';
 
+import socket from "../socket/socket";
 const ContentModels = ({
     activeModel,
     setActiveModel,
@@ -37,14 +38,30 @@ const ContentModels = ({
     setNewModelOpen,
     getFoldersData,
     folderSelect,
-    ActiveChannel,
-    InanotherPage,
-    socket
+    ActiveChannel, InanotherPage
 }) => {
     const navigate = useNavigate();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('xs');
+    const [allUsersList,setAllUsersList]=useState({})
 
+    useEffect(()=>{
+        const list=selectChatV1?.users;
+        const userIdArr=list?.map((item)=>{
+            return item?._id
+        })
+        if(userIdArr)
+        {
+
+            const idKeyObj={}
+            for(let val of userIdArr)
+            {
+                idKeyObj[val]=true
+            }
+            
+            setAllUsersList(idKeyObj)
+        }
+    },[])
     ////// use conetext use here
     const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
 
@@ -372,10 +389,10 @@ const ContentModels = ({
     const [selectUserSave, setAddUserObj] = useState(null);
     /////////// When click on the select user then this function run here
     const selectUserFun = async () => {
-        const data = {
-            "chatId": selectChatV1._id,
-            "userId": selectSrcMember._id
-        }
+        const data={
+            "chatId":selectChatV1._id, 
+            "userId":selectSrcMember._id
+       }
         const response = await AddMemberInGroup(data);
         if (response) {
             setSelectedChatV1(response)
@@ -416,11 +433,22 @@ const ContentModels = ({
     const [debouncedSearchMember] = useDebounce(srcMemberText, 500);
     const [listNewMembers, setNewMembersList] = useState([]);
     const [selectSrcMember, setSelectSrcMem] = useState(null);
+    
     const searchMemberv1 = async (srcItem) => {
         try {
             const response = await MemberSearchV1({ search: srcItem });
+            
+            const filterUsers=response.filter((item)=>{
+                if(allUsersList[item._id])
+                {
+                    return false
+                }else{
+                    return true
+                }
+            })
+
             if (response.length > 0) {
-                setNewMembersList(response);
+                setNewMembersList(filterUsers);
             }
         } catch (error) {
             console.log(error.response);
