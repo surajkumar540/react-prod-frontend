@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useDebounce } from 'use-debounce';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess,AddMemberInGroup } from '../api/InternalApi/OurDevApi';
+import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess, AddMemberInGroup } from '../api/InternalApi/OurDevApi';
 // import appConfig from "../Config";
 // import {
 //     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
@@ -370,34 +370,25 @@ const ContentModels = ({
 
     /////////// when click on the add button in teammate model
     const [selectUserSave, setAddUserObj] = useState(null);
-
     /////////// When click on the select user then this function run here
     const selectUserFun = async () => {
-        const data={
-            "chatId":selectChatV1._id, 
-            "userId":selectSrcMember._id
-       }
-       console.log(data)
+        const data = {
+            "chatId": selectChatV1._id,
+            "userId": selectSrcMember._id
+        }
         const response = await AddMemberInGroup(data);
         if (response) {
             setSelectedChatV1(response)
             //// Here we are call the socket function 
-            socket.emit("add-member-in-group",{AddMemberUserId:selectSrcMember._id});
+            socket.emit("add-member-in-group", { AddMemberUserId: selectSrcMember._id  , response:response});
             toast.success("Member added successfully");
+            handleClose();
         } else {
             toast.error("Something is wrong.Member not add in channel");
         }
-
-       
     }
 
-    /////////// useEffect run when add member in group socket call
-    useEffect(() => {
-        socket.on("add-member-in-group-event", (data) => {
-            console.log("add-member-in-group-event", data)
-            handleClose()
-        })
-    })
+
 
     // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
     //     try {
@@ -692,9 +683,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontSize={{xs:'19px',sm:'22px'}} fontWeight={"600"} color="#333333" mb={1}>Add New Teammate</Typography>
+                            <Typography variant="h6" fontSize={{ xs: '19px', sm: '22px' }} fontWeight={"600"} color="#333333" mb={1}>Add New Teammate</Typography>
                             <Box >
-                                <Typography variant="subtitle2" fontSize={{xs:'12px',sm:'15px'}}>
+                                <Typography variant="subtitle2" fontSize={{ xs: '12px', sm: '15px' }}>
                                     Start a chat conversation with adding teammates via email
                                     Chat directly with them for fast solutions.
                                 </Typography>
@@ -728,7 +719,7 @@ const ContentModels = ({
                                             }}
                                             onChange={(event, newValue) => {
                                                 SetSrcMemberText(event.target.value);
-                                            }}/>
+                                            }} />
                                     )}
                                 />
                             </Box>
@@ -1010,9 +1001,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1} fontSize={{xs:'19px',sm:'22px'}}>Start Conversation </Typography>
+                            <Typography variant="h6" fontWeight={"600"} color="#333333" mb={1} fontSize={{ xs: '19px', sm: '22px' }}>Start Conversation </Typography>
                             <Box >
-                                <Typography variant="subtitle2"  fontSize={{xs:'12px',sm:'15px'}}>
+                                <Typography variant="subtitle2" fontSize={{ xs: '12px', sm: '15px' }}>
                                     Start a chat conversation with your member just search thee member via email or name.
                                     Chat directly with them for fast solutions.
                                 </Typography>
@@ -1115,9 +1106,9 @@ const ContentModels = ({
                     </DialogTitle>
                     <DialogContent sx={{ paddingBottom: "0px" }}>
                         <DialogContentText id="alert-dialog-create-group-description">
-                            <Typography variant="h6"  fontSize={{xs:'19px',sm:'22px'}} fontWeight={"600"} color="#333333" mb={1}>Create Group</Typography>
+                            <Typography variant="h6" fontSize={{ xs: '19px', sm: '22px' }} fontWeight={"600"} color="#333333" mb={1}>Create Group</Typography>
                             <Box >
-                                <Typography variant="subtitle2" fontSize={{xs:'12px',sm:'15px'}}>
+                                <Typography variant="subtitle2" fontSize={{ xs: '12px', sm: '15px' }}>
                                     Start a chat conversation with creating Group and add
                                     your teammates.
                                 </Typography>
@@ -1171,7 +1162,7 @@ const ContentModels = ({
                             <Button
                                 variant="outlined"
                                 size='small'
-                                sx={{ padding: {xs:'3px 20px',md:"5px 30px"},fontSize:{xs:'10px',sm:'12px'} }}
+                                sx={{ padding: { xs: '3px 20px', md: "5px 30px" }, fontSize: { xs: '10px', sm: '12px' } }}
                                 onClick={() => handleClose()}
                             >
                                 Discard
@@ -1179,8 +1170,8 @@ const ContentModels = ({
                             <Button
                                 variant="contained"
                                 size='small'
-                                sx={{ padding: {xs:'3px 20px',md:"5px 30px"},fontSize:{xs:'10px',sm:'12px'} }}
-                                onClick={() => {createGroupFun();}}
+                                sx={{ padding: { xs: '3px 20px', md: "5px 30px" }, fontSize: { xs: '10px', sm: '12px' } }}
+                                onClick={() => { createGroupFun(); }}
                             >
                                 Create Group
                             </Button>

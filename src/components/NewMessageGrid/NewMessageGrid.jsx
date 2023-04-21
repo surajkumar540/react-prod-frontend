@@ -18,14 +18,16 @@ import { useMutation } from 'react-query';
 import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message }
     from '../../api/InternalApi/OurDevApi';
 import { getSender } from '../../utils/chatLogic';
-import io from "socket.io-client";
+import socket from "../../socket/socket";
+
+//import io from "socket.io-client";
 
 import ListModal from '../Chat/ListModal';
 
-const ENDPOINT = process.env.REACT_APP_ENDPOINT
+//const ENDPOINT = process.env.REACT_APP_ENDPOINT
 
-
-var socket, selectedChatCompare;
+//var socket;
+var selectedChatCompare;
 
 const NewMessageGrid = ({ selectedChannel }) => {
 
@@ -37,7 +39,9 @@ const NewMessageGrid = ({ selectedChannel }) => {
     ////// socket connection state
     const [socketConnected, setSocketConnected] = useState(false);
     ////// use conetext use here
-    const { user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats } = ChatState();
+    const { user, setUser, selectChatV1,
+        setSelectedChatV1, currentChats, setCurrentChats,
+        chats, setChats, notification, setNotification } = ChatState();
     //////////// Store the userid of user ////////
     const [UserId, setUserId] = useState("");
     ////////// Create and store Identity service //////
@@ -54,16 +58,16 @@ const NewMessageGrid = ({ selectedChannel }) => {
     ///////// UseEffect for socket io
     useEffect(() => {
         //////// Here we are check the login user status
-        socket = io(`${ENDPOINT}`, {
-            debug: true
-        });
-        socket.on("connect_error", (err) => {
-            console.error("Connection error:", err);
-        });
+        // socket = io(`${ENDPOINT}`, {
+        //     debug: true
+        // });
+        // socket.on("connect_error", (err) => {
+        //     console.error("Connection error:", err);
+        // });
 
-        socket.on("connect_timeout", (timeout) => {
-            console.error("Connection timeout:", timeout);
-        });
+        // socket.on("connect_timeout", (timeout) => {
+        //     console.error("Connection timeout:", timeout);
+        // });
         socket.emit("setup", user);
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setisTyping(true));
@@ -242,6 +246,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
             //setMessages([...messages, response]);
             //fetchAllMessV1(selectChatV1._id);
             socket.emit("new message", response);
+            socket.emit("add-notification-in-member",{response})
 
         } catch (error) {
             console.log(error.response);
@@ -250,8 +255,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
     useEffect(() => {
         socket.on("message recived", (newMessageRecived) => {
-            if (!selectedChatCompare || selectedChatCompare._id !== newMessageRecived.chat._id) {
-                //give notification
+            if (!selectedChatCompare || (selectedChatCompare._id !== newMessageRecived.chat._id)) {
+                if (!notification.includes(newMessageRecived)) {
+                    setNotification([...notification, newMessageRecived]);
+                }
             } else {
                 setCurrentChats([...currentChats, newMessageRecived]);
                 //setMessages([...messages, newMessageRecived]);
@@ -456,7 +463,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
                                 if (mes?.sender?._id === selectChatV1?.users[0]?._id && selectChatV1.isGroupChat !== true) {
 
-                                  return <Grid
+                                    return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
                                             marginTop: "0px", width: "100%", marginLeft: "0px",
