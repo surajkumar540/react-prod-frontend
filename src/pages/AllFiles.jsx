@@ -76,6 +76,7 @@ const AllFiles = () => {
             }
         });
         const FilesResponse = response.data;
+        console.log(FilesResponse,'response of file')
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
             setUserFiles(FilesData)
@@ -90,12 +91,14 @@ const AllFiles = () => {
     }, [])
 
     ///////////// Delete fie code add here
+
     const { mutateAsync: deleteFileApiCall, isLoading: delFileIsLoading } = useMutation(deleteFileApi)
     const ActionDelFile = async (data) => {
         
-            // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-            const createDeleteObj = { fileId: data._id};
-            const resData = await deleteFileApiCall(createDeleteObj);
+        // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
+        const createDeleteObj = { fileId: data._id};
+        const resData = await deleteFileApiCall(createDeleteObj);
+        console.log(resData,'delete file by suraj')
             if (resData.status) {
                 toast.success(resData.message);
                 if (debouncedSearchTerm !== "") {

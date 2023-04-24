@@ -179,15 +179,16 @@ const User = ({ name, role, online = false, img,id,removeMember,chatId,adminId }
         <Box>
 
         <Typography pl='8px' color="black" fontSize={{xs:'12px',md:'15px'}} textTransform={'capitalize'}>{name}</Typography>
-        {id===adminId&&<Typography pl='8px' color="green" fontSize={{xs:'9px',md:'11px'}} textTransform={'capitalize'}>admin</Typography>}
+        {id===adminId?<Typography pl='8px' color="green" fontSize={{xs:'9px',md:'11px'}} textTransform={'capitalize'}>admin</Typography>: <Typography pl='8px' color=" #A1A1A1" fontSize={{xs:'9px',md:'11px'}}  textTransform={'capitalize'}>
+          {role}
+        </Typography>}
+       
         </Box>
       </Box>
 
       <Box >
       <Box display={'flex'} justifyContent='center' alignItems={'center'}>
-        <Typography pl='8px' color=" #A1A1A1" fontSize={{xs:'10px',md:'12px'}}  textTransform={'capitalize'}>
-          {role}
-        </Typography>
+        
         {(localStorage.getItem("userInfo")===adminId)&&<Box>
             {id!==adminId&&<IconButton>
               <DeleteModal type='list' handleDelete={()=>{removeMember(chatId,id)}}/>
