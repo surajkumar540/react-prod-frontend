@@ -98,17 +98,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
 
 
-    //////////When this page render then user_id store , nad channel list also load
-    // useEffect(() => {
-    //     getAwsCredentialsFromCognito();
-    //     IdentityServiceObject.setupClient();
-    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-    //     setUserId(userid)
-    //     setMember({ username: getLoginUserName, userId: userid });
-    // }, [])
-
     /////////when user click on the channel/////////////
     //////// Here we are store the active channel //////
     const [ActiveChannel, setActiveChannel] = useState({});
@@ -283,7 +272,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
             } else {
                 console.log("send message and recove message test", [...currentChats, newMessageRecived]);
                 setCurrentChats([...currentChats, newMessageRecived]);
-                //setMessages([...messages, newMessageRecived]);
 
             }
         })
@@ -293,10 +281,8 @@ const NewMessageGrid = ({ selectedChannel }) => {
     const handleEnterKeyPress = (event) => {
         if (event.key === 'Enter') {
             if (newMessage !== "") {
-                //sendMessageByUser(ActiveChannel, newMessage, member)
                 sendMessagev1(newMessage);
             }
-            // setCurrentChats
 
         }
     };
@@ -313,10 +299,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
     const fetchAllMessV1 = async (chatId) => {
         try {
             const response = await fetchingAllMess({ chatId });
-            // console.log(response,"ye response id hai")
-            // var utcDate = response[4].createdAt;  // ISO-8601 formatted date returned from server
-            // var localDate = new Date(utcDate);
-            // console.log(localDate.toLocaleTimeString())
             setCurrentChats(response)
             socket.emit("join chat", chatId)
         } catch (error) {
@@ -656,6 +638,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     setActiveModel={setActiveModel}
                     setNewModelOpen={setNewModelOpen}
                     ActiveChannel={ActiveChannel}
+                    socket={socket}
                 />
             }
 

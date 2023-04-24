@@ -1,28 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import {
-    Box, Toolbar, List, ListItem, ListItemButton, ListItemIcon, InputBase,
-    ListItemText, Grid, CssBaseline, Typography, Divider, IconButton, Tooltip, Avatar, Menu, MenuItem,
-    Button, FormHelperText, FormControl, Select, LinearProgress, Paper, CardMedia
+    Box, Toolbar, List, ListItem, InputBase,
+    ListItemText, CssBaseline, Typography, Divider, Avatar,
+    Button,FormControl,CardMedia
 } from '@mui/material/';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
-import EditIcon from '@mui/icons-material/Edit';
 import MuiDrawer from "@mui/material/Drawer"
-import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import SearchIcon from '@mui/icons-material/Search';
-import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 
@@ -31,25 +18,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import PersonIcon from '@mui/icons-material/Person';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import LogoutIcon from '@mui/icons-material/Logout';
 import ContentModels from '../../pages/ContentModels';
-// import {
-//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-//     sendChannelMessage, listChannelMessages
-// }
-//     from "../../api/ChimeApi/ChimeApi";
-import appConfig from "../../Config";
-//////////get the all users from congnito ///////////////////
-// import { IdentityService } from '../../services/IdentityService.js';
 import { useMutation } from 'react-query';
-import { fetchAllChatSingleUserOrGroup, getCompanyName } from '../../api/InternalApi/OurDevApi';
+import { fetchAllChatSingleUserOrGroup,fetchMessagesV1,sendV1Message , getCompanyName } from '../../api/InternalApi/OurDevApi';
 import { toast } from 'react-toastify';
-import BusinessIcon from '@mui/icons-material/Business';
 import { ChatState } from '../../Context/ChatProvider';
 import { getSender } from '../../utils/chatLogic';
-import { BorderLeft } from '@mui/icons-material';
 import oLogo from "../../assets/svg/oLogo.svg"
 import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
@@ -228,23 +203,6 @@ const LeftSideBar = (props) => {
     //////////// Store the userid of user ////////
     const [UserId, setUserId] = useState("");
     const [subUserId, setSubUserId] = useState("");
-    ////////// Create and store Identity service //////
-    // const [IdentityServiceObject] = useState(
-    //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
-    // );
-    //////////When this page render then user_id store , and channel list also load
-    // useEffect(() => {
-    //     getAwsCredentialsFromCognito();
-    //     IdentityServiceObject.setupClient();
-    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-    //     let GetsubUserId = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "sub")).Value;
-    //     setUserId(userid)
-    //     setSubUserId(GetsubUserId);
-    //     //setMember({ username: getLoginUserName, userId: userid });
-    // }, [])
-
     useEffect(() => {
         if (props?.data?.pageName === "Folder") {
             setOpen(!open);
@@ -363,37 +321,7 @@ const LeftSideBar = (props) => {
     const [channelList, setChannelList] = useState([]);
     ///////  Here store channel interval
     const [ChannelInterval, setChannelInterval] = useState(null);
-    // const channelListFunction = async (userid) => {
-    //     const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
-    //         userid
-    //     );
-    //     const userChannelList = userChannelMemberships.map(
-    //         (channelMembership) => {
-    //             const channelSummary = channelMembership.ChannelSummary;
-    //             channelSummary.SubChannelId =
-    //                 channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
-    //             return channelSummary;
-    //         }
-    //     );
-    //     setChannelList(userChannelList);
-    // }
-
-    /////// run first time and get the channel list and store it
-
-    // useEffect(() => {
-    //     if ((UserId !== "") && (location.pathname === "/")) {
-    //         clearInterval(ChannelInterval);
-    //         setChannelList([]);
-    //         setChannelInterval(setInterval(() => {
-    //             channelListFunction(UserId);
-    //         }, [3000]))
-    //     } else {
-    //         if (UserId !== "") {
-    //             clearInterval(ChannelInterval);
-    //             channelListFunction(UserId);
-    //         }
-    //     }
-    // }, [UserId, location])
+   
 
     //////// useLocation Check and update the state according to left sidebar options 
     useEffect(() => {
@@ -472,17 +400,17 @@ const LeftSideBar = (props) => {
                             </Box>
 
                             {/* <Box id="search_field_in_App_bar" pl='2rem'>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon sx={{ fontSize: "18px" }} />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                            sx={{ border:'1px solid #BEBEBE'}}
-                        />
-                    </Search>
-                </Box> */}
+                                <Search>
+                                    <SearchIconWrapper>
+                                        <SearchIcon sx={{ fontSize: "18px" }} />
+                                    </SearchIconWrapper>
+                                    <StyledInputBase
+                                        placeholder="Search…"
+                                        inputProps={{ 'aria-label': 'search' }}
+                                        sx={{ border:'1px solid #BEBEBE'}}
+                                    />
+                                </Search>
+                            </Box> */}
 
                             <Box sx={{ flexGrow: 0, width: "60%" }} display="inline-flex"
                                 justifyContent={props.data.pageName === "Data" ? 'space-between' : "end"}
@@ -510,40 +438,40 @@ const LeftSideBar = (props) => {
                                             sx={{ width: "28px", height: "28px", fontSize: '30px', color: "#333", opacity: 0.5 }} />
                                     </Box>
                                     {/* <Box id="profile_icon"  px='.8rem'>
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar src="https://images.pexels.com/photos/8864285/pexels-photo-8864285.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                     alt="Remy Sharp" sx={{ width: "32px", height: "32px" }} />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={() => handleCloseUserMenu()}
-                            >
-                                {settings.map((setting) => (
-                                    <>
-                                    <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
-                                        <ListItemIcon>
-                                            <EditIcon fontSize="small" />
-                                        </ListItemIcon>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                    </>
-                                ))}
-                            </Menu>
-                        </Box> */}
+                                        <Tooltip title="Open settings">
+                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                <Avatar src="https://images.pexels.com/photos/8864285/pexels-photo-8864285.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                                alt="Remy Sharp" sx={{ width: "32px", height: "32px" }} />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Menu
+                                            sx={{ mt: '45px' }}
+                                            id="menu-appbar"
+                                            anchorEl={anchorElUser}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={Boolean(anchorElUser)}
+                                            onClose={() => handleCloseUserMenu()}
+                                        >
+                                            {settings.map((setting) => (
+                                                <>
+                                                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                                                    <ListItemIcon>
+                                                        <EditIcon fontSize="small" />
+                                                    </ListItemIcon>
+                                                    <Typography textAlign="center">{setting}</Typography>
+                                                </MenuItem>
+                                                </>
+                                            ))}
+                                        </Menu>
+                                    </Box> */}
                                     <HeaderMenu />
                                 </Box>
                             </Box>
@@ -609,48 +537,13 @@ const LeftSideBar = (props) => {
                     variant="permanent"
                     open={open && !props.closeSideList}
                     position='relative'
-                   
-                // display={props.closeSideList&&handleDrawerClose}
                 >
 
-                    {/* <DrawerHeader >
-                        <Grid
-                            container
-                            display="flex"
-                            justifyContent="center"
-                            sx={{ transform: "translateX(-18px)" }}
-                          
-                        >
-                             {open &&
-                                <IconButton onClick={handleDrawerClose} sx={{ padding: "12px" }}>
-                                    {theme.direction === 'rtl' ?
-                                    <ChevronRightIcon /> :
-                                    // <ChevronLeftIcon />
-                                    <MenuIcon />
-                                }
-                                </IconButton>
-                            }
-
-                            {open && <Typography
-                                variant="subtitle1"
-                                sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
-                                color="primary">Microsoft</Typography>
-                            } 
-                        </Grid>
-                    </DrawerHeader> */}
-
+                   
                     <DrawerHeader />
 
                     {open && <Box>
 
-                        {/* <Box display="flex" justifyContent="center" width={'100%'}>
-                        <Typography
-                            variant="subtitle1"
-                            sx={{ fontWeight: "500", fontSize: "22px", lineHeight: 2.75 ,color:'#646464'}}
-                            color="primary">Microsoft
-                        </Typography>
-                            
-                    </Box> */}
                         <Divider />
 
                         <FormControl sx={{ m: 1, minWidth: 120, paddingLeft: "15px", paddingRight: "15px", }}>
@@ -688,7 +581,6 @@ const LeftSideBar = (props) => {
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
                                                 onClick={() => { setActivePage("groups"); setActiveChatId(""); }}
-                                                // onClick={() => navigatePage("")}
                                                 variant={activePage === "groups" ? "contained" : "text"}
                                                 size='small'
                                                 sx={{
@@ -705,24 +597,6 @@ const LeftSideBar = (props) => {
                                         </Box>
                                         {showGroups && <Box>
                                             <List sx={{ paddingTop: "5px" }} >
-                                                {/* <ListItem sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px" }}>
-                                    <ListItemText
-                                        primary={`# General`}
-                                        sx={{
-                                            opacity: open ? 1 : 0, marginTop: "4px", marginBottom: "0px",
-                                            "& span": { fontSize: "13px", color: "#5454D4", fontWeight: 500 }
-                                        }}
-                                    />
-                                </ListItem>
-                                <ListItem sx={{ paddingTop: "0px", paddingBottom: "0px", paddingLeft: "60px" }}>
-                                    <ListItemText
-                                        primary={`# Random`}
-                                        sx={{
-                                            opacity: open ? 1 : 0, marginTop: "4px",
-                                            marginBottom: "0px", "& span": { fontSize: "13px", fontWeight: 500, color: "#333333b5" }
-                                        }}
-                                    />
-                                </ListItem> */}
 
                                                 {
                                                     //channelList.length !== 0 && channelList.map((d) =>
@@ -731,16 +605,12 @@ const LeftSideBar = (props) => {
                                                         <ListItem
                                                             key={index}
                                                             sx={{ paddingTop: "2px", paddingBottom: "0px", paddingLeft: { sm: '25px', md: '40px', xl: "42px" }, cursor: "pointer" }}
-                                                            // onClick={() =>
-                                                            //     (location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d);setActiveChatId(d._id);setActivePage("groups");)
-                                                            // }
-
+                                                        
                                                             onClick={() => { location.pathname === "/chat" ? InanotherPage("1", d) : InanotherPage("2", d); setActiveChatId(d?._id); setActivePage("groups") }
                                                             }
                                                         >
                                                             <ListItemText
                                                                 primary={
-                                                                    //    d.Name.charAt(0).toUpperCase() + d.Name.slice(1)
                                                                     Object.keys(d).length > 0 &&
                                                                     (d?.isGroupChat && (`# ${d?.chatName}`))
                                                                 }
@@ -876,8 +746,6 @@ const LeftSideBar = (props) => {
                                                 aria-controls={open ? 'basic-menu' : undefined}
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
-                                                // onClick={() => navigatePage("allFiles")}
-                                                // onClick={() => {navigatePage("files/allFiles"),setActivePage("allFiles")}}
                                                 onClick={() => navigatePage("files/allFiles")}
                                                 variant={location.pathname === "/files/allFiles" ? "contained" : "text"}
                                                 size='small'
@@ -900,7 +768,6 @@ const LeftSideBar = (props) => {
                                                 aria-controls={open ? 'basic-menu' : undefined}
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
-                                                // onClick={() => {navigatePage("files/upload"),setActivePage("upload")}}
                                                 onClick={() => navigatePage("files/upload")}
                                                 variant={location.pathname === "/files/upload" ? "contained" : "text"}
                                                 size='small'
@@ -924,8 +791,6 @@ const LeftSideBar = (props) => {
                                                 aria-controls={open ? 'basic-menu' : undefined}
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
-                                                // onClick={() => navigatePage("create-folder")}
-                                                // onClick={() => {navigatePage("files/create-folder"),setActivePage("createFolder")}}
                                                 onClick={() => navigatePage("files/folder")}
                                                 variant={
                                                     location.pathname === ("/files/folder")||location.pathname.slice(0,13)=="/files/folder" ? "contained" : "text"
@@ -1000,21 +865,6 @@ const LeftSideBar = (props) => {
 
                         <Box id="logout_box" sx={{ position: "absolute", bottom: "0%", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: { sm: '8px', md: "10px" }, background: "white" }} mt={1}>
                             <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                                {/* <Button
-                                id="logout-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleLogout}
-                                variant="text"
-                                size='small'
-                                sx={{ width: "100%", justifyContent: 'flex-start' }}
-                            >
-                                <LogoutIcon sx={{ fontSize: "18px", marginRight: "8px" }} />
-                                <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
-                                    Logout
-                                </span>
-                            </Button> */}
                                 <LogOutModal handleLogout={handleLogout} />
                             </Box>
                         </Box>
@@ -1023,53 +873,7 @@ const LeftSideBar = (props) => {
                             paddingLeft: open ? "25px" : "5px",
                             paddingRight: open ? "25px" : "5px"
                         }}>
-                            {/* ['Dashboard', 'Messaging', 'Folders', 'Data', 'Privacy Policy', 'Settings'] */}
-
-                            {/* {['Dashboard', 'Messaging', 'Folders', 'Data'].map(
-                        (text, index) => (
-                            <ListItem key={text} disablePadding px="auto" sx={{ display: 'block' }}>
-                                <ListItemButton
-                                    sx={{
-                                        minHeight: 40,
-                                        justifyContent: open ? 'initial' : 'center',
-                                        px: 2.5,
-                                        paddingTop: "0px",
-                                        paddingBottom: "0px",
-                                        border: open && index === props.data.index ? "1px solid #5454D3" : "none",
-                                        borderRadius: open ? "25px" : "10px",
-                                        marginTop: "15px",
-                                        backgroundColor: (open && index === props.data.index) ? "#5454D4" : index === props.data.index ? "#5454D4" : "#fff",
-                                        color: (open && index === props.data.index) ? "#ffffff" : index === props.data.index ? "#ffffff" : "#333333",
-                                        opacity: open && index !== props.data.index ? 0.7 : 1,
-                                        "&:hover": {
-                                            backgroundColor: (open && index === props.data.index) ? "#5454D4" : index === props.data.index ? "#5454D3" : "#fff",
-
-                                        },
-                                        boxShadow: open && index === props.data.index ? "0px 0px 10px 10px rgba(0, 0, 0, 0.15)" : "none",
-                                    }}
-                                    onClick={() => changePage(index)}
-                                >
-                                    <ListItemIcon
-                                        sx={{
-                                            minWidth: 0,
-                                            mr: open ? 1 : 'auto',
-                                            justifyContent: 'center',
-                                            color: (open && index === props.data.index) ? "#ffffff" : index === props.data.index ? "#ffffff" : "#333333",
-
-                                        }}
-                                    >
-                                        {index === 0 && <HomeOutlinedIcon sx={{ fontSize: "20px" }} />}
-                                        {index === 1 && <ChatBubbleOutlineOutlinedIcon sx={{ fontSize: "18px" }} />}
-                                        {index === 2 && <FolderOutlinedIcon sx={{ fontSize: "18px" }} />}
-                                        {index === 3 && <DescriptionOutlinedIcon sx={{ fontSize: "18px" }} />}
-                                        {index === 4 && <HelpOutlineOutlinedIcon sx={{ fontSize: "18px" }} />}
-                                        {index === 5 && <SettingsOutlinedIcon sx={{ fontSize: "18px" }} />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }}
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        ))} */}
+                    
                         </List>
 
                     </Box>}
