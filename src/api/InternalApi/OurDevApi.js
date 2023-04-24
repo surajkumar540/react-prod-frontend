@@ -4,10 +4,10 @@ const devURL = "https://devorganaise.com/api";
 //
 const localUrl = "http://localhost:8000/api";
 
-const UserApiVersion = "signup";
-const OtpApiVersion = "verify";
-const ChatApiVersion = "v2/chat";
-const MessageApiVersion = "v2/message";
+const UserApiVersion = "api/signup";
+const OtpApiVersion = "api/verify";
+const ChatApiVersion = "api/v2/chat";
+const MessageApiVersion = "api/v2/message";
 
 // axios.interceptors.request.use(config => {
 //     config.headers['Content-Type'] = 'application/json';
@@ -26,7 +26,7 @@ const headerData =
 //////-------------------------------///////////
 
 export const userTokenVerify = async () => {
-    const response = await axios.get(`tokenVerification`, headerData);
+    const response = await axios.get(`api/tokenVerification`, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -37,7 +37,7 @@ export const userTokenVerify = async () => {
 //////-------------------------------///////////
 
 export const getStartedVerify = async (getData) => {
-    const response = await axios.post(`emailCheck`, getData, headerData);
+    const response = await axios.post(`api/emailCheck`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -71,7 +71,7 @@ export const otpSignUpVerify = async (getData) => {
 ///////-----------------------------///////////
 
 export const userLoginAccount = async (getData) => {
-    const response = await axios.post(`signin`, getData, headerData);
+    const response = await axios.post(`api/signin`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -79,7 +79,7 @@ export const userLoginAccount = async (getData) => {
 }
 
 export const ForgetEmailOtp = async (getData) => {
-    const response = await axios.post(`sendOtpForgetPassword`, getData, headerData);
+    const response = await axios.post(`api/sendOtpForgetPassword`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -93,7 +93,7 @@ export const ForgetEmailOtp = async (getData) => {
 ///////-----------------------------///////////
 
 export const resendVerification = async (getData) => {
-    const response = await axios.post(`resendVeriCode`, getData, headerData);
+    const response = await axios.post(`api/resendVeriCode`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -101,7 +101,7 @@ export const resendVerification = async (getData) => {
 }
 
 export const forgetPasswordVerify = async (getData) => {
-    const response = await axios.post(`forgetPasswordChange`, getData, headerData);
+    const response = await axios.post(`api/forgetPasswordChange`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -115,7 +115,7 @@ export const forgetPasswordVerify = async (getData) => {
 
 export const searchUserV1 = async (getData) => {
 
-    const response = await axios.get(`v2/chat/searchUser?search=${getData.search}`, headerData);
+    const response = await axios.get(`api/v2/chat/searchUser?search=${getData.search}`, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -159,7 +159,7 @@ export const createGroupChat = async (getData) => {
 }
 
 export const AddMemberInGroup = async (getData) => {
-    const response = await axios.put(`v2/chat/groupadd`, getData, headerData);
+    const response = await axios.put(`api/v2/chat/groupadd`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -167,7 +167,7 @@ export const AddMemberInGroup = async (getData) => {
 }
 
 export const RemoveMemberInGroup = async (getData) => {
-    const response = await axios.put(`v2/chat/groupremove`, getData, headerData);
+    const response = await axios.put(`api/v2/chat/groupremove`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -204,7 +204,7 @@ export const fetchMessagesV1 = async (getData) => {
 
 ////////// Create company api call
 export const postCompannyName = async (getData) => {
-    const response = await axios.post(`v2/company/create`, getData, headerData);
+    const response = await axios.post(`api/v2/company/create`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -212,7 +212,7 @@ export const postCompannyName = async (getData) => {
 }
 
 export const getCompanyName = async (userID) => {
-    const response = await axios.get(`v2/company/?${userID}`);
+    const response = await axios.get(`api/v2/company/?${userID}`);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -220,7 +220,7 @@ export const getCompanyName = async (userID) => {
 }
 
 export const removeFileApi = async (getData) => {
-    const response = await axios.post(`/removeFile`, getData, headerData);
+    const response = await axios.post(`api/removeFile`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -230,7 +230,7 @@ export const removeFileApi = async (getData) => {
 
 ///////delete file
 export const deleteFileApi = async (getData) => {
-    const response = await axios.delete(`v2/file/deleteFile`, { data: getData }, headerData);
+    const response = await axios.delete(`api/v2/file/deleteFile`, { data: getData }, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -240,7 +240,7 @@ export const deleteFileApi = async (getData) => {
 
 
 export const deleteFileFromFolderApi = async (getData) => {
-    const response = await axios.put(`v2/folder/folderFileDelete`, getData, headerData);
+    const response = await axios.put(`api/v2/folder/folderFileDelete`, getData, headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }
@@ -248,7 +248,7 @@ export const deleteFileFromFolderApi = async (getData) => {
 }
 
 export const getFileFolderApi = async (folderId) => {
-    const response = await axios.get(`/v2/folder/?folderId=${folderId}`,headerData);
+    const response = await axios.get(`api/v2/folder/folderFiles/${folderId}`,headerData);
     if (!response.statusText === "OK") {
         throw new Error("Something is wrong.");
     }

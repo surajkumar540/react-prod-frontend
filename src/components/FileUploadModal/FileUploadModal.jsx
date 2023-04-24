@@ -53,21 +53,19 @@ const FileUploadModal = ({ handleClose, open, setJsonData, handleClickOpen, user
         for (let index = 0; index < ShowFiles.length; index++) {
             let fileData = ShowFiles[index];
             const formData = new FormData();
-            formData.append('fileData', fileData);
-            formData.append('userId', UserId);
-            formData.append('fileSize', fileData.size);
-            const response = await axios.post('v2/file/uploadfile', formData, {
+            formData.append('file', fileData);
+            // formData.append('userId', UserId);
+            // formData.append('fileSize', fileData.size);
+            const response = await axios.post('v2/api/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
 
             if (ShowFiles.length - 1 === index) {
-                console.log(response.data.data)
-                if (response?.data?.data?.Key) {
+                if (response?.data?.data?.status) {
                     setLoader(false)
                     toast.success(`File uploaded successfully`);
-                    // ${response.data.Key.split(".")[0]}
                     handleClose();
                     navigate("/files/allFiles");
                 } else {

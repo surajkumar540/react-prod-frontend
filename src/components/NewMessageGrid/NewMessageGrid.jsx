@@ -28,7 +28,7 @@ import ListModal from '../Chat/ListModal';
 
 //const ENDPOINT = process.env.REACT_APP_ENDPOINT
 
-var socket, selectedChatCompare;
+var selectedChatCompare;
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         backgroundColor: '#44b700',
