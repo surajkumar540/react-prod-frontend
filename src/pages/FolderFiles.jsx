@@ -8,7 +8,7 @@ import { useNavigate,useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useMutation } from 'react-query';
-import { deleteFileApi } from '../api/InternalApi/OurDevApi';
+import {deleteFileFromFolderApi,getFileFolderApi } from '../api/InternalApi/OurDevApi';
 import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 import DotMenu from '../components/Chat/DotMenu';
@@ -16,8 +16,8 @@ import Loader from '../components/Tools/Loader';
 
 const FolderFiles = () => {
     const navigate = useNavigate();
-    const {fid}=useParams();
-    console.log(fid)
+    const {fid:folderId}=useParams();
+    // console.log(fid, 'folderid');
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
     const [folderName, setFolderName] = useState("");
@@ -67,26 +67,18 @@ const FolderFiles = () => {
    
 
     /////// Get files of this user
-    const getFilesOfUser = async (userId) => {
-        const userID = { userId: userId }
-        const response = await axios.get(`/v2/folder/?folderId=${fid}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(response)
-        const FilesResponse = response;
-        if (FilesResponse.status==200) {
-            const FilesData = FilesResponse?.data?.data[0]?.filesList;
-            setFolderName(FilesResponse?.data?.data[0]?.folderName)
-            // FilesData.forEach((item)=>{
-            //     const ext=item.fileName.split(['.'])[1];
-            //     console.log(ext)
-            // })
+    const getFilesOfUser = async () => {
+        try{
+
+            const FilesResponse = await getFileFolderApi(folderId)
+            const FilesData = FilesResponse?.data[0]?.filesList;
+            setFolderName(FilesResponse?.data[0]?.folderName)
             setUserFiles(FilesData)
             
-        } else {
-            toast.error(FilesResponse.message);
+        }catch(error)
+        {
+            console.log(error);
+            toast.error(error?.message||"Something is wrong");
         }
         setLoading(false)
     }
@@ -94,35 +86,37 @@ const FolderFiles = () => {
 
     useEffect(() => {
         setLoading(true)
+        getFilesOfUser();
         // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-        const UserId =localStorage.getItem("sub");
-        setUserId(UserId);
-        if (UserId !== "") {
-            getFilesOfUser(UserId);
-        }
-    }, [UserId])
+        // const UserId =localStorage.getItem("sub");
+        // setUserId(UserId);
+        // if (UserId !== "") {
+        // }
+    }, [])
 
-    ///////////// Delete fie code add here
-    const { mutateAsync: deleteFileApiCall, isLoading: delFileIsLoading } = useMutation(deleteFileApi)
-    const ActionDelFile = async (data) => {
-        
-            // const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-            const createDeleteObj = { fileId: data._id, userId: UserId };
-            const resData = await deleteFileApiCall(createDeleteObj);
-            if (resData.status) {
-                toast.success(resData.message);
-                if (debouncedSearchTerm !== "") {
-                    const afterDelFilterFile = userFiles.filter((srcFiles) => srcFiles.fileId !== data.fileId);
-                    setUserFiles(afterDelFilterFile);
-                    if (afterDelFilterFile.length === 0) {
-                        SetSrcFileText("");
-                    }
-                } else {
-                    getFilesOfUser(UserId);
-                }
-            } else {
-                toast.error(resData.message);
-            }
+    
+    ///////////// Delete file folder code add here
+    const { mutateAsync: deleteFileFromFolder, isLoading: delFileFromFolderIsLoading } = useMutation(deleteFileFromFolderApi)
+    const ActionDelFile = async (fileId) => {
+          
+           
+            const dummyData = { fileId: fileId, folderId: folderId };
+            const resData = await deleteFileFromFolder(dummyData);
+            getFilesOfUser()
+            // if (resData.status) {
+            //     toast.success(resData.message);
+            //     if (debouncedSearchTerm !== "") {
+            //         const afterDelFilterFile = userFiles.filter((srcFiles) => srcFiles.fileId !== data.fileId);
+            //         setUserFiles(afterDelFilterFile);
+            //         if (afterDelFilterFile.length === 0) {
+            //             SetSrcFileText("");
+            //         }
+            //     } else {
+            //         getFilesOfUser(UserId);
+            //     }
+            // } else {
+            //     toast.error(resData.message);
+            // }
    
 
     }
@@ -226,7 +220,7 @@ const FolderFiles = () => {
                         </Grid>
                         <Grid container item mt={3} xs={12} display={'flex'} >
                             {userFiles.length !== 0 && userFiles.map((d,index) =>
-                                <Box marginRight={"25px"} my={"10px"} sx={{
+                             <Box key={index} marginRight={"25px"} my={"10px"} sx={{
                                     width: "170px",
                                     height: "170px",
                                     padding: "5px 5px",
@@ -235,7 +229,6 @@ const FolderFiles = () => {
                                 }}>
                                     <Box container display={'flex'} justifyContent="end">
                                         <DotMenu handleDelete={ActionDelFile} value={d} pageName='files'/>
-                                        {/* <DeleteModal handleDelete={ActionDelFile} value={d} /> */}
                                     </Box>
                                     <Box container display={'flex'} justifyContent="center">
                                       

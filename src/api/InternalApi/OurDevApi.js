@@ -239,3 +239,18 @@ export const deleteFileApi = async (getData) => {
 
 
 
+export const deleteFileFromFolderApi = async (getData) => {
+    const response = await axios.put(`v2/folder/folderFileDelete`, getData, headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}
+
+export const getFileFolderApi = async (folderId) => {
+    const response = await axios.get(`/v2/folder/?folderId=${folderId}`,headerData);
+    if (!response.statusText === "OK") {
+        throw new Error("Something is wrong.");
+    }
+    return response.data
+}

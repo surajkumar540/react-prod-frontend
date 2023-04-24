@@ -45,7 +45,9 @@ const HeaderMenu = () => {
         <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar src="https://images.pexels.com/photos/8864285/pexels-photo-8864285.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    alt="Remy Sharp" sx={{ width: "32px", height: "32px" }} />
+                    alt="Remy Sharp" 
+                    sx={{ width: "32px", height: "32px" }} 
+                    />
             </IconButton>
         </Tooltip>
         <Menu
@@ -71,8 +73,8 @@ const HeaderMenu = () => {
                 </ListItemIcon>
                 <Typography textAlign="center" fontSize={'14px'}>Edit Profile</Typography>
             </MenuItem>
-            <Divider/>
-            <MenuItem onClick={() => handleCloseUserMenu("da")}>
+            {/* <Divider/> */}
+            {/* <MenuItem onClick={() => handleCloseUserMenu("da")}>
                 <ListItemIcon>
                     <ColorLensIcon fontSize="small" />
                 </ListItemIcon>
@@ -91,7 +93,7 @@ const HeaderMenu = () => {
                     <HelpOutlineIcon fontSize="small" />
                 </ListItemIcon>
                 <Typography textAlign="center"  fontSize={'14px'}>Help</Typography>
-            </MenuItem>
+            </MenuItem> */}
             <Divider/>
             <MenuItem onClick={() => handleCloseUserMenu("ds")}>
                 <ListItemIcon>

@@ -1,7 +1,8 @@
-import { Box, Grid, Typography, Avatar, Stack, Button, TextField, AvatarGroup } from '@mui/material'
+import { Box, Grid, Typography, Avatar, Stack, Button, Badge, TextField, AvatarGroup } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
+import { styled } from '@mui/material/styles';
 // import {
 //     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
 //     sendChannelMessage, listChannelMessages
@@ -15,8 +16,8 @@ import ContentModels from '../../pages/ContentModels';
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
 import { useMutation } from 'react-query';
-import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message } 
-from '../../api/InternalApi/OurDevApi';
+import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message }
+    from '../../api/InternalApi/OurDevApi';
 import { getSender } from '../../utils/chatLogic';
 import { getTime } from '../../utils/validation';
 import socket from "../../socket/socket";
@@ -27,8 +28,25 @@ import ListModal from '../Chat/ListModal';
 
 //const ENDPOINT = process.env.REACT_APP_ENDPOINT
 
-//var socket;
-var selectedChatCompare;
+var socket, selectedChatCompare;
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        backgroundColor: '#44b700',
+        color: '#44b700',
+        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        '&::after': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            // animation: 'ripple 1.2s infinite ease-in-out',
+            // border: '1px solid currentColor',
+            content: '""',
+        },
+    },
+}));
 
 const NewMessageGrid = ({ selectedChannel }) => {
 
@@ -50,6 +68,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
     //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
     // );
 
+    // console.log(selectChatV1,'sguas77as7dta78std78as');
     useEffect(() => {
         setActiveChannel(selectedChannel);
     }, [selectedChannel])
@@ -125,7 +144,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
         firstBoxMessage: { height: "80vh", backgroundColor: "#ffffff", marginTop: "0px" },
         groupNameBox: {
             position: "sticky", top: "65px", width: "100%", height: "50px", zIndex: "100",
-            background: " #FFFFFF", boxSizing: "border-box", 
+            background: " #FFFFFF", boxSizing: "border-box",
             borderBottom: "1px solid #F1F1F1"
         },
         avatarCss: { width: "25px", height: "25px" },
@@ -133,11 +152,11 @@ const NewMessageGrid = ({ selectedChannel }) => {
         timeRecMess: { fontSize: "10px", lineHeight: "25px", paddingLeft: "5px" },
         recRealMess: {
             paddingRight: "30px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "14px", lineHeight: "15px",  color: "black", background: "#F2F2F2", borderRadius: "0px 10px 10px 10px",fontWeight:'400'
+            fontSize: "14px", lineHeight: "15px", color: "black", background: "#F2F2F2", borderRadius: "0px 10px 10px 10px", fontWeight: '400'
         },
         sendRealMess: {
             paddingRight: "10px", paddingLeft: "10px", paddingTop: "10px", paddingBottom: "10px",
-            fontSize: "14px", lineHeight: "15px",background: "#448DF0", color: "white", borderRadius: "10px 0px 10px 10px",fontWeight:"400"
+            fontSize: "14px", lineHeight: "15px", background: "#448DF0", color: "white", borderRadius: "10px 0px 10px 10px", fontWeight: "400"
         },
         sendMessInput: {
             "& input": {
@@ -340,52 +359,92 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
     return (
         <>
-            <Box container py="13px" px={"25px"} boxSizing={"border-box"} sx={cssStyle.groupNameBox} display="flex" justifyContent={"space-between"} >
+            <Box container py="13px" px={"25px"} bgcolor='pink' boxSizing={"border-box"} sx={cssStyle.groupNameBox} display="flex" justifyContent={"space-between"}>
                 {
                     //Object.keys(ActiveChannel).length > 3 &&
                     //Object.keys(MyActiveChat).lenght > 0 &&
                     <>
-                        <Box display={"flex"}>
-                            <Typography fontWeight={"600"}
-                                variant="subtitle2">
-                                {/* {ActiveChannel.Name.charAt(0).toUpperCase() + ActiveChannel.Name.slice(1)} */}
-                                {Object.keys(MyActiveChat).length > 0 &&
-                                    (!MyActiveChat.isGroupChat ? getSender(user, MyActiveChat?.users) : (MyActiveChat.chatName))
-                                }
-                            </Typography>
+                        <Box display={"flex"} height='30px' >
+                            {
+                                selectChatV1?.isGroupChat === false &&
+                                <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
+
+                                    <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }}  >{selectChatV1?.users[1].name[0].toUpperCase()}</Avatar>
+                                </StyledBadge>
+                            }
+                            <Box display='flex' flexDirection='column' justifyContent={'center'}>
+                                <Box>
+
+                                <Typography fontWeight={"600"}
+                                    variant="subtitle2" paddingTop={0.3} paddingLeft={1.2} textTransform={'capitalize'} >
+                                    {/* {ActiveChannel.Name.charAt(0).toUpperCase() + ActiveChannel.Name.slice(1)} */}
+                                    {Object.keys(MyActiveChat).length > 0 &&
+                                        (!MyActiveChat.isGroupChat ? getSender(user, MyActiveChat?.users) : (MyActiveChat.chatName))
+                                    }
+                                     {
+                                        
+                                        selectChatV1?.isGroupChat === false &&
+                                        <Typography fontSize='12px'>
+                                            online
+                                        </Typography>
+                                        }
+                                    
+                                </Typography>
+                               
+
+                                </Box>
+                            </Box>
+                            {/* 
+
+                            <Box display={'flex'} alignItems={'center'}>
+                                <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
+                                        <Avatar alt="Remy Sharp" src={img} />
+                                    </StyledBadge> : <Avatar alt="Remy Sharp" src={img} />
+
+                                <Box>
+
+                                    <Typography pl='8px' color="black" fontSize={{ xs: '12px', md: '15px' }} textTransform={'capitalize'}>{name}</Typography>
+                                    {id === adminId ? <Typography pl='8px' color="green" fontSize={{ xs: '9px', md: '11px' }} textTransform={'capitalize'}>admin</Typography> : <Typography pl='8px' color=" #A1A1A1" fontSize={{ xs: '9px', md: '11px' }} textTransform={'capitalize'}>
+                                        {role}
+                                    </Typography>}
+
+                                </Box>
+                            </Box> */}
+
                             <Stack ml={1} direction="row" spacing={-.25}>
-                                <AvatarGroup max={3} 
-                                sx={{
+                                <AvatarGroup max={3}
+                                    sx={{
                                         '& .MuiAvatar-root': { width: 24, height: 24, fontSize: 15 },
                                     }}
                                 >
                                     {
-                                        selectChatV1?.isGroupChat===true?
-                                        selectChatV1?.users?.map((item)=>{
+                                        selectChatV1?.isGroupChat === true &&
+                                        selectChatV1?.users?.map((item) => {
                                             return <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
-                                        }):<Avatar alt="Remy Sharp" src="">{selectChatV1?.users[1].name[0].toUpperCase()}</Avatar>
+                                        })
                                     }
-                                
+
                                 </AvatarGroup>
                             </Stack>
                         </Box>
 
 
-                       {
-                        (selectChatV1?.isGroupChat==='true'||selectChatV1?.isGroupChat===true)&&<Box display={'flex'} alignItems={'center'} >
-                        <Button
-                            sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
-                            variant="outlined"
-                            size="small"
-                            onClick={() => modelOpens()}>
-                            Add Member
-                        </Button>
-                        {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
+                        {
+                            (selectChatV1?.isGroupChat === 'true' || selectChatV1?.isGroupChat === true) && <Box display={'flex'} alignItems={'center'} >
+
+                                {selectChatV1?.groupAdmin._id === localStorage.getItem("userInfo") && <Button
+                                    sx={{ ...cssStyle.listofPeopeBtn, marginRight: "10px" }}
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => modelOpens()}>
+                                    Add Member
+                                </Button>}
+                                {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
                             List Of People
                         </Button> */}
-                        <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens}/>
-                    </Box>
-                       } 
+                                <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens} />
+                            </Box>
+                        }
                     </>
                 }
 
@@ -475,10 +534,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
                             */
                     }
 
-                    {(currentChats.length > 0&&selectChatV1) &&
+                    {(currentChats.length > 0 && selectChatV1) &&
                         <>
                             {currentChats?.map((mes, index) => {
-                                if (mes?.sender?._id === selectChatV1?.users[0]?._id&&selectChatV1.isGroupChat!==true) {
+                                if (mes?.sender?._id === selectChatV1?.users[0]?._id && selectChatV1.isGroupChat !== true) {
                                     return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
