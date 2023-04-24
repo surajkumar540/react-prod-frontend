@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IconButton, Box, Button, Typography, Modal, InputAdornment, OutlinedInput, Badge, Avatar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import { ChatState } from '../../Context/ChatProvider';
@@ -19,7 +18,7 @@ const style = {
   width: 400,
   bgcolor: 'background.paper',
   // border: '2px solid #000',
-  boxShadow: 24,
+  boxShadow: 12,
   padding: '2rem',
   borderRadius: "6px"
 };
@@ -137,17 +136,6 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
               startAdornment={<InputAdornment position="start"><SearchIcon sx={{ color: '#BEBEBE' }} /></InputAdornment>}
             />
           </Box>
-
-          {/* <Box my='1.2rem' >
-
-            <IconButton aria-label="add" size="small" sx={{ color: '#A9A9A9', border: '1px solid #A9A9A9', borderRadius: '5px', outline: 'none !important' }} onClick={addMemberFunction}>
-              <AddIcon fontSize="inherit" />
-            </IconButton>
-
-            <Button sx={{ p: 0, px: 1, color: 'black', fontSize: '16px', textTransform: 'capitalize', outline: 'none !important' }} onClick={addMemberFunction}>
-              Add People
-            </Button>
-          </Box> */}
 
           <Box display={'flex'} flexDirection={'column'}>
           {
