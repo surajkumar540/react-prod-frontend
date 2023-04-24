@@ -6,8 +6,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import { ChatState } from '../../Context/ChatProvider';
 import DeleteModal from '../../components/Chat/DeleteModal';
-import { RemoveMemberInGroup,fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
+import { RemoveMemberInGroup, fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
 import { toast } from 'react-toastify';
+import socket from "../../socket/socket";
+
 
 const style = {
   position: 'absolute',
@@ -56,28 +58,26 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
         setChats(response)
         console.log(response,"hooooo gyaayauya")
     } catch (error) {
-        console.log("Something is wrong");
+      console.log("Something is wrong");
     }
   }
 
-  const removeMember=async(chatId,userId)=>{
-    try{
-      const data={
-        "chatId":chatId, 
-        "userId":userId 
-        }
-      const response=await RemoveMemberInGroup(data)
-      if(response)
-      {
+  const removeMember = async (chatId, userId) => {
+    try {
+      const data = {
+        "chatId": chatId,
+        "userId": userId
+      }
+      const response = await RemoveMemberInGroup(data)
+      if (response) {
         setSelectedChatV1(response)
-        toast.success("User removed successfully")
-        fetchChat()
-      }else{
+        socket.emit("remove-member-in-group",{"RemoveMemberUserId":userId, response})
+        toast.success("User removed successfully");
+      } else {
         toast.error("User not removed")
       }
       handleClose()
-    }catch(error)
-    {
+    } catch (error) {
       toast.error("Something is wrong in delete")
     }
   }
@@ -112,15 +112,15 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
             <CloseIcon sx={{ p: 0, fontSize: '15px' }} />
           </IconButton>
 
-          <Typography id="modal-modal-title" color={'black'} fontSize={{xs:'19px',sm:'22px'}} mb='.5rem'>
+          <Typography id="modal-modal-title" color={'black'} fontSize={{ xs: '19px', sm: '22px' }} mb='.5rem'>
             List of People
           </Typography>
 
           <Box mb={".6rem"} display={'flex'} justifyContent={'space-between'}>
-            <Typography id="modal-modal-title" variant="p" color={'#448DF0'} fontSize={{xs:'13px',md:'16px'}}>
+            <Typography id="modal-modal-title" variant="p" color={'#448DF0'} fontSize={{ xs: '13px', md: '16px' }}>
               # {selectChatV1?.chatName}
             </Typography>
-            <Typography variant="p" color={'#BEBEBE'} fontSize={{xs:'11px',md:'14px'}}>{selectChatV1 && selectChatV1?.users?.length} people</Typography>
+            <Typography variant="p" color={'#BEBEBE'} fontSize={{ xs: '11px', md: '14px' }}>{selectChatV1 && selectChatV1?.users?.length} people</Typography>
           </Box>
 
           <Box my={".6rem"}>
@@ -172,7 +172,7 @@ const User = ({ name, role, online = false, img,id,removeMember,chatId,adminId }
       <Box display={'flex'} alignItems={'center'}>
         {
           online ? <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-           <Avatar alt="Remy Sharp" src={img} />
+            <Avatar alt="Remy Sharp" src={img} />
           </StyledBadge> : <Avatar alt="Remy Sharp" src={img} />
         }
 

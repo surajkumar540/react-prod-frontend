@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import NewMessageGrid from '../components/NewMessageGrid/NewMessageGrid'
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import createChannelPng from "../assets/BackgroundImages/create-channel-homepage.png";
 import ContentModels from './ContentModels';
+import socket from "../socket/socket";
 
 const MyMessage = () => {
-    
+
     ////////// active messaging part
     const [messagingActive, setMessagingActive] = useState(false);
     ///////// Selected Channel state declare
@@ -17,6 +18,17 @@ const MyMessage = () => {
         }
     }
 
+    ///////// UseEffect for socket io
+    useEffect(() => {
+        //////// Here we are check the login user status
+        const userID = localStorage.getItem("userInfo");
+        if (userID) {
+            ///// when user are active on the message option
+            socket.emit("user-in-message-part", userID);
+        }
+    }, []);
+
+    
 
 
     //////  when click on the add channel button
@@ -33,6 +45,7 @@ const MyMessage = () => {
         setActiveModel("AddChannel");/////// which type of model active
         setNewModelOpen(true);////// Real dilog box open
     }
+
 
 
     return (
@@ -54,11 +67,11 @@ const MyMessage = () => {
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
                                 <Grid xs={8} lg={12} textAlign={'center'}>
-                                <Typography  variant="subtitle1" fontWeight={"700"} >No channel added yet or select your favorite channel.</Typography>
+                                    <Typography variant="subtitle1" fontWeight={"700"} >No channel added yet or select your favorite channel.</Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography sx={{ width: { xs: "80%",sm:'75%', md: "45%" },fontSize:{xs:'12px'} }}
+                                <Typography sx={{ width: { xs: "80%", sm: '75%', md: "45%" }, fontSize: { xs: '12px' } }}
                                     color="#808191" variant="body2"
                                     textAlign={'center'} >
                                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
@@ -68,7 +81,7 @@ const MyMessage = () => {
                                 <Button
                                     variant="contained"
                                     size='small'
-                                    sx={{ padding: "5px 25px",width:{xs:'80%',sm:"200px"} }}
+                                    sx={{ padding: "5px 25px", width: { xs: '80%', sm: "200px" } }}
                                     onClick={() => modelOpens()}
                                 >
                                     Create Channel

@@ -55,6 +55,7 @@ import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogOutModal from '../Chat/LogOutModal';
 import HeaderMenu from './Items/HeaderMenu';
+import socket from "../../socket/socket";
 
 const drawerWidth = '200px';
 
@@ -203,7 +204,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const LeftSideBar = (props) => {
 
     ////// use conetext use here
-    const { user, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats, compNameContext, setCompNameContext } = ChatState();
+    const { user, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats, compNameContext, setCompNameContext, notification, setNotification } = ChatState();
     const theme = useTheme();
     const navegate = useNavigate();
     const location = useLocation();
@@ -437,7 +438,7 @@ const LeftSideBar = (props) => {
         setSubUserId(localStorage.getItem("userInfo"))
     }, [])
 
-
+    
     return (
         <>
             <Box id="main_container_box" sx={{ display: 'flex' }} >

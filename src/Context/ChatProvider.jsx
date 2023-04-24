@@ -1,5 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom";
+import socket from "../socket/socket";
+import { useMutation } from "react-query";
+import { fetchAllChatSingleUserOrGroup } from "../api/InternalApi/OurDevApi";
 
 const ChatContext = createContext();
 
@@ -10,8 +13,8 @@ const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState([]);
     const location = useLocation();
     const [serviceType, setSeviceType] = useState();
-    const [compNameContext,setCompNameContext]=useState("")
-
+    const [compNameContext, setCompNameContext] = useState("")
+    const [notification, setNotification] = useState([]);
 
     useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");
@@ -24,8 +27,49 @@ const ChatProvider = ({ children }) => {
         }
     }, [location])
 
+    /////// get the chat of selected group or selected member v1
+    const { mutateAsync: userGroupFetchChat } = useMutation(fetchAllChatSingleUserOrGroup);
+    const fetchChat = async () => {
+        try {
+            const response = await userGroupFetchChat();
+            if (response) {
+                setChats(response);
+                // setLoggedUser(localStorage.getItem("userInfo"));
+            }
+        } catch (error) {
+            console.log("NewMessageGrid", error.response);
+        }
+    }
+    useEffect(() => {
+        socket.on("add-member-in-group-event", (recivedData) => {
+            fetchChat();
+        })
+        socket.on("remove-member-in-group-event", (response) => {
+            const RemoveChatId = response._id;
+            const ChatsData = [...chats];
+            const newChatData = ChatsData.filter((d) => d._id !== RemoveChatId);
+            setChats(newChatData);
+        })
+        socket.on("show-notification-count-in-member",(response)=>{
+            console.log({chats , response});
+        })
+    }, [chats])
+
     return (
-        <ChatContext.Provider value={{ user, setUser, selectChatV1, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats,setCompNameContext,compNameContext }}>
+        <ChatContext.Provider value={{
+            user,
+            setUser,
+            selectChatV1,
+            setSelectedChatV1,
+            currentChats,
+            setCurrentChats,
+            chats,
+            setChats,
+            setCompNameContext,
+            compNameContext,
+            notification,
+            setNotification
+        }}>
             {children}
         </ChatContext.Provider>
 
