@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
 
 
 // if (process.env.NODE_ENV === 'development') {
-axios.defaults.baseURL = "https:/app.organaise.com/api/";
+axios.defaults.baseURL = "https://app.organaise.com/";
 // } else if (process.env.NODE_ENV === 'production') {
 //   axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
 // }

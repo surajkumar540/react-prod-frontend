@@ -174,7 +174,7 @@ const ContentModels = ({
                 "filesList": "[]"
             }
 
-            const response = await axios.post('v2/folder/create', folderData, {
+            const response = await axios.post('api/v2/folder/create', folderData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -202,7 +202,7 @@ const ContentModels = ({
     const [userFiles, setUserFiles] = useState([]);
     const getFilesOfUser = async (userId) => {
         const userID = { userId: userId }
-        const response = await axios.get('v2/file/getfiles', {
+        const response = await axios.get('api/v2/file/getfiles', {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -284,7 +284,7 @@ const ContentModels = ({
             fileId: JSON.stringify(fileArr),
         };
         // const addFileInFolderObject = { userId: userId, folderId: selectedFolder, fileId: fileId }
-        const response = await axios.put('v2/folder/FileAddFolder', addFileInFolderObject, {
+        const response = await axios.put('api/v2/folder/FileAddFolder', addFileInFolderObject, {
             headers: {
                 'Content-Type': 'application/json'
             }

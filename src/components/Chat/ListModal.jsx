@@ -19,7 +19,7 @@ const style = {
   width: 400,
   bgcolor: 'background.paper',
   // border: '2px solid #000',
-  boxShadow: 12,
+  boxShadow: 24,
   padding: '2rem',
   borderRadius: "6px"
 };
@@ -54,9 +54,12 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
 
   const fetchChat = async () => {
     try {
-        const response = await fetchAllChatSingleUserOrGroup();
-        setChats(response)
-        console.log(response,"hooooo gyaayauya")
+      const response = await fetchAllChatSingleUserOrGroup();
+
+      console.log(response, "all fetchhhhhhhh")
+      // setChats(response);
+      // setSelectedChatV1(response)
+      // setLoggedUser(localStorage.getItem("userInfo"));
     } catch (error) {
       console.log("Something is wrong");
     }
@@ -135,7 +138,7 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
             />
           </Box>
 
-          <Box my='1.2rem' >
+          {/* <Box my='1.2rem' >
 
             <IconButton aria-label="add" size="small" sx={{ color: '#A9A9A9', border: '1px solid #A9A9A9', borderRadius: '5px', outline: 'none !important' }} onClick={addMemberFunction}>
               <AddIcon fontSize="inherit" />
@@ -144,7 +147,7 @@ export default function ListModal({ buttonStyle, addMemberFunction }) {
             <Button sx={{ p: 0, px: 1, color: 'black', fontSize: '16px', textTransform: 'capitalize', outline: 'none !important' }} onClick={addMemberFunction}>
               Add People
             </Button>
-          </Box>
+          </Box> */}
 
           <Box display={'flex'} flexDirection={'column'}>
           {

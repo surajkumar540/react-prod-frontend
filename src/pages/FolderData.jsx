@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
-import { Button, Box, Grid, Typography, InputAdornment, IconButton, Menu, MenuItem } from '@mui/material/';
+import { Button, Box, Grid, Typography, InputAdornment } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/folder-data.png";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FolderIcon from '@mui/icons-material/Folder';
-import TextField from '@mui/material/TextField'
-import { AccountCircle } from '@mui/icons-material';
+import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 import ContentModels from './ContentModels';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useDebounce } from 'use-debounce';
-import DeleteModal from '../components/Chat/DeleteModal';
 import DotMenu from "../components/Chat/DotMenu"
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Tools/Loader';
@@ -78,7 +73,7 @@ const FolderData = () => {
     //////// Delete Folder
     const deleteFolder = async (folderData) => {
         const UserId = localStorage.getItem("userInfo");
-            const response = await axios.delete('v2/folder/deleteFolder',
+            const response = await axios.delete('api/v2/folder/deleteFolder',
                 { data: { folderId: folderData} }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,7 +112,7 @@ const FolderData = () => {
     const getFoldersData = async () => {
         setLoading(true)
         try {
-            const response = await axios.get('v2/folder', {    
+            const response = await axios.get('api/v2/folder', {    
             headers: {
                     'Content-Type': 'application/json'
                 }
@@ -265,32 +260,8 @@ const FolderData = () => {
                                     >
                                         <Box container display={'flex'} justifyContent="end"
                                         >
-                                            {/* <MoreVertIcon
-                                                sx={{ fontSize: "18px", color: '#7A7A7A', cursor: "pointer",position: "relative" }}
-                                            />
-                                             */}
-
-                                            {/* <DeleteForeverIcon
-                                                sx={{
-                                                    fontSize: "19px",
-                                                    cursor: "pointer",
-                                                    marginRight: "5px",
-                                                    color: "#e70f0fc2"
-                                                }}
-                                                onClick={() => ActionDelFolAndAddFile("deleteFolder", d)}
-                                            /> */}
-                                            {/* <DeleteModal handleDelete={deleteFolder} value={d._id} 
-                                            type='folder'/> */}
                                             <DotMenu handleDelete={deleteFolder} value={d._id} pageName='folder' handleAddFile={()=>ActionDelFolAndAddFile("addFile",d)}/>
-                                            {/* <NoteAddIcon
-                                                sx={{
-                                                    fontSize: "18px",
-                                                    cursor: "pointer",
-                                                    marginRight: "0px",
-                                                    color: "#0d4503bf"
-                                                }}
-                                                onClick={() => ActionDelFolAndAddFile("addFile", d)}
-                                            /> */}
+                                            
 
                                         </Box>
                                         <Box container display={'flex'} justifyContent="center"> 
@@ -301,7 +272,7 @@ const FolderData = () => {
                                                     ,
                                                     cursor: "pointer"
                                                 }}
-                                                onClick={() =>navigate(`/files/folder/${d._id}`)}
+                                                onClick={() =>{d.filesList.length>0?navigate(`/files/folder/${d._id}`): toast.info("Files not added yet");}}
                                                 />
                                         </Box>
                                         <Box container>
@@ -338,4 +309,3 @@ const FolderData = () => {
 }
 
 export default FolderData
-
