@@ -12,13 +12,13 @@ import { styled } from '@mui/material/styles';
 // import appConfig from "../../Config";
 //////////get the all users from congnito ///////////////////
 // import { IdentityService } from '../../services/IdentityService.js';
-import ContentModels from '../../pages/ContentModels';
+import ContentModels from "../../pages/ContentModels";
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
 import { useMutation } from 'react-query';
 import { fetchAllChatSingleUserOrGroup, fetchMessagesV1, sendV1Message }
-    from '../../api/InternalApi/OurDevApi';
-import { getSender } from '../../utils/chatLogic';
+    from "../../api/InternalApi/OurDevApi";
+import { getSender } from "../../utils/chatLogic";
 import { getTime } from '../../utils/validation';
 import socket from "../../socket/socket";
 

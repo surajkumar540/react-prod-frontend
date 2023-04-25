@@ -12,18 +12,6 @@ import { useDebounce } from 'use-debounce';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { createGroupChat, removeFileApi, searchUserV1, SingleUserchatAccess, AddMemberInGroup } from '../api/InternalApi/OurDevApi';
-// import appConfig from "../Config";
-// import {
-//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-//     sendChannelMessage, listChannelMessages, createChannelMembership
-// }
-//     from "../api/ChimeApi/ChimeApi";
-
-
-// import { getAllUsersFromCognitoIdp, setAuthenticatedUserFromCognito } from "../api/CognitoApi/CognitoApi";
-
-//////////get the all users from congnito ///////////////////
-// import { IdentityService } from '../services/IdentityService.js';
 import { useMutation } from 'react-query';
 import { ChatState } from '../Context/ChatProvider';
 

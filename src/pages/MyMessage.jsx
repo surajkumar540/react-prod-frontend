@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
-import NewMessageGrid from '../components/NewMessageGrid/NewMessageGrid'
+import NewMessageGrid from "../components/NewMessageGrid/NewMessageGrid"
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import createChannelPng from "../assets/BackgroundImages/create-channel-homepage.png";
 import ContentModels from './ContentModels';

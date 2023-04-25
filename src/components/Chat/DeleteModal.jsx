@@ -8,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
 import { ChatState } from '../../Context/ChatProvider';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const style = {
   position: 'absolute',
@@ -45,7 +46,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 
 
-const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteModal,type,refetch}) => {
+const DeleteModal = ({handleDelete,value,pageName,closeParentModal=false,toggleDeleteModal,type,refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -66,16 +67,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteM
 
     return (
       <div>
-        {/* <DeleteForeverIcon
-            sx={{
-                fontSize: "19px",
-                cursor: "pointer",
-                marginRight: "5px",
-                color: "#e70f0fc2"
-            }}
-            onClick={handleOpen}
-        />  */}
-         {type=='list'?<CloseIcon  onClick={handleOpen} sx={{color:'red'}}/>
+         {type=='list'?<HighlightOffIcon  onClick={handleOpen} sx={{color:'red'}}/>
          :<Typography onClick={handleOpen} color={'red'}>Delete</Typography>}
 
         
@@ -103,7 +95,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal,toggleDeleteM
      
             
             <Box mt='1.2rem' mb='.5rem' display={'flex'} justifyContent={'space-between'}>
-            <Button variant="outlined" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleClose();closeParentModal();}} >
+            <Button variant="outlined" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleClose(); closeParentModal&&closeParentModal();}} >
                 Cancel
             </Button>
             
