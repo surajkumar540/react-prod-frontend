@@ -19,6 +19,7 @@ import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 import DeleteModal from '../components/Chat/DeleteModal';
 import DotMenu from '../components/Chat/DotMenu';
 import Loader from '../components/Tools/Loader';
+import { ChatState } from '../Context/ChatProvider';
 
 const AllFiles = () => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const AllFiles = () => {
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
     const [showSearchSmall,setShowSearchSmall]=useState(false)
+    const {setPageNameContext,setCloseSideList}=ChatState()
 
    const colorsCode={
         doc:'#2892e7d6',
@@ -88,6 +90,8 @@ const AllFiles = () => {
 
     useEffect(() => {
         getFilesOfUser();
+        setPageNameContext("data")
+        setCloseSideList(false)
     }, [])
 
     ///////////// Delete fie code add here
@@ -136,14 +140,15 @@ const AllFiles = () => {
     if(loading)
     {
         return(
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+        // <LeftSideBar data={{ pageName: "data", index: 2 }}>
             <Loader/>
-        </LeftSideBar>
+        // </LeftSideBar>
         )
     }
 
     return (
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+        <>
+        {/* <LeftSideBar data={{ pageName: "data", index: 2 }}> */}
             <Box px={"20px"} sx={style.folderCreateMainBox}>
                 {userFiles.length === 0 &&
                     <Grid container>
@@ -248,7 +253,8 @@ const AllFiles = () => {
                     </Grid>
                 }
             </Box>
-        </LeftSideBar>
+        {/* </LeftSideBar> */}
+    </>
     )
 }
 

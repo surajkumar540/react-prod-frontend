@@ -13,15 +13,17 @@ import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 import DotMenu from '../components/Chat/DotMenu';
 import Loader from '../components/Tools/Loader';
+import { ChatState } from '../Context/ChatProvider';
 
 const FolderFiles = () => {
     const navigate = useNavigate();
     const {fid:folderId}=useParams();
-    // console.log(fid, 'folderid');
+    
     const [userFiles, setUserFiles] = useState([]);
     const [UserId, setUserId] = useState("");
     const [folderName, setFolderName] = useState("");
     const [loading,setLoading]=useState(true);
+    const { setPageNameContext,setCloseSideList } = ChatState();
     const colorsCode={
         doc:'#2892e7d6',
         docx:'#2892e7d6',
@@ -87,6 +89,8 @@ const FolderFiles = () => {
     useEffect(() => {
         setLoading(true)
         getFilesOfUser();
+        setPageNameContext("data")
+        setCloseSideList(false)
     }, [])
 
     
@@ -121,16 +125,16 @@ const FolderFiles = () => {
     if(loading)
     {
         return(
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
             <Loader/>
-        </LeftSideBar>
+        // <LeftSideBar>
+        // </LeftSideBar>
         )
     }
 
 
 
     return (
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+        // <LeftSideBar>
             <Box px={"20px"} sx={style.folderCreateMainBox}>
                 {userFiles?.length === 0 &&
                     <Grid container>
@@ -230,7 +234,7 @@ const FolderFiles = () => {
                     </Grid>
                 }
             </Box>
-        </LeftSideBar>
+        // </LeftSideBar>
     )
 }
 

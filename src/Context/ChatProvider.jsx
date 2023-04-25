@@ -16,6 +16,11 @@ const ChatProvider = ({ children }) => {
     const [compNameContext, setCompNameContext] = useState("")
     const [notification, setNotification] = useState([]);
 
+    const [pageNameContext,setPageNameContext]=useState("data");
+    const [closeSideListContext,setCloseSideList]=useState(false)
+    const [messagingActive, setMessagingActive] = useState(false);
+    const [selectedChannel, setSelectedChannel] = useState({});
+
     useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");
         setUser(userInfo);
@@ -68,7 +73,15 @@ const ChatProvider = ({ children }) => {
             setCompNameContext,
             compNameContext,
             notification,
-            setNotification
+            setNotification,
+            pageNameContext,
+            setPageNameContext,
+            closeSideListContext,
+            setCloseSideList,
+            messagingActive,
+            setMessagingActive,
+            selectedChannel,
+            setSelectedChannel
         }}>
             {children}
         </ChatContext.Provider>

@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect} from 'react'
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import {Typography,Grid,Box,TextField,InputAdornment,MenuItem,Divider,Avatar,Button,ButtonGroup} from '@mui/material'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -7,10 +7,12 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import ListIcon from '@mui/icons-material/List';
-
+import { ChatState } from '../Context/ChatProvider';
 const MyAccount = ({closeSideList}) => {
     //Index prop defiend by according to this array
     //['dashboard', 'message', 'folder', 'data', 'privacy-policy', 'settings'];
+    const { setPageNameContext,setCloseSideList } = ChatState();
+
     const currencies = [
         {
           value: 'USD',
@@ -49,9 +51,18 @@ const MyAccount = ({closeSideList}) => {
         },
       ];
 
+
+      
+      useEffect(() => {
+        // setLoading(true)
+        // getFilesOfUser();
+        setPageNameContext("data")
+        setCloseSideList(true);
+    }, [])
+
     return (
         <>
-            <LeftSideBar data={{ pageName: "Privacy Policy", index: 4 }} closeSideList={closeSideList}>
+            {/* <LeftSideBar > */}
                 
                 <Box sx={{ flexGrow: 1 }} px={'2rem'}>
                     
@@ -279,7 +290,7 @@ const MyAccount = ({closeSideList}) => {
 
                     
                 </Box>
-            </LeftSideBar>
+            {/* </LeftSideBar> */}
         </>
     )
 }

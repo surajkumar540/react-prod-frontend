@@ -5,13 +5,17 @@ import { Button, Box, Grid, Typography } from '@mui/material/';
 import createChannelPng from "../assets/BackgroundImages/create-channel-homepage.png";
 import ContentModels from './ContentModels';
 import socket from "../socket/socket";
+import { ChatState } from '../Context/ChatProvider';
+
+
 
 const MyMessage = () => {
-
+    const {messagingActive,selectedChannel,setCloseSideList}=ChatState();
     ////////// active messaging part
-    const [messagingActive, setMessagingActive] = useState(false);
+    // const [messagingActive, setMessagingActive] = useState(false);
     ///////// Selected Channel state declare
-    const [selectedChannel, setSelectedChannel] = useState({});
+    const { setPageNameContext } = ChatState();
+    // const [selectedChannel, setSelectedChannel] = useState({});
     const styleCss = {
         fileUploadMainBox: {
             minHeight: "500px", backgroundColor: "transparent",
@@ -47,19 +51,25 @@ const MyMessage = () => {
         setActiveModel("AddChannel");/////// which type of model active
         setNewModelOpen(true);////// Real dilog box open
     }
-
-
+    
+    
+    useEffect(() => {
+      // setLoading(true)
+      // getFilesOfUser();
+      setPageNameContext("Message")
+      setCloseSideList(false)
+  }, [])
 
     return (
         <>
-            <LeftSideBar
+            {/* <LeftSideBar
                 data={{
                     pageName: "Message",
                     index: 1,
                     setMessagingActive: setMessagingActive,
                     setSelectedChannel: setSelectedChannel
                 }}
-            >
+            > */}
 
                 {!messagingActive &&
                     <Box sx={styleCss.fileUploadMainBox}>
@@ -107,7 +117,7 @@ const MyMessage = () => {
                         setNewModelOpen={setNewModelOpen}
                     />
                 }
-            </LeftSideBar>
+            {/* </LeftSideBar> */}
         </>
     )
 }

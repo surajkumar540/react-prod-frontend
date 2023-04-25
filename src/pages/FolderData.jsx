@@ -12,11 +12,13 @@ import { useDebounce } from 'use-debounce';
 import DotMenu from "../components/Chat/DotMenu"
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Tools/Loader';
+import { ChatState } from '../Context/ChatProvider';
 
 const FolderData = () => {
     const navigate=useNavigate()
     const [loading,setLoading]=useState(true);
     const [showSearchSmall,setShowSearchSmall]=useState(false)
+    const { setPageNameContext,setCloseSideList } = ChatState();
     const colorsCode={
         a:'#ff7f47aa',
         b:'#fcaf45aa',
@@ -164,18 +166,28 @@ const FolderData = () => {
         }
     }
 
+    useEffect(() => {
+        // setLoading(true)
+        // getFilesOfUser();
+        setPageNameContext("data")
+        setCloseSideList(false)
+    }, [])
+
+
     if(loading)
     {
         return(
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
+        // <LeftSideBar data={{ pageName: "data", index: 2 }}>
             <Loader/>
-        </LeftSideBar>
+        // </LeftSideBar>
         )
     }
 
+
+
     return (
         <>
-            <LeftSideBar data={{ pageName: "data", index: 2 }}>
+            {/* <LeftSideBar data={{ pageName: "data", index: 2 }}> */}
                 <Box px={{xs:'5px',sm:"20px"}} sx={style.folderCreateMainBox}>
                     {folderDataStore.length === 0 &&
                         <Grid container>
@@ -289,7 +301,7 @@ const FolderData = () => {
                     }
                 </Box>
 
-            </LeftSideBar>
+            {/* </LeftSideBar> */}
             {openNewModel &&
                 <ContentModels
                     activeModel={activeModel} //////  which type of model
