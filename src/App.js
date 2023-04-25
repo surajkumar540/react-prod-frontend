@@ -121,18 +121,26 @@ function App() {
                     </ServiceProvider>
                     :
                     <ChatProvider>
+                        
+                        <Routes>
+                            <Route path="/companyDetail" element={<CompanyDetails />} />
+                            <Route path="*" element={<>404 page</>} />
+                        </Routes>
+
+
                         <Routes>
 
-                            <Route path="/companyDetail" element={<CompanyDetails />} />
                             <Route path="/files/allFiles" element={<AllFiles />} />
                             <Route path="/files/upload" element={<FileUpload />} />
                             <Route path="/files/folder" element={<FolderData userId={userId} />} />
                             <Route path="/files/folder/:fid" element={<FolderFiles userId={userId} />} />
                             <Route path="/chat" element={<MyMessage userId={userId} />} />
-                            <Route path="*" element={<>404 page</>} />
                             <Route path="/account" element={<MyAccount closeSideList={true}/>} />
 
                         </Routes>
+
+                        
+
                     </ChatProvider>
                 }
 

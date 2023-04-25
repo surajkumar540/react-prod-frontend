@@ -273,8 +273,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
         <>
             <Box container py="13px" px={"25px"} bgcolor='pink' boxSizing={"border-box"} sx={cssStyle.groupNameBox} display="flex" justifyContent={"space-between"}>
                 {
-                    //Object.keys(ActiveChannel).length > 3 &&
-                    //Object.keys(MyActiveChat).lenght > 0 &&
                     <>
                         <Box display={"flex"} height='30px' >
                             {
@@ -335,9 +333,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                     onClick={() => modelOpens()}>
                                     Add Member
                                 </Button>}
-                                {/* <Button sx={cssStyle.listofPeopeBtn} variant="contained" size="small">
-                            List Of People
-                        </Button> */}
                                 <ListModal buttonStyle={cssStyle.listofPeopeBtn} addMemberFunction={modelOpens} />
                             </Box>
                         }
@@ -433,7 +428,12 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     {(currentChats.length > 0 && selectChatV1) &&
                         <>
                             {currentChats?.map((mes, index) => {
-                                if (mes?.sender?._id === selectChatV1?.users[0]?._id && selectChatV1.isGroupChat !== true) {
+                                console.log(selectChatV1,"select chat v1")
+                                console.log(mes,"recieved message")
+                               
+                                if (mes?.sender?._id !== localStorage.getItem("userInfo")) {
+                                    console.log("enter into left")
+                                    console.log(" ")
                                     return <Grid
                                         id="rec_mess_con_grid"
                                         sx={{
@@ -478,6 +478,8 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                         </Grid>
                                     </Grid>
                                 } else {
+                                    console.log("enter into right")
+                                    console.log(" ")
                                     return <Grid
                                         id="send_mess_con_grid"
                                         container

@@ -481,7 +481,7 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl: '70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'}>
+                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl: '70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0'>
 
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
@@ -880,7 +880,7 @@ const LeftSideBar = (props) => {
                 </Drawer>
                 
                 {/* Drawer toggle icon */}
-                <Box height={'100vh'} width='16px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>
+                <Box height={'96vh'} width='16px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>
                         
                     {!props.closeSideList && 
                     <Box 
