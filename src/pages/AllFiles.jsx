@@ -76,7 +76,7 @@ const AllFiles = () => {
             }
         });
         const FilesResponse = response.data;
-        console.log(FilesResponse,'response of file')
+        
         if (FilesResponse.status) {
             const FilesData = FilesResponse.data;
             setUserFiles(FilesData)
