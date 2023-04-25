@@ -25,10 +25,12 @@ const MyMessage = () => {
         if (userID) {
             ///// when user are active on the message option
             socket.emit("user-in-message-part", userID);
+            ///// Change the status of user  active or not
+            socket.emit("user-active-status", userID)
         }
     }, []);
 
-    
+
 
 
     //////  when click on the add channel button

@@ -1,7 +1,11 @@
 import io from "socket.io-client";
 const ENDPOINT = process.env.REACT_APP_ENDPOINT;
+const userID = localStorage.getItem("userInfo");
 const socket = io(`${ENDPOINT}`, {
-    debug: true
+    debug: true,
+    auth:{
+        uid: userID
+    }
 });
 
 
