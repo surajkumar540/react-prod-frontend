@@ -1,5 +1,4 @@
 import React, {useEffect, useState } from 'react'
-import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/upload-file.png";
 import FileUploadModal from '../components/FileUploadModal/FileUploadModal';
@@ -29,7 +28,6 @@ const FileUpload = () => {
 
     return (
         <>
-         {/* <LeftSideBar data={{ pageName: "Data", index: 3 }}> */}
             <Box sx={styleCss.fileUploadMainBox}>
                 <Grid container>
                     <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
@@ -54,7 +52,6 @@ const FileUpload = () => {
             {
                 open && <FileUploadModal open={open} handleClose={handleClose} />
             }
-         {/* </LeftSideBar> */}
         </>
     )
 }

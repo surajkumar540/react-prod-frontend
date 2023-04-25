@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import { Button, Box, Grid, Typography, InputAdornment } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/folder-data.png";
 import TextField from '@mui/material/TextField'
@@ -126,115 +125,111 @@ const FolderFiles = () => {
     {
         return(
             <Loader/>
-        // <LeftSideBar>
-        // </LeftSideBar>
         )
     }
 
 
 
     return (
-        // <LeftSideBar>
-            <Box px={"20px"} sx={style.folderCreateMainBox}>
-                {userFiles?.length === 0 &&
-                    <Grid container>
-                        <Grid container item xs={12} mt={2} display="flex"  justifyContent={'center'}>
-                            <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
-                        </Grid>
-                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                            <Typography variant="subtitle1" fontWeight={"600"} >No files added yet</Typography>
-                        </Grid>
-                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                            <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
-                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                            </Typography>
-                        </Grid>
-                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                            <Button
-                                variant="contained"
-                                size='small'
-                                sx={{ padding: "5px 25px" }}
-                                onClick={() => navigate("/files/upload")}
-                            >
-                                Add File
-                            </Button>
-                        </Grid>
+        <Box px={"20px"} sx={style.folderCreateMainBox}>
+            {userFiles?.length === 0 &&
+                <Grid container>
+                    <Grid container item xs={12} mt={2} display="flex"  justifyContent={'center'}>
+                        <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
                     </Grid>
-                }
+                    <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                        <Typography variant="subtitle1" fontWeight={"600"} >No files added yet</Typography>
+                    </Grid>
+                    <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                        <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
+                            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                        </Typography>
+                    </Grid>
+                    <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                        <Button
+                            variant="contained"
+                            size='small'
+                            sx={{ padding: "5px 25px" }}
+                            onClick={() => navigate("/files/upload")}
+                        >
+                            Add File
+                        </Button>
+                    </Grid>
+                </Grid>
+            }
 
-                {userFiles&&userFiles?.length !== 0 &&
-                    <Grid container px={1} >
-                        <Grid container item mt={2} xs={12} >
-                            <Box container width={"100%"} display={'flex'} justifyContent="space-between">
-                                <Typography variant="h6" >{folderName}</Typography>
-                                <Box >
-                                    {/* <TextField
-                                        id="search_folder"
-                                        placeholder='Search file'
-                                        size='small'
-                                        sx={{
-                                            marginRight: "10px", "& input": {
-                                                paddingTop: "7px",
-                                                paddingBottom: "7px", fontSize: "14px"
-                                            },
-                                            paddingLeft: "4px", "& fieldset": { borderRadius: "8px" }
-                                        }}
-                                        value={srcFileText}
-                                        onChange={(e) => SetSrcFileText(e.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <Search sx={{ color: "#efefef" }} />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    /> */}
-                                    {/* <Button
-                                        variant="contained"
-                                        size='small'
-                                        sx={{ padding: "5px 20px" }}
-                                        onClick={() => navigate("/files/upload")}
-                                    >
-                                        Add File
-                                    </Button> */}
-                                </Box>
-
+            {userFiles&&userFiles?.length !== 0 &&
+                <Grid container px={1} >
+                    <Grid container item mt={2} xs={12} >
+                        <Box container width={"100%"} display={'flex'} justifyContent="space-between">
+                            <Typography variant="h6" >{folderName}</Typography>
+                            <Box >
+                                {/* <TextField
+                                    id="search_folder"
+                                    placeholder='Search file'
+                                    size='small'
+                                    sx={{
+                                        marginRight: "10px", "& input": {
+                                            paddingTop: "7px",
+                                            paddingBottom: "7px", fontSize: "14px"
+                                        },
+                                        paddingLeft: "4px", "& fieldset": { borderRadius: "8px" }
+                                    }}
+                                    value={srcFileText}
+                                    onChange={(e) => SetSrcFileText(e.target.value)}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Search sx={{ color: "#efefef" }} />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                /> */}
+                                {/* <Button
+                                    variant="contained"
+                                    size='small'
+                                    sx={{ padding: "5px 20px" }}
+                                    onClick={() => navigate("/files/upload")}
+                                >
+                                    Add File
+                                </Button> */}
                             </Box>
-                        </Grid>
-                        <Grid container item mt={3} xs={12} display={'flex'} >
-                            {userFiles.length !== 0 && userFiles.map((d,index) =>
-                             <Box key={index} marginRight={"25px"} my={"10px"} sx={{
-                                    width: "170px",
-                                    height: "170px",
-                                    padding: "5px 5px",
-                                    boxSizing: "border-box",
-                                    border: "0.5px solid #CBCBCB", borderRadius: "8px"
-                                }}>
-                                    <Box container display={'flex'} justifyContent="end">
-                                        <DotMenu handleDelete={ActionDelFile} value={d} pageName='files'/>
-                                    </Box>
-                                    <Box container display={'flex'} justifyContent="center">
-                                      
-                                        <FileIcon ext={d?.fileName?.split(['.'])[1]}/>
-                                    </Box>
-                                    <Box container>
-                                        <Typography align='center' variant="subtitle2" color={"#121212"}>
-                                        {d.fileName.split(".")[0].length > 15 ? d.fileName.split(".")[0].substring(0, 14) : d.fileName.split(".")}
-                                        </Typography>
-                                    </Box>
-                                    <Box container>
-                                        <Typography align='center' variant="subtitle2" fontSize={"13px"}
-                                            color={"#CDCDCD"}>
-                                           {`${Math.abs(parseInt(d?.fileSize) / 1000000) % 1 !== 0 ? Math.abs(parseInt(d?.fileSize) / 1000000).toFixed(2) : Math.floor(Math.abs(parseInt(d?.fileSize) / 1000000))} MB`}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            )}
-                        </Grid>
+
+                        </Box>
                     </Grid>
-                }
-            </Box>
-        // </LeftSideBar>
+                    <Grid container item mt={3} xs={12} display={'flex'} >
+                        {userFiles.length !== 0 && userFiles.map((d,index) =>
+                            <Box key={index} marginRight={"25px"} my={"10px"} sx={{
+                                width: "170px",
+                                height: "170px",
+                                padding: "5px 5px",
+                                boxSizing: "border-box",
+                                border: "0.5px solid #CBCBCB", borderRadius: "8px"
+                            }}>
+                                <Box container display={'flex'} justifyContent="end">
+                                    <DotMenu handleDelete={ActionDelFile} value={d} pageName='files'/>
+                                </Box>
+                                <Box container display={'flex'} justifyContent="center">
+                                    
+                                    <FileIcon ext={d?.fileName?.split(['.'])[1]}/>
+                                </Box>
+                                <Box container>
+                                    <Typography align='center' variant="subtitle2" color={"#121212"}>
+                                    {d.fileName.split(".")[0].length > 15 ? d.fileName.split(".")[0].substring(0, 14) : d.fileName.split(".")}
+                                    </Typography>
+                                </Box>
+                                <Box container>
+                                    <Typography align='center' variant="subtitle2" fontSize={"13px"}
+                                        color={"#CDCDCD"}>
+                                        {`${Math.abs(parseInt(d?.fileSize) / 1000000) % 1 !== 0 ? Math.abs(parseInt(d?.fileSize) / 1000000).toFixed(2) : Math.floor(Math.abs(parseInt(d?.fileSize) / 1000000))} MB`}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        )}
+                    </Grid>
+                </Grid>
+            }
+        </Box>
     )
 }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import NewMessageGrid from "../components/NewMessageGrid/NewMessageGrid"
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import createChannelPng from "../assets/BackgroundImages/create-channel-homepage.png";
@@ -62,62 +61,52 @@ const MyMessage = () => {
 
     return (
         <>
-            {/* <LeftSideBar
-                data={{
-                    pageName: "Message",
-                    index: 1,
-                    setMessagingActive: setMessagingActive,
-                    setSelectedChannel: setSelectedChannel
-                }}
-            > */}
-
-                {!messagingActive &&
-                    <Box sx={styleCss.fileUploadMainBox}>
-                        <Grid container>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <img src={createChannelPng} style={{ width: '350px', userSelect: "none", pointerEvents: "none" }} alt="file-upload-image" />
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Grid xs={8} lg={12} textAlign={'center'}>
-                                    <Typography variant="subtitle1" fontWeight={"700"} >No channel added yet or select your favorite channel.</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography sx={{ width: { xs: "80%", sm: '75%', md: "45%" }, fontSize: { xs: '12px' } }}
-                                    color="#808191" variant="body2"
-                                    textAlign={'center'} >
-                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                                </Typography>
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Button
-                                    variant="contained"
-                                    size='small'
-                                    sx={{ padding: "5px 25px", width: { xs: '80%', sm: "200px" } }}
-                                    onClick={() => modelOpens()}
-                                >
-                                    Create Channel
-                                </Button>
+            {!messagingActive &&
+                <Box sx={styleCss.fileUploadMainBox}>
+                    <Grid container>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <img src={createChannelPng} style={{ width: '350px', userSelect: "none", pointerEvents: "none" }} alt="file-upload-image" />
+                        </Grid>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Grid xs={8} lg={12} textAlign={'center'}>
+                                <Typography variant="subtitle1" fontWeight={"700"} >No channel added yet or select your favorite channel.</Typography>
                             </Grid>
                         </Grid>
-                    </Box>
-                }
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Typography sx={{ width: { xs: "80%", sm: '75%', md: "45%" }, fontSize: { xs: '12px' } }}
+                                color="#808191" variant="body2"
+                                textAlign={'center'} >
+                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                            </Typography>
+                        </Grid>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                sx={{ padding: "5px 25px", width: { xs: '80%', sm: "200px" } }}
+                                onClick={() => modelOpens()}
+                            >
+                                Create Channel
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            }
 
-                {/*Messaging Part here*/}
-                {messagingActive && <NewMessageGrid selectedChannel={selectedChannel} />}
+            {/*Messaging Part here*/}
+            {messagingActive && <NewMessageGrid selectedChannel={selectedChannel} />}
 
-                {openNewModel &&
-                    <ContentModels
-                        activeModel={activeModel} //////  which type of model
-                        show={show} //// boolen value of avtive  state model
-                        NewModelOpen={NewModelOpen} ///// boolean value of dialog box open
-                        setOpenNewModel={setOpenNewModel}
-                        setShow={setShow}
-                        setActiveModel={setActiveModel}
-                        setNewModelOpen={setNewModelOpen}
-                    />
-                }
-            {/* </LeftSideBar> */}
+            {openNewModel &&
+                <ContentModels
+                    activeModel={activeModel} //////  which type of model
+                    show={show} //// boolen value of avtive  state model
+                    NewModelOpen={NewModelOpen} ///// boolean value of dialog box open
+                    setOpenNewModel={setOpenNewModel}
+                    setShow={setShow}
+                    setActiveModel={setActiveModel}
+                    setNewModelOpen={setNewModelOpen}
+                />
+            }
         </>
     )
 }
