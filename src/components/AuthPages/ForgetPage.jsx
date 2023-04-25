@@ -84,7 +84,7 @@ const ForgetPage = () => {
         }
         const updatePassword = await resetPasswordFunCall({ ...forgetData });
 
-        if (updatePassword.statusCode == 200) {
+        if (updatePassword.statusCode === 200) {
             toast.success("Password update successfullly.Please wait we are redirect in login page.");
             setTimeout(() => {
                 setVerifyBtnDisabled(false)

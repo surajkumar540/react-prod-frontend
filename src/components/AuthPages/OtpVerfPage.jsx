@@ -74,17 +74,17 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
         try {
             const otpResponse = await SignUpOtpVerification({ ...postData });
 
-            if (otpResponse.status == true && otpResponse.status !== 'false') {
+            if (otpResponse.status === true && otpResponse.status !== 'false') {
                 console.log("enter in response area")
                 const response = await loginApiCall({ email, password });
 
-                if (response.status == true) {
+                if (response.status === true) {
 
                     toast.success("OTP verified successfully.Please wait we are setup your account.");
                     // setTimeout(async () => {
                     localStorage.clear();
                     const AgainLoginresponse = await loginApiCall({ email, password });
-                    if (AgainLoginresponse.status == true) {
+                    if (AgainLoginresponse.status === true) {
                         localStorage.setItem("token", AgainLoginresponse?.token)
                         localStorage.setItem("userInfo", AgainLoginresponse?._id)
                         setVerifyBtnDisabled(false)
