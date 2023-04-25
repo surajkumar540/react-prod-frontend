@@ -1,12 +1,7 @@
-import { Button, TextField, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import FileUploadModal from '../components/FileUploadModal/FileUploadModal';
 import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import Typography from '@mui/material/Typography'
-
-
-//Index prop defiend by according to this array
-//['dashboard', 'message', 'folder', 'data', 'privacy-policy', 'settings'];
 
 
 const Dashboard = () => {

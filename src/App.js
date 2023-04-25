@@ -1,5 +1,5 @@
 import { useState, createContext } from 'react'
-import { Route, Router, Routes, useNavigate, useParams, useLocation } from 'react-router-dom'
+import { Route, Routes, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useEffect } from 'react';
 import FileUpload from './pages/FileUpload';
@@ -21,6 +21,7 @@ import ProjectName from './pages/ProjectName';
 import FolderFiles from './pages/FolderFiles';
 import MyAccount from './pages/MyAccount';
 import { userTokenVerify } from './api/InternalApi/OurDevApi';
+import LeftSideBar from './components/LeftSideBar/LeftSideBar';
 export const LeftSideBarContext = createContext(null);
 function App() {
     const [leftSideData, setLeftSideData] = useState("")
@@ -121,22 +122,31 @@ function App() {
                     </ServiceProvider>
                     :
                     <ChatProvider>
+                        
+                        <Routes>
+                            <Route path="/companyDetail" element={<CompanyDetails />} />
+                            <Route path="*" element={<>404 page</>} />
+                        </Routes>
+
+                        <LeftSideBar>
                         <Routes>
 
-                            <Route path="/companyDetail" element={<CompanyDetails />} />
                             <Route path="/files/allFiles" element={<AllFiles />} />
                             <Route path="/files/upload" element={<FileUpload />} />
-                            <Route path="/files/folder" element={<FolderData userId={userId} />} />
-                            <Route path="/files/folder/:fid" element={<FolderFiles userId={userId} />} />
+                            <Route path="/files/folder" element={<FolderData />} />
+                            <Route path="/files/folder/:fid" element={<FolderFiles />} />
                             <Route path="/chat" element={<MyMessage userId={userId} />} />
-                            <Route path="*" element={<>404 page</>} />
-                            <Route path="/account" element={<MyAccount closeSideList={true}/>} />
+                            <Route path="/account" element={<MyAccount/>} />
 
                         </Routes>
+                        </LeftSideBar>
+                        
+
                     </ChatProvider>
                 }
 
             </ThemeProvider >
+
 
         </>
     )

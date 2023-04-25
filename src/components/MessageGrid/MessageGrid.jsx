@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Typography, Box, TextField, Avatar } from '@mui/material'
 import appConfig from "../../Config";
-//////////get the all users from congnito ///////////////////
-// import { IdentityService } from '../../services/IdentityService.js';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import InputBase from '@mui/material/InputBase';
 import NavigationIcon from '@mui/icons-material/Navigation';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-// import {
-//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-//     sendChannelMessage, listChannelMessages
-// }
-//     from "../../api/ChimeApi/ChimeApi";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ModelAddMemberInChannel from "../ModelAddMemberInChannel/ModelAddMemberInChannel";
-// import { getAllUsersFromCognitoIdp, setAuthenticatedUserFromCognito } from "../../api/CognitoApi/CognitoApi";
-import { toast } from 'react-toastify';
 
 const MessageGrid = () => {
 
@@ -98,132 +89,17 @@ const MessageGrid = () => {
         },
     }));
 
-    //////////When this page render then user_id store , nad channel list also load
-    // useEffect(() => {
-    //     getAwsCredentialsFromCognito();
-    //     IdentityServiceObject.setupClient();
-    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-    //     setUserID(userid)
-    //     setMember({ username: getLoginUserName, userId: userid });
-    // }, [])
 
-    ////////// Whenn user id set then this useEffect run
-    // useEffect(() => {
-    //     if (user_id !== "") {
-    //         //setChannelInterval
-    //         channelListFunction(user_id);
-    //         getAllUsersFromCognitoIdp(IdentityServiceObject).then((uData) => {
-    //             if (uData.status) {
-    //                 SetAllUsersList(uData.data)
-    //             } else {
-    //                 toast.error("Something is wrong.");
-    //                 console.log("Something is wrong", uData);
-    //             }
-    //         }).catch((err) => {
-    //             console.log("Something is wrong error get  when user list get", err);
-    //         });
-    //     }
-    // }, [user_id]);
 
     useEffect(() => {
         if (user_id !== "") {
             clearInterval(ChannelInterval);
             setChannelList([]);
-            // setChannelInterval(setInterval(() => {
-            //     channelListFunction(user_id);
-            // }, [3000]))
         }
 
     }, [user_id])
 
-    ///////This function use for creating a channel
-    // const CreateChannel = async () => {
-    //     let channelName = window.prompt("Please enter channel name");
-    //     if (channelName != null) {
-    //         const creatChannelObj = {
-    //             "instenceArn": `${appConfig.appInstanceArn}`,
-    //             "metaData": null,
-    //             "newName": `${channelName}`,
-    //             "mode": "RESTRICTED",
-    //             "privacy": "PRIVATE",
-    //             "elasticChannelConfiguration": null,
-    //             "userId": `${user_id}`
-    //         }//////// These object types value pass in createChannel function 
-    //         const channelArn = await createChannel(`${appConfig.appInstanceArn}`, null,
-    //             `${channelName}`, "RESTRICTED", "PRIVATE", null, `${user_id}`);/////////By this function we are  creating the channnel
-    //         if (channelArn) {
-    //             const channel = await describeChannel(channelArn, user_id);
-    //             if (channel) {
-    //                 await channelListFunction(user_id);
-    //             } else {
-    //                 console.log('Error, could not retrieve channel information.');
-    //             }
-    //         } else {
-    //             console.log('Error, could not create new channel.');
-    //         }
-    //     }
-    // }
-
-    /////////// Get the channel list 
-    // const channelListFunction = async (userid) => {
-    //     const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
-    //         userid
-    //     );
-    //     const userChannelList = userChannelMemberships.map(
-    //         (channelMembership) => {
-    //             const channelSummary = channelMembership.ChannelSummary;
-    //             channelSummary.SubChannelId =
-    //                 channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
-    //             return channelSummary;
-    //         }
-    //     );
-    //     setChannelList(userChannelList);
-    // }
-
-    ////////// Send message here //////
-    // const sendMessageByUser = async (ActiveChannel, sendingMessgeHere, member) => {
-    //     await sendChannelMessage(ActiveChannel.ChannelArn, sendingMessgeHere, "PERSISTENT", "STANDARD", member, undefined, null).then((messData) => {
-    //         listChannelMessages(ActiveChannel.ChannelArn, user_id, undefined, null).then((md) => {
-    //             setSendingMessage("");
-    //             setAllMessgesOfChannel(md.Messages)
-    //         }).catch((error) => {
-    //             console.log("error", error);
-    //         })
-    //     }).catch((error) => {
-    //         console.log("message Sending error", error)
-    //     })
-
-    // }
-
-    /////////// Get the channel messaages///////
-    // const GetMessagesListOnEverySec = (ActiveChannel, user_id) => {
-    //     listChannelMessages(ActiveChannel.ChannelArn, user_id, undefined, null).then((md) => {
-    //         setAllMessgesOfChannel(md.Messages)
-    //     }).catch((error) => {
-    //         console.log("error", error);
-    //     })
-    // }
-    // useEffect(() => {
-    //     console.log("messageInterval val", messageInterval)
-    //     if (Object.keys(ActiveChannel).length > 0) {
-    //         clearInterval(messageInterval);
-    //         setAllMessgesOfChannel([]);
-    //         setmessageInterval(setInterval(() => {
-    //             GetMessagesListOnEverySec(ActiveChannel, user_id);
-    //         }, [3000]))
-    //         console.log("messageInterval", messageInterval);
-    //     }
-    // }, [ActiveChannel])
-
-    // useEffect(() => {
-    //     if (Object.keys(ActiveChannel).length > 0) {
-    //         GetMessagesListOnEverySec(ActiveChannel, user_id);
-    //     }
-    // }, [count])
-
-
+ 
 
     ///////// Here  we are set the message value
     const handleChange = (event) => {

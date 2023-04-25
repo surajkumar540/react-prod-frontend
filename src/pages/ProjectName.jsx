@@ -1,11 +1,10 @@
 import { Box, Grid, Typography, TextField, Button } from '@mui/material'
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
 
 import organaiseLogo from "../assets/Logo/organaise-logo.png";
-import InviteSkipModal from '../components/InviteSkipModal/InviteSkipModal';
+// import InviteSkipModal from '../components/InviteSkipModal/InviteSkipModal';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -13,7 +12,7 @@ import StepLabel from '@mui/material/StepLabel';
 
 const ProjectName = () => {
 
-    const [userId, setUserID] = useState("")
+    // const [userId, setUserID] = useState("")
     const steps = [
         'Company Name',
         'Invite Team',
@@ -22,32 +21,20 @@ const ProjectName = () => {
 
     const [companyName, setCompanyName] = useState("");
     /////// get Company data
-    const getComFun = async (subUserId) => {
-        try {
-            const responseGetCom = await getCompanyName(subUserId);
-            if (responseGetCom.status) {
-                if (responseGetCom.data.length > 0) {
-                    window.location.href = "/"
-                }
-            } else {
-                toast.error(responseGetCom.message);
-            }
-        } catch (error) {
-            console.log(error.response.message);
-        }
-    }
-
-    // useEffect(() => {
-    //     const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-    //     setUserID(UserId);
-    // }, [])
-
-    // useEffect(() => {
-    //     if (userId !== "") {
-    //         getComFun(userId);
+    // const getComFun = async (subUserId) => {
+    //     try {
+    //         const responseGetCom = await getCompanyName(subUserId);
+    //         if (responseGetCom.status) {
+    //             if (responseGetCom.data.length > 0) {
+    //                 window.location.href = "/"
+    //             }
+    //         } else {
+    //             toast.error(responseGetCom.message);
+    //         }
+    //     } catch (error) {
+    //         console.log(error.response.message);
     //     }
-    // }, [userId])
-
+    // }
 
 
 

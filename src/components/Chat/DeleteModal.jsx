@@ -1,11 +1,6 @@
 import * as React from 'react';
-import { IconButton,Box,Button,Typography,Modal,InputAdornment,OutlinedInput,Badge,Avatar } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
+import {Box,Button,Typography,Modal,Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import LogoutIcon from '@mui/icons-material/Logout';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { fetchAllChatSingleUserOrGroup } from '../../api/InternalApi/OurDevApi';
 import { ChatState } from '../../Context/ChatProvider';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';

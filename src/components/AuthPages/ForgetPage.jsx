@@ -11,11 +11,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 /////Import react query functions
 import { useMutation } from 'react-query'
-// import {
-//     CognitoSignUp,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
-import { userCreateAccount, forgetPasswordVerify } from '../../api/InternalApi/OurDevApi';
+import {forgetPasswordVerify } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 import { useNavigate, Link } from 'react-router-dom';
 const cssStyle = {

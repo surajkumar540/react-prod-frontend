@@ -80,15 +80,6 @@ const ContentModels = ({
     //////////// Store the userid of user ////////
     const [user_id, setUserID] = useState(localStorage.getItem("userInfo"));
 
-    //////////When this page render then user_id store , nad channel list also load
-    // useEffect(() => {
-    //     getAwsCredentialsFromCognito();
-    //     IdentityServiceObject.setupClient();
-    //     let getLoginUserName = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.LastAuthUser`);
-    //     let selectUserData = localStorage.getItem(`CognitoIdentityServiceProvider.${appConfig.cognitoAppClientId}.${getLoginUserName}.userData`);
-    //     let userid = (JSON.parse(selectUserData).UserAttributes.find((d) => d.Name === "profile")).Value;
-    //     setUserID(userid)
-    // }, [])
 
     ////////// channel state value save here
 
@@ -97,53 +88,6 @@ const ContentModels = ({
     const [channelName, setChannelName] = useState("");
     const [channelDiscription, setChannelDiscription] = useState("");
 
-    // const createChannelFun = async () => {
-    //     if (channelName === "") {
-    //         toast.info("Please enter channel name");
-    //         return;
-    //     }
-    //     if (channelName != null && channelName !== "") {
-    //         const creatChannelObj = {
-    //             "instenceArn": `${appConfig.appInstanceArn}`,
-    //             "metaData": null,
-    //             "newName": `${channelName}`,
-    //             "mode": "RESTRICTED",
-    //             "privacy": "PRIVATE",
-    //             "elasticChannelConfiguration": null,
-    //             "userId": `${user_id}`
-    //         }//////// These object types value pass in createChannel function 
-    //         const channelArn = await createChannel(`${appConfig.appInstanceArn}`, null,
-    //             `${channelName}`, "RESTRICTED", "PRIVATE", null, `${user_id}`);/////////By this function we are  creating the channnel
-    //         if (channelArn) {
-    //             const channel = await describeChannel(channelArn, user_id);
-    //             if (channel) {
-    //                 // await channelListFunction(user_id);
-    //                 toast.success("Channel created successfully.");
-    //             } else {
-    //                 console.log('Error, could not retrieve channel information.');
-    //             }
-    //         } else {
-    //             console.log('Error, could not create new channel.');
-    //         }
-    //     }
-    //     handleClose();
-    // }
-
-    /////////// Get the channel list 
-    // const channelListFunction = async (userid) => {
-    //     const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(
-    //         userid
-    //     );
-    //     const userChannelList = userChannelMemberships.map(
-    //         (channelMembership) => {
-    //             const channelSummary = channelMembership.ChannelSummary;
-    //             channelSummary.SubChannelId =
-    //                 channelMembership.AppInstanceUserMembershipSummary.SubChannelId;
-    //             return channelSummary;
-    //         }
-    //     );
-    //     setChannelList(userChannelList);
-    // }
 
     ///////// Create folder function and aadd staates here
     const [folderName, setFolderName] = useState("");
@@ -306,12 +250,6 @@ const ContentModels = ({
         }
 
         await addIngFileInFolder(UserId, filesArr, folderSelect._id);
-        // if (selectedFile.length - 1 === index) {
-        // toast.success("Files added successfully");
-        // setAddBtnDisable(false);
-        // getFoldersData(UserId);
-        // handleClose();
-        // }
     }
 
 
@@ -353,24 +291,6 @@ const ContentModels = ({
     /////////////////// add team mate model code  here
     //////// All users list store here //////
     const [AddAllUsers, SetAllUsersList] = useState([]);
-    ////////// Whenn user id set then this useEffect run
-    // useEffect(() => {
-    //     if ((user_id !== "") && (location.pathname === "/")) {
-    //         //setChannelInterval
-    //         channelListFunction(user_id);
-    //         getAllUsersFromCognitoIdp(IdentityServiceObject).then((uData) => {
-    //             if (uData.status) {
-    //                 SetAllUsersList(uData.data)
-    //             } else {
-    //                 toast.error("Something is wrong.");
-    //                 console.log("Something is wrong", uData);
-    //             }
-    //         }).catch((err) => {
-    //             console.log("Something is wrong error get  when user list get", err);
-    //         });
-    //     }
-    // }, [user_id, location]);
-
 
 
     /////////// when click on the add button in teammate model
@@ -392,28 +312,6 @@ const ContentModels = ({
             toast.error("Something is wrong.Member not add in channel");
         }
     }
-
-
-
-    // const AddMemberButton = async (selectChannel, selectUser, user_id) => {
-    //     try {
-    //         const membership = await createChannelMembership(
-    //             selectChannel.ChannelArn,
-    //             `${appConfig.appInstanceArn}/user/${selectUser.value}`,
-    //             user_id,
-    //             undefined //activeChannel.SubChannelId
-    //         );
-    //         const memberships = []  ///activeChannelMemberships;
-    //         memberships.push({ Member: membership });
-    //         handleClose();
-    //         return { status: true, data: memberships }
-    //     } catch (err) {
-    //         toast.error("Something is wrong please try after some time");
-    //         console.log("error in adding member in channel", err);
-    //         return { status: false, error: err };
-    //     }
-    // }
-
 
     ////////// search member  in new version 1 and start single chatting
     const { mutateAsync: MemberSearchV1 } = useMutation(searchUserV1);
@@ -978,14 +876,6 @@ const ContentModels = ({
                                     onClick={() => handleClose()}>
                                     Close
                                 </Button>
-                                {/* <Button
-                                    variant="contained"
-                                    size='small'
-                                    sx={{ padding: "5px 30px" }}
-                                    onClick={() => FinalAddFileInFolder()}
-                                >
-                                    Add
-                                </Button> */}
                             </Box>
                         </Box>
 
@@ -1141,17 +1031,6 @@ const ContentModels = ({
                                     onChange={(e) => setGroupName(e.target.value)}
                                 />
                             </Box>
-                            {/* <Box container sx={{ width: "100%" }} mt={1}>
-                                <TextareaAutosize
-                                    minRows={4}
-                                    maxRows={4}
-                                    aria-label="maximum height"
-                                    placeholder="Channel Description (Maximum 200 Words)"
-                                    defaultValue={""}
-                                    style={{ padding: "10px 15px", fontFamily: "sans-serif", fontSize: "14px", width: "100%", height: "80px !important", resize: "none", boxSizing: "border-box" }}
-                                    onChange={(e) => setChannelDiscription(e.target.value)}
-                                />
-                            </Box> */}
                             <Box container sx={{ width: "100%" }} mt={2}>
                                 <Autocomplete
                                     multiple

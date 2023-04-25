@@ -7,21 +7,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState, useEffect } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
 import { useSelector } from 'react-redux';
-import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroundImg.png"
-import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
 import signupPageBgImg from "../../assets/BackgroundImages/signupBackgroundImg.png"
-import otpVerificationBgImg from "../../assets/BackgroundImages/otpVerificationBgImg.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import OtpField from 'react-otp-field';
 import { toast } from 'react-toastify';
-/////Import react query functions
 import { useMutation } from 'react-query'
-// import {
-//     userSignIn, resendConfermationEMail,
-//     CognitoSignUp, SignUpOtpVarify,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
 import { passwordValidator } from '../../utils/validation';
 import { userCreateAccount } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
@@ -198,18 +188,8 @@ export const SignupPage = () => {
                                         onChange={(e) => setLastName(e?.target?.value)}
                                     />
                                 </Box>
-                                {/* </Box> */}
 
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
-                                    {/* <TextField
-                                    id="login-signup-forgetPassword-email"
-                                    label="Phone Number"
-                                    variant='outlined'
-                                    type="number"
-                                    sx={cssStyle.btn_textfield}
-                                    value={phoneNumber ? phoneNumber : ""}
-                                    onChange={(e) => setPhoneNumber(e?.target?.value)}
-                                /> */}
                                 </Grid>
                                 <Grid item xs={12} sx={cssStyle.grid_textBox_button}>
                                     <TextField

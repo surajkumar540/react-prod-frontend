@@ -4,25 +4,14 @@ import {
 } from '@mui/material'
 
 import CircularProgress from '@mui/material/CircularProgress';
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
-import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroundImg.png"
-import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
 import signupPageBgImg from "../../assets/BackgroundImages/signupBackgroundImg.png"
-import otpVerificationBgImg from "../../assets/BackgroundImages/otpVerificationBgImg.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import OtpField from 'react-otp-field';
 import { toast } from 'react-toastify';
 /////Import react query functions
-import { useMutation } from 'react-query'
-// import {
-//     userSignIn, resendConfermationEMail,
-//     CognitoSignUp, SignUpOtpVarify,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
 import { passwordValidator } from '../../utils/validation';
-import { userCreateAccount, userLoginAccount } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 
 
@@ -85,58 +74,7 @@ const NewPassword = () => {
     const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
 
     const navigate = useNavigate();
-
-    // const { mutateAsync: SignUpFunCall, isLoading: isLoadingSignUpFun } = useMutation(CognitoSignUp);
-    // const { mutateAsync: SignUpFunCallV1, isLoading: isLoadingSignUpFunV1 } = useMutation(userCreateAccount);
-    // const createAccount = async (name, email, password) => {
-    //     const userName = email.split('@')[0];
-    //     const userEmail = email;
-    //     const userPassword = password;
-    //     // const userPhoneNo = phoneNumber;
-    //     const response = await SignUpFunCall({ username: userName, email: userEmail, password: userPassword })
-    //     if (response.status && response.data.userSub) {
-    //         toast.info("Please check your inbox");
-    //         setSeviceType('signup')
-    //         navigate("/otpVerf")
-    //         await userInsertv1(name, email, password);
-    //     } else {
-    //         toast.error(response.error.message);
-    //     }
-
-    // }
-
-    //    const { mutateAsync: resetPasswordFunCall, isLoading: resetPasswordIsLoading } = useMutation(resetPasswordFun);
-    // const resendOtpInMail = async (email) => {
-    //     const response = await resetPasswordFunCall({ username: email.split("@")[0] });
-    //     if (response.status) {
-    //         toast.info("Otp send in your mail please check your mail inbox.");
-    //         setShowVeriCon(true);
-    //     } else {
-    //         toast.error(response.error.message);
-    //     }
-    // }
-
-
-    //////// change password api call or Reset password code here when user in forget passsword page 
-    // const { mutateAsync: updatePasswordWithOtp } = useMutation(otpWithResetPassword);
-    // const updateNewPassword = async (email, GetOtp, newPassword) => {
-    //     setVerifyBtnDisabled(true)
-    //     let userName = email.split('@')[0]
-    //     const updatePassword = await updatePasswordWithOtp({ username: userName, otp: GetOtp, password: newPassword });
-    //     if (updatePassword.status) {
-    //         toast.success("Password update successfullly.Please wait we are redirect in login page.");
-    //         setTimeout(() => {
-    //             setVerifyBtnDisabled(false)
-    //             window.location = "/login";
-    //         }, [3000])
-    //     } else {
-    //         toast.error(updatePassword.error.message);
-    //         setVerifyBtnDisabled(false)
-    //     }
-    // }
-
     const buttonAction = async () => {
-        // if (firstName === "" || lastName === "" || emailAddress === "" || password === "" || confirmPassword === "" || phoneNumber === "") {
         if (firstName === "" || emailAddress === "" || password === "" || confirmPassword === "") {
             toast.error("Please fill all fields.")
             return null;
@@ -148,15 +86,8 @@ const NewPassword = () => {
         if (!passwordValidator(password) || !passwordValidator(confirmPassword)) {
             return null;
         }
-        // await createAccount(firstName, emailAddress, password);
-        // await createAccount(firstName, lastName, emailAddress, password);
 
     }
-
-    ////////// When click on the verify button
-    // const otpVerifyBtn = async (serviceType) => {
-    //     await signupVerificationOtp(emailAddress, OtpValue);
-    // }
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);

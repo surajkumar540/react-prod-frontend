@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
 import { Button, Box, Grid, Typography, InputAdornment } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/folder-data.png";
 import FolderIcon from '@mui/icons-material/Folder';
@@ -12,11 +11,13 @@ import { useDebounce } from 'use-debounce';
 import DotMenu from "../components/Chat/DotMenu"
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Tools/Loader';
+import { ChatState } from '../Context/ChatProvider';
 
 const FolderData = () => {
     const navigate=useNavigate()
     const [loading,setLoading]=useState(true);
     const [showSearchSmall,setShowSearchSmall]=useState(false)
+    const { setPageNameContext,setCloseSideList } = ChatState();
     const colorsCode={
         a:'#ff7f47aa',
         b:'#fcaf45aa',
@@ -164,132 +165,138 @@ const FolderData = () => {
         }
     }
 
+    useEffect(() => {
+        // setLoading(true)
+        // getFilesOfUser();
+        setPageNameContext("data")
+        setCloseSideList(false)
+    }, [])
+
+
     if(loading)
     {
         return(
-        <LeftSideBar data={{ pageName: "data", index: 2 }}>
             <Loader/>
-        </LeftSideBar>
         )
     }
 
+
+
     return (
         <>
-            <LeftSideBar data={{ pageName: "data", index: 2 }}>
-                <Box px={{xs:'5px',sm:"20px"}} sx={style.folderCreateMainBox}>
-                    {folderDataStore.length === 0 &&
-                        <Grid container>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography variant="subtitle1" fontWeight={"600"} >No folders added yet</Typography>
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
-                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                                </Typography>
-                            </Grid>
-                            <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
-                                <Button
-                                    variant="contained"
-                                    size='small'
-                                    sx={{ padding: "5px 25px" }}
-                                    onClick={() => modelOpens("CreateFolder")}
-                                >
-                                    Create Folders
-                                </Button>
-                            </Grid>
-
+            <Box px={{xs:'5px',sm:"20px"}} sx={style.folderCreateMainBox}>
+                {folderDataStore.length === 0 &&
+                    <Grid container>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <img src={fileUploadImage} style={{ width: "350px", userSelect: "none", pointerEvents: "none" }} alt="folder-creating-image" />
                         </Grid>
-                    }
-                    {folderDataStore?.length !== 0 &&
-                        <Grid container px={1} >
-                            <Grid container item mt={2} xs={12} >
-                                <Box container width={"100%"} display={'flex'} justifyContent="space-between">
-                                    <Typography variant="h6" >Folders</Typography>
-                                    <Box >
-                                        <TextField
-                                         onClick={()=>setShowSearchSmall(true)}
-                                            id="search_folder"
-                                            placeholder='Search folder'
-                                            size='small'
-                                            sx={{
-                                                width:{xs:showSearchSmall?"150px":'50px',sm:'140px',md:'180px',xl:'220px'},
-                                                marginRight: "10px", "& input": {
-                                                    paddingTop: "7px",
-                                                    paddingBottom: "7px", fontSize: "14px",
-                                                },
-                                                paddingLeft: "4px", "& fieldset": { borderRadius: "8px" }
-                                            }}
-                                            value={srcFolderText}
-                                            onChange={(e) => SetSrcFolderText(e.target.value)}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <Search sx={{ color: "#efefef" }} />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                        <Button
-                                            variant="contained"
-                                            size='small'
-                                            sx={{ padding:{xs: "4px 15px",md:"5px 20px"},textTransform:'capitalize' }}
-                                            onClick={() => modelOpens("CreateFolder")}
-                                        >
-                                            Create Folder
-                                        </Button>
-                                    </Box>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Typography variant="subtitle1" fontWeight={"600"} >No folders added yet</Typography>
+                        </Grid>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Typography sx={{ width: { sm: "75%", md: "45%" } }} color="#808191" variant="body2" textAlign={'center'}>
+                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                            </Typography>
+                        </Grid>
+                        <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                sx={{ padding: "5px 25px" }}
+                                onClick={() => modelOpens("CreateFolder")}
+                            >
+                                Create Folders
+                            </Button>
+                        </Grid>
 
-                                </Box>
-                            </Grid>
-                            <Grid container item mt={3} xs={12} display={'flex'} flexWrap={'wrap'}>
-                                {folderDataStore?.map((d, index) =>
-                                    <Box
-                                    marginX={{xs:"5px",sm:"3px",md:"25px"}}
-                                        my={"10px"}
+                    </Grid>
+                }
+                {folderDataStore?.length !== 0 &&
+                    <Grid container px={1} >
+                        <Grid container item mt={2} xs={12} >
+                            <Box container width={"100%"} display={'flex'} justifyContent="space-between">
+                                <Typography variant="h6" >Folders</Typography>
+                                <Box >
+                                    <TextField
+                                        onClick={()=>setShowSearchSmall(true)}
+                                        id="search_folder"
+                                        placeholder='Search folder'
+                                        size='small'
                                         sx={{
-                                            width: {xs:"100px",sm:'155px',md:"170px"},
-                                            height: {xs:"150px",sm:'170px',md:"180px"},
-                                            padding: "5px 5px",
-                                            boxSizing: "border-box",
-                                            border: "0.5px solid #CBCBCB", borderRadius: "8px"
+                                            width:{xs:showSearchSmall?"150px":'50px',sm:'140px',md:'180px',xl:'220px'},
+                                            marginRight: "10px", "& input": {
+                                                paddingTop: "7px",
+                                                paddingBottom: "7px", fontSize: "14px",
+                                            },
+                                            paddingLeft: "4px", "& fieldset": { borderRadius: "8px" }
                                         }}
-                                        key={`folder_${index}_ids`}
+                                        value={srcFolderText}
+                                        onChange={(e) => SetSrcFolderText(e.target.value)}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Search sx={{ color: "#efefef" }} />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        size='small'
+                                        sx={{ padding:{xs: "4px 15px",md:"5px 20px"},textTransform:'capitalize' }}
+                                        onClick={() => modelOpens("CreateFolder")}
                                     >
-                                        <Box container display={'flex'} justifyContent="end"
-                                        >
-                                            <DotMenu handleDelete={deleteFolder} value={d._id} pageName='folder' handleAddFile={()=>ActionDelFolAndAddFile("addFile",d)}/>
-                                            
+                                        Create Folder
+                                    </Button>
+                                </Box>
 
-                                        </Box>
-                                        <Box container display={'flex'} justifyContent="center"> 
-                                            <FolderIcon
-                                                sx={{
-                                                    fontSize:{xs:'55px',sm:'80px'},
-                                                    color: colorsCode[d.folderName.slice(0,1).toLowerCase()]||"red"
-                                                    ,
-                                                    cursor: "pointer"
-                                                }}
-                                                onClick={() =>{d.filesList.length>0?navigate(`/files/folder/${d._id}`): toast.info("Files not added yet");}}
-                                                />
-                                        </Box>
-                                        <Box container>
-                                            <Typography align='center' variant="subtitle2" color={"#121212"} fontSize={{xs:"0.79rem",sm:"0.875rem"}}>{d.folderName}</Typography>
-                                        </Box>
-                                        <Box container>
-                                            <Typography align='center' variant="subtitle2" fontSize={{xs:"10px",sm:"13px"}} color={"#CDCDCD"}>{folderSize(d.filesList)}</Typography>
-                                        </Box>
-                                    </Box>
-                                )}
-
-                            </Grid>
+                            </Box>
                         </Grid>
-                    }
-                </Box>
+                        <Grid container item mt={3} xs={12} display={'flex'} flexWrap={'wrap'}>
+                            {folderDataStore?.map((d, index) =>
+                                <Box
+                                marginX={{xs:"5px",sm:"3px",md:"25px"}}
+                                    my={"10px"}
+                                    sx={{
+                                        width: {xs:"100px",sm:'155px',md:"170px"},
+                                        height: {xs:"150px",sm:'170px',md:"180px"},
+                                        padding: "5px 5px",
+                                        boxSizing: "border-box",
+                                        border: "0.5px solid #CBCBCB", borderRadius: "8px"
+                                    }}
+                                    key={`folder_${index}_ids`}
+                                >
+                                    <Box container display={'flex'} justifyContent="end"
+                                    >
+                                        <DotMenu handleDelete={deleteFolder} value={d._id} pageName='folder' handleAddFile={()=>ActionDelFolAndAddFile("addFile",d)}/>
+                                        
 
-            </LeftSideBar>
+                                    </Box>
+                                    <Box container display={'flex'} justifyContent="center"> 
+                                        <FolderIcon
+                                            sx={{
+                                                fontSize:{xs:'55px',sm:'80px'},
+                                                color: colorsCode[d.folderName.slice(0,1).toLowerCase()]||"red"
+                                                ,
+                                                cursor: "pointer"
+                                            }}
+                                            onClick={() =>{d.filesList.length>0?navigate(`/files/folder/${d._id}`): toast.info("Files not added yet");}}
+                                            />
+                                    </Box>
+                                    <Box container>
+                                        <Typography align='center' variant="subtitle2" color={"#121212"} fontSize={{xs:"0.79rem",sm:"0.875rem"}}>{d.folderName}</Typography>
+                                    </Box>
+                                    <Box container>
+                                        <Typography align='center' variant="subtitle2" fontSize={{xs:"10px",sm:"13px"}} color={"#CDCDCD"}>{folderSize(d.filesList)}</Typography>
+                                    </Box>
+                                </Box>
+                            )}
+
+                        </Grid>
+                    </Grid>
+                }
+            </Box>
+
             {openNewModel &&
                 <ContentModels
                     activeModel={activeModel} //////  which type of model

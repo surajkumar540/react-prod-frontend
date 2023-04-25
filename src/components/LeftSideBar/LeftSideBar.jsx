@@ -179,7 +179,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const LeftSideBar = (props) => {
 
     ////// use conetext use here
-    const { user, setSelectedChatV1, currentChats, setCurrentChats, chats, setChats, compNameContext, setCompNameContext, notification, setNotification } = ChatState();
+    const { user, setSelectedChatV1, pageNameContext, closeSideListContext, chats, setChats, compNameContext, setCompNameContext, notification, setNotification,setMessagingActive,setSelectedChannel } = ChatState();
     const theme = useTheme();
     const navegate = useNavigate();
     const location = useLocation();
@@ -204,10 +204,10 @@ const LeftSideBar = (props) => {
     const [UserId, setUserId] = useState("");
     const [subUserId, setSubUserId] = useState("");
     useEffect(() => {
-        if (props?.data?.pageName === "Folder") {
+        if (pageNameContext === "Folder") {
             setOpen(!open);
         }
-    }, [props.data])
+    }, [pageNameContext])
 
 
     //////// here we are call api to getting company name
@@ -335,8 +335,8 @@ const LeftSideBar = (props) => {
     const InanotherPage = async (type, data) => {
         if (type === "1") {
             setSelectedChatV1(data);
-            // props.data.setSelectedChannel(data);
-            props.data.setMessagingActive(true);
+            setMessagingActive(true);
+            setSelectedChannel(data);
         } else {
             if (location.pathname !== "/chat") {
                 setActivePage("groups");
@@ -365,6 +365,7 @@ const LeftSideBar = (props) => {
         fetchChat();
         setSubUserId(localStorage.getItem("userInfo"))
     }, [])
+    
 
     
     return (
@@ -413,9 +414,9 @@ const LeftSideBar = (props) => {
                             </Box> */}
 
                             <Box sx={{ flexGrow: 0, width: "60%" }} display="inline-flex"
-                                justifyContent={props.data.pageName === "Data" ? 'space-between' : "end"}
+                                justifyContent={pageNameContext === "Data" ? 'space-between' : "end"}
                             >
-                                {props.data.pageName === "Data" &&
+                                {pageNameContext === "Data" &&
                                     <Box id="file_upload_icon">
                                         {/* <Button
                                 variant="contained"
@@ -481,7 +482,7 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl: '70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'}>
+                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl: '70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0'>
 
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
@@ -535,7 +536,7 @@ const LeftSideBar = (props) => {
 
                 <Drawer
                     variant="permanent"
-                    open={open && !props.closeSideList}
+                    open={open && !closeSideListContext}
                     position='relative'
                 >
 
@@ -880,9 +881,9 @@ const LeftSideBar = (props) => {
                 </Drawer>
                 
                 {/* Drawer toggle icon */}
-                <Box height={'100vh'} width='16px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>
+                <Box height={'96vh'} width='16px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>
                         
-                    {!props.closeSideList && 
+                    {!closeSideListContext && 
                     <Box 
                         position={'absolute'}
                         bottom={'18%'}
@@ -900,8 +901,8 @@ const LeftSideBar = (props) => {
 
 
                 {/* <DrawerHeader /> */}
-                <Box component="main" sx={{ flexGrow: 1, py: 3, px: 0 }}>
-                    <Box mt={5.5}>
+                <Box component="main" sx={{ flexGrow: 1, py: 2.2, px: 0 }}>
+                    <Box mt={3}>
                         {
                             props.children
                         }

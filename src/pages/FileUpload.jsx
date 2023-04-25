@@ -1,11 +1,11 @@
-import React, {useState } from 'react'
-import LeftSideBar from '../components/LeftSideBar/LeftSideBar'
+import React, {useEffect, useState } from 'react'
 import { Button, Box, Grid, Typography } from '@mui/material/';
 import fileUploadImage from "../assets/BackgroundImages/upload-file.png";
 import FileUploadModal from '../components/FileUploadModal/FileUploadModal';
-import { useDropzone } from "react-dropzone";
-const FileUpload = () => {
+import { ChatState } from '../Context/ChatProvider';
 
+const FileUpload = () => {
+    const {setPageNameContext,setCloseSideList}=ChatState()
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -13,6 +13,11 @@ const FileUpload = () => {
     const handleClose = () => {
         setOpen(false);
     };
+    
+    useEffect(()=>{
+        setPageNameContext("data")
+        setCloseSideList(false)
+    },[])
 
     const styleCss = {
         fileUploadMainBox: {
@@ -22,7 +27,7 @@ const FileUpload = () => {
  
 
     return (
-        <LeftSideBar data={{ pageName: "Data", index: 3 }}>
+        <>
             <Box sx={styleCss.fileUploadMainBox}>
                 <Grid container>
                     <Grid container item xs={12} mt={2} display="flex" justifyContent={'center'}>
@@ -47,7 +52,7 @@ const FileUpload = () => {
             {
                 open && <FileUploadModal open={open} handleClose={handleClose} />
             }
-        </LeftSideBar>
+        </>
     )
 }
 
