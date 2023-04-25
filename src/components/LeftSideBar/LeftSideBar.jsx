@@ -900,8 +900,8 @@ const LeftSideBar = (props) => {
 
 
                 {/* <DrawerHeader /> */}
-                <Box component="main" sx={{ flexGrow: 1, py: 3, px: 0 }}>
-                    <Box mt={5.5}>
+                <Box component="main" sx={{ flexGrow: 1, py: 2.2, px: 0 }}>
+                    <Box mt={3}>
                         {
                             props.children
                         }
