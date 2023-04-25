@@ -88,7 +88,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
       ////////user account created but user account not activated//////
       if (response?.response === "User is not confirmed.") {
         const mailApiRes = await resendVerificationMail({ email });
-        if (mailApiRes.statusCode == 200) {
+        if (mailApiRes.statusCode === 200) {
           toast.info("Please check your mail inbox.");
           setBtnDisabled(false);
 

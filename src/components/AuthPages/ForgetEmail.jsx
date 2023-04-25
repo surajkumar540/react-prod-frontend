@@ -70,7 +70,7 @@ const ForgetEmail = () => {
             const checkResponse = await checkUserApi({ email: emailAddress })
             if (checkResponse.status) {
                 const response = await ForgetEmailApi({ email });
-                if (response.statusCode == 200) {
+                if (response.statusCode === 200) {
                     toast.info("Otp send in your mail please check your mail inbox.");
                     setSeviceType('forgetPassword');
                     setContextEmail(emailAddress);

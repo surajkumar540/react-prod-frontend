@@ -62,7 +62,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal=false,toggleD
 
     return (
       <div>
-         {type=='list'?<HighlightOffIcon  onClick={handleOpen} sx={{color:'red'}}/>
+         {type==='list'?<HighlightOffIcon  onClick={handleOpen} sx={{color:'red'}}/>
          :<Typography onClick={handleOpen} color={'red'}>Delete</Typography>}
 
         
@@ -78,7 +78,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal=false,toggleD
        
             
             <Box display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
-            {type=='list'?<Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
+            {type==='list'?<Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
             Are you sure do you want to remove this user ?
             </Typography>:<Typography id="modal-modal-title" color={'black'} fontSize={'21px'}fontWeight={600} >
             Are you sure do you want to delete this {pageName==='folder'?"folder":"file"} ?
@@ -95,7 +95,7 @@ const DeleteModal = ({handleDelete,value,pageName,closeParentModal=false,toggleD
             </Button>
             
          
-           {type=='list'? <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete();handleClose();}}>
+           {type==='list'? <Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete();handleClose();}}>
             Remove
           </Button>:<Button variant="contained" sx={{width:'48%',fontSize:'16px',textTransform:'capitalize',outline:'none !important' }} onClick={()=>{handleDelete(value);handleClose();closeParentModal();}}>
             Delete

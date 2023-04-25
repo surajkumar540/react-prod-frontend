@@ -61,7 +61,7 @@ const MyAccount = ({closeSideList}) => {
 
     return (
         <>
-            <Box sx={{ flexGrow: 1 }} px={'2rem'}>
+            <Box sx={{ flexGrow: 1 }} pl={'2rem'} pt='1rem'>
                 
                 
                 <Grid container>
@@ -72,12 +72,12 @@ const MyAccount = ({closeSideList}) => {
 
                 {/* Name */}
                 <Grid container my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={400}>Name</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                         <TextField
@@ -100,12 +100,12 @@ const MyAccount = ({closeSideList}) => {
 
                 {/* Email */}
                 <Grid container  my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={400}>Email address</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                             <TextField
                                 id="outlined-helperText"
@@ -126,13 +126,13 @@ const MyAccount = ({closeSideList}) => {
 
                 {/* Profile */}
                 <Grid container  my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={500}>Your Photo</Typography>
                             <Typography fontSize={'14px'} fontWeight={300}>This will be displayed on your profile.</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                             <Box flex={0.15} display={'flex'} justifyContent={'center'} alignItems={'center'}>
                                 <Avatar
@@ -161,12 +161,12 @@ const MyAccount = ({closeSideList}) => {
                 
                 {/* Role */}
                 <Grid container  my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={400}>Role</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                             <TextField
                                 defaultValue="Product Designer"
@@ -180,12 +180,12 @@ const MyAccount = ({closeSideList}) => {
                 
                 {/* Country */}
                 <Grid container  my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={500}>Country</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                         <TextField
                             id="outlined-select-currency"
@@ -207,12 +207,12 @@ const MyAccount = ({closeSideList}) => {
                 
                 {/* Timezone */}
                 <Grid container  my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'} alignItems={'center'}>
+                    <Grid xs={6} md={5} display={'flex'} alignItems={'center'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={500}>Timezone</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8}>
+                    <Grid xs={6} md={7}>
                         <Box width={'80%'} display={'flex'} justifyContent={'space-between'}>
                         <TextField
                             id="outlined-select-currency"
@@ -234,13 +234,13 @@ const MyAccount = ({closeSideList}) => {
 
                 {/* Bio */}
                 <Grid container my={'1rem'}>
-                    <Grid xs={6} md={4} display={'flex'}>
+                    <Grid xs={6} md={5} display={'flex'}>
                         <Box>
                             <Typography fontSize={'16px'} fontWeight={500}>Bio</Typography>
                             <Typography fontSize={'14px'} fontWeight={300}>Write a short introduction.</Typography>
                         </Box>
                     </Grid>
-                    <Grid xs={6} md={8} >
+                    <Grid xs={6} md={7} >
                         <Box width={'80%'} mb='1rem' display={'flex'}>
                             <TextField
                             sx={{width:'50%'}}

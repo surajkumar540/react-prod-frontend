@@ -104,7 +104,6 @@ export const SignupPage = () => {
     };
 
     const buttonAction = () => {
-        // if (firstName === "" || lastName === "" || emailAddress === "" || password === "" || confirmPassword === "" || phoneNumber === "") {
         if (firstName === "" || emailAddress === "" || password === "" || confirmPassword === "") {
             toast.error("Please fill all fields.")
             return null;

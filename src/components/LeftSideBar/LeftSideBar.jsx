@@ -34,6 +34,23 @@ import socket from "../../socket/socket";
 
 const drawerWidth = '200px';
 
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme),
+        }),
+    }),
+);
+
 const openedMixin = (theme) => ({
     // width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -52,7 +69,8 @@ const openedMixin = (theme) => ({
         display: 'inherit',
         width: '160px'
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('xl')]: {
+        marginLeft: '4.3rem',
         width: drawerWidth,
     },
 });
@@ -64,18 +82,18 @@ const closedMixin = (theme) => ({
         duration: theme.transitions.duration.complex,
     }),
     overflowX: 'hidden',
-    // marginLeft: '5rem',
-    width: `calc(${theme.spacing(3.2)} + 1px)`,
+    marginLeft: '5rem',
+    width: `calc(${theme.spacing(0)} + 1px)`,
     [theme.breakpoints.up('xs')]: {
         width: `calc(${theme.spacing(0)} + 0px)`,
         display: 'none'
     },
     [theme.breakpoints.up('sm')]: {
-        marginLeft: '3rem',
+        marginLeft: '2.8rem',
         display: 'inherit',
     },
     [theme.breakpoints.up('md')]: {
-        marginLeft: '4rem',
+        marginLeft: '3.5rem',
     },
 });
 
@@ -106,22 +124,7 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        ...(open && {
-            ...openedMixin(theme),
-            '& .MuiDrawer-paper': openedMixin(theme),
-        }),
-        ...(!open && {
-            ...closedMixin(theme),
-            '& .MuiDrawer-paper': closedMixin(theme),
-        }),
-    }),
-);
+
 
 const styleCss = {
     appBarCss: {
@@ -482,7 +485,7 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl: '70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0'>
+                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl:'70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0' borderRight={closeSideListContext&&'1px solid  rgba(0, 0, 0, 0.1)'}>
 
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
@@ -881,9 +884,8 @@ const LeftSideBar = (props) => {
                 </Drawer>
                 
                 {/* Drawer toggle icon */}
-                <Box height={'96vh'} width='16px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>
-                        
-                    {!closeSideListContext && 
+                {!closeSideListContext && 
+                <Box height={'96vh'} width='14px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>     
                     <Box 
                         position={'absolute'}
                         bottom={'18%'}
@@ -894,9 +896,8 @@ const LeftSideBar = (props) => {
                             )
                         }
                     </Box>
-                     }
-
                 </Box>
+                     }
 
 
 
