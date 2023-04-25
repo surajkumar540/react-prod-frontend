@@ -1,16 +1,12 @@
 import * as React from 'react';
-// import { getAllUsersFromCognitoIdp } from "../../api/CognitoApi/CognitoApi";
-// import appConfig from "../../Config";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography'
 import { toast } from 'react-toastify';
-// import { createChannelMembership } from "../../api/ChimeApi/ChimeApi"
 
 
 

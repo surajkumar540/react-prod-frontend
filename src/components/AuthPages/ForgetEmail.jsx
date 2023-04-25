@@ -7,14 +7,9 @@ import React, { useEffect, useState } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
 import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
 import { toast } from 'react-toastify';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 /////Import react query functions
 import { useMutation } from 'react-query'
-// import {
-//     CognitoSignUp,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
 import { getStartedVerify, ForgetEmailOtp } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 import { useNavigate, Link } from 'react-router-dom';

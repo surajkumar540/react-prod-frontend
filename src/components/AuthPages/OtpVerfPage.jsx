@@ -1,26 +1,12 @@
-import {
-    Box, Grid, Typography, TextField,
-    Button, IconButton, InputAdornment
-} from '@mui/material'
+import {Box, Grid, Typography,Button} from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
-import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroundImg.png"
-import forgetPassPageBGImg from "../../assets/BackgroundImages/forgetPasswordBgImg.png"
-import signupPageBgImg from "../../assets/BackgroundImages/signupBackgroundImg.png"
 import otpVerificationBgImg from "../../assets/BackgroundImages/otpVerificationBgImg.png"
-import { Link } from 'react-router-dom';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import OtpField from 'react-otp-field';
 import { toast } from 'react-toastify';
 /////Import react query functions
 import { useMutation } from 'react-query'
-// import {
-//     userSignIn, resendConfermationEMail,
-//     CognitoSignUp, SignUpOtpVarify,
-//     otpWithResetPassword, resetPasswordFun
-// } from "../../api/CognitoApi/CognitoApi";
-import { passwordValidator } from '../../utils/validation';
 import { userLoginAccount, otpSignUpVerify } from '../../api/InternalApi/OurDevApi';
 import { ServiceState } from '../../Context/ServiceProvider';
 import { useNavigate } from "react-router-dom"
@@ -33,7 +19,6 @@ const cssStyle = {
     },
     content_container_box: {
         backgroundColor: "#ffffff",
-        // padding: "10% 20%",
         padding: "10% 20%",
         minHeight: "500px",
         maxHeight: "100vh"
@@ -75,17 +60,9 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
     const [btnDisabed, setBtnDisabled] = useState(false);
     /////// Verify button disaabled until operation not complete
     const [verifyBtnDisable, setVerifyBtnDisabled] = useState(false);
-    // console.log(serviceType, contextEmail, contextName, contextPassword);
 
     ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
     const { mutateAsync: loginApiCall } = useMutation(userLoginAccount);
-    const { mutateAsync: loginV1 } = useMutation(userLoginAccount);
-    // const { mutateAsync: resendVerificationMail } = useMutation(resendConfermationEMail);
-
-    // serviceType === "createAccount"
-    // serviceType === "createAccount"
-    // serviceType === "loginVerification"
-    ///////// Signup otp verification/////////
     const { mutateAsync: SignUpOtpVerification } = useMutation(otpSignUpVerify);
 
     const signupVerificationOtp = async (getOtp, email, userName = 'jai', password) => {
@@ -186,7 +163,6 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
                                         numInputs={6}
                                         onChangeRegex={/^([0-9]{0,})$/}
                                         autoFocus
-                                        // separator={<span>-</span>}
                                         isTypeNumber
                                         inputProps={{
                                             className: `otp-field__input`,
@@ -203,7 +179,6 @@ const OtpVerfPage = ({ setIsAuthenticated }) => {
                                         }
                                     </Typography>
                                     <Button
-                                        // onClick={() => resendOtpInMail(contextEmail)}
                                         style={{ fontWeight: 700, color: "#1c529b" }}>
                                         Resend
                                     </Button>

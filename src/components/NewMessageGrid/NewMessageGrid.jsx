@@ -3,15 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
 import { styled } from '@mui/material/styles';
-// import {
-//     createChannel, describeChannel, listChannelMembershipsForAppInstanceUser, getAwsCredentialsFromCognito,
-//     sendChannelMessage, listChannelMessages
-// }
-//     from "../../api/ChimeApi/ChimeApi";
-
-// import appConfig from "../../Config";
-//////////get the all users from congnito ///////////////////
-// import { IdentityService } from '../../services/IdentityService.js';
 import ContentModels from "../../pages/ContentModels";
 import { useLocation } from 'react-router-dom';
 import { ChatState } from '../../Context/ChatProvider';
@@ -22,11 +13,8 @@ import { getSender } from "../../utils/chatLogic";
 import { getTime } from '../../utils/validation';
 import socket from "../../socket/socket";
 
-//import io from "socket.io-client";
-
 import ListModal from '../Chat/ListModal';
 
-//const ENDPOINT = process.env.REACT_APP_ENDPOINT
 
 var selectedChatCompare;
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -41,8 +29,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            // animation: 'ripple 1.2s infinite ease-in-out',
-            // border: '1px solid currentColor',
             content: '""',
         },
     },
@@ -63,12 +49,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
         chats, setChats, notification, setNotification } = ChatState();
     //////////// Store the userid of user ////////
     const [UserId, setUserId] = useState("");
-    ////////// Create and store Identity service //////
-    // const [IdentityServiceObject] = useState(
-    //     () => new IdentityService(appConfig.region, appConfig.cognitoUserPoolId)
-    // );
-
-    // console.log(selectChatV1,'sguas77as7dta78std78as');
     useEffect(() => {
         setActiveChannel(selectedChannel);
     }, [selectedChannel])
@@ -77,17 +57,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
     ///////// UseEffect for socket io
     useEffect(() => {
-        //////// Here we are check the login user status
-        // socket = io(`${ENDPOINT}`, {
-        //     debug: true
-        // });
-        // socket.on("connect_error", (err) => {
-        //     console.error("Connection error:", err);
-        // });
-
-        // socket.on("connect_timeout", (timeout) => {
-        //     console.error("Connection timeout:", timeout);
-        // });
         socket.emit("setup", user);
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setisTyping(true));
@@ -104,29 +73,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
     //////// All messges of channel  store here //////////////
     const [AllMessagesChannel, setAllMessgesOfChannel] = useState([]);
     const [messageInterval, setmessageInterval] = useState(null);
-
-    /////////// Get the channel messaages///////
-    // const GetMessagesListOnEverySec = (ActiveChannel, user_id) => {
-    //     listChannelMessages(ActiveChannel.ChannelArn, user_id, undefined, null).then((md) => {
-    //         setAllMessgesOfChannel(md.Messages)
-    //     }).catch((error) => {
-    //         console.log("error", error);
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     console.log("messageInterval val", messageInterval)
-    //     if ((Object.keys(ActiveChannel).length > 0) && (location.pathname === "/")) {/////Here we are check object is empty or not
-    //         clearInterval(messageInterval);
-    //         setAllMessgesOfChannel([]);
-    //         setmessageInterval(setInterval(() => {
-    //             GetMessagesListOnEverySec(ActiveChannel, UserId);
-    //         }, [3000]))
-    //         console.log("messageInterval", messageInterval);
-    //     } else {
-    //         clearInterval(messageInterval);
-    //     }
-    // }, [ActiveChannel, location])
 
 
     const cssStyle = {
@@ -224,21 +170,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
     }
 
-    ////////// Send message here //////
-    // const sendMessageByUser = async (ActiveChannel, sendingMessgeHere, member) => {
-    //     await sendChannelMessage(ActiveChannel.ChannelArn, sendingMessgeHere, "PERSISTENT", "STANDARD", member, undefined, null)
-    //         .then((messData) => {
-    //             listChannelMessages(ActiveChannel.ChannelArn, UserId, undefined, null).then((md) => {
-    //                 setNewMessage("");
-    //                 setAllMessgesOfChannel(md.Messages);
-    //             }).catch((error) => {
-    //                 console.log("error", error);
-    //             })
-    //         }).catch((error) => {
-    //             console.log("message Sending error", error)
-    //         })
 
-    // }
 
     ////////// send message in new version //////
     const { mutateAsync: sendingMessageV1 } = useMutation(sendV1Message);
@@ -253,8 +185,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
             const response = await sendingMessageV1(sendingMessData);
             setCurrentChats([...currentChats, response])
 
-            //setMessages([...messages, response]);
-            //fetchAllMessV1(selectChatV1._id);
             socket.emit("new message", response);
             socket.emit("add-notification-in-member",{response})
 
@@ -376,22 +306,6 @@ const NewMessageGrid = ({ selectedChannel }) => {
 
                                 </Box>
                             </Box>
-                            {/* 
-
-                            <Box display={'flex'} alignItems={'center'}>
-                                <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-                                        <Avatar alt="Remy Sharp" src={img} />
-                                    </StyledBadge> : <Avatar alt="Remy Sharp" src={img} />
-
-                                <Box>
-
-                                    <Typography pl='8px' color="black" fontSize={{ xs: '12px', md: '15px' }} textTransform={'capitalize'}>{name}</Typography>
-                                    {id === adminId ? <Typography pl='8px' color="green" fontSize={{ xs: '9px', md: '11px' }} textTransform={'capitalize'}>admin</Typography> : <Typography pl='8px' color=" #A1A1A1" fontSize={{ xs: '9px', md: '11px' }} textTransform={'capitalize'}>
-                                        {role}
-                                    </Typography>}
-
-                                </Box>
-                            </Box> */}
 
                             <Stack ml={1} direction="row" spacing={-.25}>
                                 <AvatarGroup max={3}

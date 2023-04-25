@@ -37,18 +37,6 @@ const ProjectName = () => {
         }
     }
 
-    // useEffect(() => {
-    //     const UserId = JSON.parse(localStorage.getItem("UserData")).sub;
-    //     setUserID(UserId);
-    // }, [])
-
-    // useEffect(() => {
-    //     if (userId !== "") {
-    //         getComFun(userId);
-    //     }
-    // }, [userId])
-
-
 
 
 

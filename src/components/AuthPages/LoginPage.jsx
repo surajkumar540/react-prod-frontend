@@ -1,7 +1,4 @@
-import {
-  Box, Grid, Typography, TextField,
-  Button, IconButton, InputAdornment,
-} from '@mui/material'
+import {Box, Grid, Typography, TextField, Button, IconButton, InputAdornment,} from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState, useEffect } from 'react'
 import organaiseLogo from "../../assets/Logo/organaise-logo.png";
@@ -9,10 +6,10 @@ import loginPageBackgroundImg from "../../assets/BackgroundImages/loginBackGroun
 import { Link, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import { useMutation } from 'react-query'
 import { ServiceState } from '../../Context/ServiceProvider';
-import { userCreateAccount, userLoginAccount, resendVerification } from '../../api/InternalApi/OurDevApi';
-import { useSelector } from 'react-redux';
+import { userLoginAccount, resendVerification } from '../../api/InternalApi/OurDevApi';
 
 const cssStyle = {
   parent_box: {
@@ -62,9 +59,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
   const emailRedux = useSelector((state) => state.CreateAccountUserData.email)
   const navigate = useNavigate();
 
-  // console.log(ServiceState);
   const { contextEmail, serviceType, setSeviceType, setContextEmail, setContextPassword } = ServiceState();
-  // console.log(setSeviceType,setContextEmail, setContextPassword);
 
   ////////Here we are write the calling api react query function and call the login fuction and resend  confermation mail
   const { mutateAsync: loginApiCall } = useMutation(userLoginAccount);
@@ -77,10 +72,8 @@ const LoginPage = ({ setIsAuthenticated }) => {
     const response = await loginApiCall({ email, password });
     if ((response.status === true || response.status === true) && response.statusCode !== 400) {
       toast.success("Login successfully");
-      // userLoginV1(email, password);
       setTimeout(() => {
         setBtnDisabled(false);/////login , signup ,forget account btn disaabled after clicking
-        // window.location = "/chat";
         setIsAuthenticated(true)
         localStorage.setItem("token", response?.token)
         localStorage.setItem("userInfo", response?._id)
@@ -89,7 +82,6 @@ const LoginPage = ({ setIsAuthenticated }) => {
     } else {
       if (response?.response === "Incorrect username or password.") {
         toast.info(response?.response)
-        // navigate("/signup")
         setBtnDisabled(false)
         return;
       }
@@ -112,7 +104,6 @@ const LoginPage = ({ setIsAuthenticated }) => {
       }
       else {
         setBtnDisabled(false)
-        // toast.error(response?.error?.message||"User is con");
       }
     }
   }
@@ -146,7 +137,6 @@ const LoginPage = ({ setIsAuthenticated }) => {
 
 
   useEffect(() => {
-    // setFullName("");
     setEmailAddress("");
     setPassword("");
   }, [serviceType])
