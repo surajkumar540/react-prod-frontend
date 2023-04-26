@@ -58,7 +58,8 @@ const openedMixin = (theme) => ({
         duration: theme.transitions.duration['20000'],
     }),
     overflowX: 'hidden',
-    borderLeft: '2px solid  rgba(0, 0, 0, 0.06)',
+    boxShadow: 'inset 7px -2px 10px -5px rgba(0, 0, 0, 0.06)',
+    // boxShadow: '4px 0px 18px rgba(0, 0, 0, 0.06)',
     borderRight:"0px",
     [theme.breakpoints.up('xs')]: {
         marginLeft: '3rem',
@@ -130,7 +131,7 @@ const styleCss = {
     appBarCss: {
         backgroundColor: "#ffffff !important",
         boxShadow: "none",
-        borderBottom: "1px solid #efefef !important",
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.06)",
         height: "65px",
     }
 }
@@ -485,7 +486,7 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl:'70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0' borderRight={closeSideListContext&&'1px solid  rgba(0, 0, 0, 0.1)'}>
+                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl:'70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0' boxShadow={closeSideListContext&&'4px 0px 16px rgba(0, 0, 0, 0.04)'}>
 
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
@@ -885,7 +886,7 @@ const LeftSideBar = (props) => {
                 
                 {/* Drawer toggle icon */}
                 {!closeSideListContext && 
-                <Box height={'96vh'} width='14px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'}>     
+                <Box height={'96vh'} width='15px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'} boxShadow={'4px 0px 18px rgba(0, 0, 0, 0.06)'}>     
                     <Box 
                         position={'absolute'}
                         bottom={'18%'}
