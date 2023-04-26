@@ -10,6 +10,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import LogOutModal from '../../Chat/LogOutModal';
 
 const HeaderMenu = () => {
     const navigate=useNavigate()
@@ -95,12 +96,8 @@ const HeaderMenu = () => {
                 <Typography textAlign="center"  fontSize={'14px'}>Help</Typography>
             </MenuItem> */}
             <Divider/>
-            <MenuItem onClick={() => handleCloseUserMenu("ds")}>
-                <ListItemIcon>
-                    <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <Typography textAlign="center"  fontSize={'14px'}>Log out</Typography>
-            </MenuItem>
+            <LogOutModal/>
+            
         
         </Menu>
     </Box>

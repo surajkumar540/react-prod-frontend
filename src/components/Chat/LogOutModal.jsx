@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box,Button,Typography,Modal,Badge, } from '@mui/material';
+import { Box,Button,Typography,Modal,Badge,ListItemIcon,MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -36,14 +36,25 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 
-const LogOut = ({handleLogout}) => {
+const LogOutModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleLogout = () => {
+      localStorage.clear();
+      window.location = "/login";
+  }
   
     return (
       <div>
-        <Button
+        <MenuItem onClick={handleOpen}>
+            <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography textAlign="center"  fontSize={'14px'}>Log out</Typography>
+        </MenuItem>
+        {/* <Button
         id="logout-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
@@ -57,7 +68,7 @@ const LogOut = ({handleLogout}) => {
         <span style={{ fontSize: "13px", textTransform: "capitalize", paddingTop: "2px" }}>
             Logout
         </span>
-        </Button>
+        </Button> */}
 
         
         <Modal
@@ -98,4 +109,4 @@ const LogOut = ({handleLogout}) => {
     );
 }
 
-export default LogOut
+export default LogOutModal

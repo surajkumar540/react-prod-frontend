@@ -867,11 +867,11 @@ const LeftSideBar = (props) => {
                         }
 
 
-                        <Box id="logout_box" sx={{ position: "absolute", bottom: "0%", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: { sm: '8px', md: "10px" }, background: "white" }} mt={1}>
+                        {/* <Box id="logout_box" sx={{ position: "absolute", bottom: "0%", width: "100%", borderTop: "1px solid #CFCFCF", paddingTop: { sm: '8px', md: "10px" }, background: "white" }} mt={1}>
                             <Box sx={{ paddingLeft: "25px", paddingRight: "25px" }}>
                                 <LogOutModal handleLogout={handleLogout} />
                             </Box>
-                        </Box>
+                        </Box> */}
 
                         <List sx={{
                             paddingLeft: open ? "25px" : "5px",
