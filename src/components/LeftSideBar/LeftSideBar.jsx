@@ -59,7 +59,6 @@ const openedMixin = (theme) => ({
     }),
     overflowX: 'hidden',
     boxShadow: 'inset 7px -2px 10px -5px rgba(0, 0, 0, 0.06)',
-    // boxShadow: '4px 0px 18px rgba(0, 0, 0, 0.06)',
     borderRight:"0px",
     [theme.breakpoints.up('xs')]: {
         marginLeft: '3rem',
@@ -183,7 +182,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const LeftSideBar = (props) => {
 
     ////// use conetext use here
-    const { user, setSelectedChatV1, pageNameContext, closeSideListContext, chats, setChats, compNameContext, setCompNameContext, notification, setNotification,setMessagingActive,setSelectedChannel } = ChatState();
+    const { user, setSelectedChatV1, pageNameContext, closeSideListContext, chats, setChats, compNameContext, setCompNameContext, notification, setNotification,setMessagingActive,setSelectedChannel,closeAppDrawer } = ChatState();
+    console.log(closeAppDrawer,"checkingna fdsa")
     const theme = useTheme();
     const navegate = useNavigate();
     const location = useLocation();
@@ -222,11 +222,10 @@ const LeftSideBar = (props) => {
         try {
             const responseGetCom = await getComName(subUserId);
             if (responseGetCom.status !== 404 && responseGetCom?.status === true) {
-                SetComName(responseGetCom?.data[0]?.companyName)
-                setCompNameContext(responseGetCom?.data[0]?.companyName)
+                SetComName(responseGetCom?.data[0]?.companyName)     
             }
         } catch (error) {
-            toast.info("Company name is required");
+            // toast.info("Company name is required");
             navegate("/companyDetail")
         }
     }
@@ -378,7 +377,7 @@ const LeftSideBar = (props) => {
                 <CssBaseline />
 
                 {
-                    <AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
+                    !closeAppDrawer&&<AppBar sx={styleCss.appBarCss} position="fixed" open={open}>
                         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                             <Box display={'flex'} width={drawerWidth && drawerWidth} alignItems={'center'}>
 
@@ -486,7 +485,7 @@ const LeftSideBar = (props) => {
 
 
                 {/* New sidebar  */}
-                <Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl:'70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0' boxShadow={closeSideListContext&&'4px 0px 16px rgba(0, 0, 0, 0.04)'}>
+                {!closeAppDrawer&&<Box height={'100vh'}  position={'fixed'} width={{ xs: '60px', xl:'70px' }} display={{ xs: 'none', sm: 'flex' }} flexDirection={'column'} overflow={'hidden'} top='0' boxShadow={closeSideListContext&&'4px 0px 16px rgba(0, 0, 0, 0.04)'}>
 
 
                     <Box borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} height={'65px'} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} visibility={open ? "normal" : "hidden"}>
@@ -534,11 +533,11 @@ const LeftSideBar = (props) => {
                     </Box>
 
 
-                </Box>
+                </Box>}
 
 
 
-                <Drawer
+                {!closeAppDrawer&&<Drawer
                     variant="permanent"
                     open={open && !closeSideListContext}
                     position='relative'
@@ -882,10 +881,10 @@ const LeftSideBar = (props) => {
                         </List>
 
                     </Box>}
-                </Drawer>
+                </Drawer>}
                 
                 {/* Drawer toggle icon */}
-                {!closeSideListContext && 
+                {(!closeSideListContext&&!closeAppDrawer) && 
                 <Box height={'96vh'} width='15px' display={{ xs: 'none', sm: 'flex' }} overflow={'hidden'} flexDirection={'column'}borderRight='2px solid  rgba(0, 0, 0, 0.06)' zIndex={'999'} boxShadow={'4px 0px 18px rgba(0, 0, 0, 0.06)'}>     
                     <Box 
                         position={'absolute'}

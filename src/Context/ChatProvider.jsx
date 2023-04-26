@@ -20,6 +20,7 @@ const ChatProvider = ({ children }) => {
     const [closeSideListContext,setCloseSideList]=useState(false)
     const [messagingActive, setMessagingActive] = useState(false);
     const [selectedChannel, setSelectedChannel] = useState({});
+    const [closeAppDrawer,setCloseAppDrawer]=useState(false)
 
     useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");
@@ -81,7 +82,9 @@ const ChatProvider = ({ children }) => {
             messagingActive,
             setMessagingActive,
             selectedChannel,
-            setSelectedChannel
+            setSelectedChannel,
+            setCloseAppDrawer,
+            closeAppDrawer
         }}>
             {children}
         </ChatContext.Provider>

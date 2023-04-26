@@ -12,7 +12,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useMutation } from 'react-query';
-import { deleteFileApi } from '../api/InternalApi/OurDevApi';
+import { deleteFileApi,getAllFilesApi } from '../api/InternalApi/OurDevApi';
 import { useDebounce } from 'use-debounce';
 import FileIcon from '../components/FileUploadModal/Icons/FileIcon';
 import DeleteModal from '../components/Chat/DeleteModal';
@@ -71,19 +71,16 @@ const AllFiles = () => {
     /////// Get files of this user
     const getFilesOfUser = async () => {
         setLoading(true)
-        const response = await axios.get('https://devorganaise.com/api/v2/file/getfiles', {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const FilesResponse = response.data;
-        
-        if (FilesResponse.status) {
+        try{
+            const response = await getAllFilesApi()
+            const FilesResponse = response.data;
             const FilesData = FilesResponse.data;
             setUserFiles(FilesData)
-        } else {
-            toast.error(FilesResponse.message);
+        }catch(error)
+        {
+            toast.error("Cannot get files");
         }
+      
         setLoading(false)
     }
 

@@ -1,13 +1,9 @@
 import { Box, Grid, Typography, TextField, Button } from '@mui/material'
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { getCompanyName, postCompannyName } from '../api/InternalApi/OurDevApi';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import { useNavigate } from "react-router-dom"
-
+import { ChatState } from '../Context/ChatProvider';
 
 import organaiseLogo from "../assets/Logo/organaise-logo.png";
 
@@ -19,17 +15,22 @@ const CompanyDetails = () => {
     ];
     const navigate = useNavigate()
     const [userId, setUserID] = useState("")
+    const {setCloseAppDrawer,setCompNameContext,compNameContext}=ChatState()
 
 
     const [companyName, setCompanyName] = useState("");
-    /////// get Company data
-    const getComFun = async (subUserId) => {
+    const getComFun = async () => {
+        if(compNameContext)
+        {
+            navigate("/chat")
+        }
         try {
-            const responseGetCom = await getCompanyName(subUserId);
-            
-            if (responseGetCom.status==true) {
+            const responseGetCom = await getCompanyName(userId);  
+            if (responseGetCom.status===true) {
                 if (responseGetCom.data.length > 0) {
                     localStorage.setItem("sub",responseGetCom?.data[0]?.companyName)
+                    setCloseAppDrawer(false)
+                    setCompNameContext(companyName)
                     navigate("/chat")
                 }
             } else {
@@ -41,15 +42,12 @@ const CompanyDetails = () => {
     }
 
     useEffect(() => {
-        const UserId = localStorage.getItem("userInfo");
-        setUserID(UserId);
+        const userId = localStorage.getItem("userInfo");
+        setUserID(userId);
+        setCloseAppDrawer(true)
+        getComFun();
     }, [])
 
-    useEffect(() => {
-        if (userId !== "") {
-            getComFun(userId);
-        }
-    }, [userId])
 
 
 
@@ -68,7 +66,9 @@ const CompanyDetails = () => {
                 toast.success(response.message);
                 setTimeout(() => {
                     localStorage.setItem("sub",companyName)
+                    setCompNameContext(companyName)
                     navigate("/chat")
+                    setCloseAppDrawer(false)
                 }, [500])
             } else {
                 toast.error(response.message);
