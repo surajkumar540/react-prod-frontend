@@ -141,14 +141,17 @@ const ContentModels = ({
         });
         const FilesResponse = response.data;
         if (FilesResponse.status) {
-            const FilesData = FilesResponse.data;
-            const newCheckedArray = FilesData.filter(checkbox => {
 
-                const match = folderSelect.filesList.find((obj2) => {
-                    return checkbox._id === obj2
+            const FilesData = FilesResponse.data; //Total files present in server
+
+            const newCheckedArray = FilesData.filter((checkbox) => {
+                // check each file with our folder files list below
+
+                const match = folderSelect.filesList.find((file) => {
+                    return checkbox._id === file._id // If file from server matches any of our files in folder return true or file obj
                 });
-
-                return !match ? { ...checkbox, checked: false } : null;
+                
+                return !match ? { ...checkbox, checked: false } : null; // If it's matched it returns true or if not matched it returns {...previousObjValue, checked:false} object
             });
             setUserFiles(newCheckedArray);
         } else {
@@ -242,8 +245,9 @@ const ContentModels = ({
         }
         setAddBtnDisable(true);
         const UserId = localStorage.getItem("userInfo");
-        console.log(folderSelect)
-        let filesArr = [...folderSelect.filesList]
+        let filesArr = [...folderSelect.filesList].map((item)=>{
+            return item._id
+        })
         for (let index = 0; index < selectedFile.length; index++) {
 
             filesArr.push(selectedFile[index]._id)

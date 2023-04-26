@@ -75,6 +75,7 @@ const FolderFiles = () => {
             const FilesData = FilesResponse?.data[0]?.filesList;
             setFolderName(FilesResponse?.data[0]?.folderName)
             setUserFiles(FilesData)
+            console.log(FilesData)
             
         }catch(error)
         {

@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Avatar, Stack, Button, Badge, TextField, AvatarGroup } from '@mui/material'
+import { Box, Grid, Typography, Avatar, Stack, Button, Badge, TextField, AvatarGroup,Tooltip  } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
@@ -278,8 +278,9 @@ const NewMessageGrid = ({ selectedChannel }) => {
                             {
                                 selectChatV1?.isGroupChat === false &&
                                 <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-
-                                    <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }}  >{selectChatV1?.users[1].name[0].toUpperCase()}</Avatar>
+                                    <Tooltip title={selectChatV1?.users[1]?.name} placement="bottom">
+                                    <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }}  >{selectChatV1?.users[1]?.name[0]?.toUpperCase()}</Avatar>
+                                    </Tooltip>
                                 </StyledBadge>
                             }
                             <Box display='flex' flexDirection='column' justifyContent={'center'}>
@@ -312,9 +313,10 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                     }}
                                 >
                                     {
-                                        selectChatV1?.isGroupChat === true &&
-                                        selectChatV1?.users?.map((item) => {
-                                            return <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
+                                        selectChatV1?.isGroupChat === true && selectChatV1?.users?.map((item) => {
+                                            return <Tooltip title={item.name} placement="bottom">
+                                            <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
+                                            </Tooltip> 
                                         })
                                     }
 
