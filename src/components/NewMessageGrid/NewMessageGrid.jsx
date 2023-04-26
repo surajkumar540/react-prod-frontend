@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Avatar, Stack, Button, Badge, TextField, AvatarGroup,Tooltip  } from '@mui/material'
+import { Box, Grid, Typography, Avatar, Stack, Button, Badge, TextField, AvatarGroup, Tooltip } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
@@ -186,7 +186,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
             setCurrentChats([...currentChats, response])
 
             socket.emit("new message", response);
-            socket.emit("add-notification-in-member",{response})
+            socket.emit("add-notification-in-member", { response })
 
         } catch (error) {
             console.log(error.response);
@@ -276,32 +276,37 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     <>
                         <Box display={"flex"} height='30px'>
                             {
-                                selectChatV1?.isGroupChat === false &&
-                                <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-                                    <Tooltip title={selectChatV1?.users[1]?.name} placement="bottom">
+                                selectChatV1?.isGroupChat === false && selectChatV1?.users[0].isActive === true ?
+                                    <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
+                                        <Tooltip title={selectChatV1?.users[1]?.name} placement="bottom">
+                                            <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }}  >{selectChatV1?.users[1]?.name[0]?.toUpperCase()}</Avatar>
+                                        </Tooltip>
+                                    </StyledBadge> :
+
                                     <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }}  >{selectChatV1?.users[1]?.name[0]?.toUpperCase()}</Avatar>
-                                    </Tooltip>
-                                </StyledBadge>
                             }
                             <Box display='flex' flexDirection='column' justifyContent={'center'}>
                                 <Box>
 
-                                <Typography fontWeight={"600"}
-                                    variant="subtitle2" paddingTop={0.3} paddingLeft={1.2} textTransform={'capitalize'} >
-                                    {/* {ActiveChannel.Name.charAt(0).toUpperCase() + ActiveChannel.Name.slice(1)} */}
-                                    {Object.keys(MyActiveChat).length > 0 &&
-                                        (!MyActiveChat.isGroupChat ? getSender(user, MyActiveChat?.users) : (MyActiveChat.chatName))
-                                    }
-                                     {
-                                        
-                                        selectChatV1?.isGroupChat === false &&
-                                        <Typography fontSize='12px'>
-                                            online
-                                        </Typography>
+                                    <Typography fontWeight={"600"}
+                                        variant="subtitle2" paddingTop={0.3} paddingLeft={1.2} textTransform={'capitalize'} >
+                                        {/* {ActiveChannel.Name.charAt(0).toUpperCase() + ActiveChannel.Name.slice(1)} */}
+                                        {Object.keys(MyActiveChat).length > 0 &&
+                                            (!MyActiveChat.isGroupChat ? getSender(user, MyActiveChat?.users) : (MyActiveChat.chatName))
                                         }
-                                    
-                                </Typography>
-                               
+                                        {
+
+                                            selectChatV1?.isGroupChat === false && selectChatV1?.users[0].isActive === true ?
+                                            <Typography fontSize='12px'>
+                                                online
+                                            </Typography>:
+                                            <Typography fontSize='12px'>
+                                                offline
+                                            </Typography>
+                                        }
+
+                                    </Typography>
+
 
                                 </Box>
                             </Box>
@@ -315,8 +320,8 @@ const NewMessageGrid = ({ selectedChannel }) => {
                                     {
                                         selectChatV1?.isGroupChat === true && selectChatV1?.users?.map((item) => {
                                             return <Tooltip title={item.name} placement="bottom">
-                                            <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
-                                            </Tooltip> 
+                                                <Avatar alt="Remy Sharp" src={item?.pic}>{item.name[0].toUpperCase()}</Avatar>
+                                            </Tooltip>
                                         })
                                     }
 
@@ -430,7 +435,7 @@ const NewMessageGrid = ({ selectedChannel }) => {
                     {(currentChats.length > 0 && selectChatV1) &&
                         <>
                             {currentChats?.map((mes, index) => {
-                               
+
                                 if (mes?.sender?._id !== localStorage.getItem("userInfo")) {
                                     return <Grid
                                         id="rec_mess_con_grid"

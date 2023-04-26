@@ -161,10 +161,10 @@ const User = ({ name, role, online = false, img,id,removeMember,chatId,adminId }
     <Box display={'flex'} justifyContent={'space-between'} mt='1rem' order={id===adminId&&"-5"}>
 
       <Box display={'flex'} alignItems={'center'}>
-        {
-          online ? <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-            <Avatar alt="Remy Sharp" src={img} />
-          </StyledBadge> : <Avatar alt="Remy Sharp" src={img} />
+         {
+          online ?
+           <Avatar alt="Remy Sharp" src={img} />
+           : <Avatar alt="Remy Sharp" src={img} />
         }
 
         <Box>
