@@ -1,5 +1,5 @@
 import { useState, createContext } from 'react'
-import { Route, Routes, useNavigate, useParams, useLocation } from 'react-router-dom'
+import { Route, Routes, useNavigate, useParams, useLocation, redirect } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useEffect } from 'react';
 import FileUpload from './pages/FileUpload';
@@ -62,7 +62,8 @@ function App() {
             if(response.status===true)
             {
                 setIsAuthenticated(true)
-                if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/getstart' || pathname == '/forgetEmail' || pathname == '/forget-password' || pathname == '/' )
+                
+                if (pathname === '/login' || pathname === '/signup' || pathname === '/getStart' || pathname === '/getstart' || pathname === '/forgetEmail' || pathname === '/forget-password' || pathname === '/' )
                 {
                     navigate("/chat")
                 } 
@@ -70,7 +71,7 @@ function App() {
                 setIsAuthenticated(false)
                 localStorage.removeItem("token");
                 localStorage.removeItem("userinfo");
-                if (pathname == '/login' || pathname == '/signup' || pathname == '/getStart' || pathname == '/forgetEmail' || pathname == '/forget-password') {
+                if (pathname === '/login' || pathname === '/signup' || pathname === '/getStart' || pathname === '/forgetEmail' || pathname == '/forget-password') {
                     navigate(pathname)
                 } else {
                     navigate("/getStart")
@@ -122,11 +123,6 @@ function App() {
                     </ServiceProvider>
                     :
                     <ChatProvider>
-                        
-                        <Routes>
-                            <Route path="/companyDetail" element={<CompanyDetails />} />
-                            <Route path="*" element={<>404 page</>} />
-                        </Routes>
 
                         <LeftSideBar>
                         <Routes>
@@ -137,6 +133,8 @@ function App() {
                             <Route path="/files/folder/:fid" element={<FolderFiles />} />
                             <Route path="/chat" element={<MyMessage userId={userId} />} />
                             <Route path="/account" element={<MyAccount/>} />
+                            <Route path="/companyDetail" element={<CompanyDetails />} />
+                            <Route path="*" element={<>404 page</>} />
 
                         </Routes>
                         </LeftSideBar>
